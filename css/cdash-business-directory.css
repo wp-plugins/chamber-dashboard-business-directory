@@ -1,0 +1,82 @@
+#business img,
+#businesslist img {
+max-width: 100%; 
+height: auto;
+}
+
+#business img[class*="align"],
+#business img[class*="wp-image-"],
+#businesslist img[class*="align"],
+#businesslist img[class*="wp-image-"] {
+height: auto; /* Make sure images with WordPress-added height and width attributes are scaled correctly */
+}
+
+#business img.size-full,
+#businesslist img.size-full {
+max-width: 100%;
+width: auto; /* Prevent stretching of full-size images with height and width attributes in IE8 */
+}
+
+#business img.logo,
+#businesslist img.logo {
+max-width: 50%;
+}
+
+#business .membership span, 
+#business .categories span,
+#businesslist .membership span, 
+#businesslist .categories span {
+ font-weight: bold; 
+}
+
+#business .membership,
+#businesslist .description {
+ margin: 0; 
+ clear: both;
+}
+
+#business .location p,
+#businesslist .location p {
+ margin: 0; 
+}
+
+#businesslist.list .business:after {
+display: table;
+content: '';
+clear: both;
+}
+
+#businesslist .business {
+	margin-bottom: 15px;
+}
+
+#businesslist.grid2 .business {
+	width: 45%;
+	margin-right: 2%;
+	float: left;
+}
+
+#businesslist.grid3 .business {
+	width: 30%;
+	margin-right: 2%;
+	float: left;
+}
+
+#businesslist.grid3 .business .logo.alignleft,
+#businesslist.grid4 .business .logo.alignleft {
+	width: 100%;
+	max-width: 100%;
+	float: none;
+	margin-bottom: 1em;
+}
+
+#businesslist.grid4 .business {
+	width: 22.5%;
+	margin-right: 2%;
+	float: left;
+}
+
+#businesslist .pagination {
+	text-align: center;
+	margin: 20px 0;
+}
