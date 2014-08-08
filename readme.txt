@@ -8,21 +8,25 @@ Stable tag: trunk
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Create a directory of businesses.  Specifically designed for chambers of commerce to store information about businesses and display them on a website.
+Create a directory of businesses.  Specifically designed for chambers of commerce to store information about businesses and 
+display them on a website.
 
 == Description ==
-Chamber Dashboard Business Directory is a part of the Chamber Dashboard collection of plugins and themes designed to meet the needs of chambers of commerce.
+Chamber Dashboard Business Directory is a part of the Chamber Dashboard collection of plugins and themes designed to meet the 
+needs of chambers of commerce.
 
 With Chamber Dashboard Business Directory, you can:
-* create a database of the businesses in your chamber
-* display a business directory on your website
-* customize what information is displayed about the businesses
+*   create a database of the businesses in your chamber
+*   display a business directory on your website
+*   customize what information is displayed about the businesses
 
-You can learn more at [link](http://chamberdashboard.com)
+You can learn more at [chamberdashboard.com](http://chamberdashboard.com)
 
-For full instructions about how to use the plugin, go to [link](http://chamberdashboard.com/support/documentation)
+For full instructions about how to use the plugin, go to [Chamber Dashboard 
+Documentation](http://chamberdashboard.com/support/documentation)
 
-More features coming soon!  Chamber Dashboard is in the early stages of its development.  By the end of 2014, it will include membership management, event sign-up and management, and much more.
+More features coming soon!  Chamber Dashboard is in the early stages of its development.  By the end of 2014, it will include 
+membership management, event sign-up and management, and much more.
 
 == Installation ==
 = Using The WordPress Dashboard =
@@ -53,17 +57,19 @@ More features coming soon!  Chamber Dashboard is in the early stages of its deve
 Create a page, and insert the following shortcode:
 [business_directory]
 
-There are lots of options for this shortcode.  For a full description, see [link](http://chamberdashboard.com/document/displaying-business-directory-site/)
+There are lots of options for this shortcode.  For a full description, see [Chamber Dashboard 
+Documentation](http://chamberdashboard.com/document/displaying-business-directory-site/)
 
 = Will it work with my theme? =
 Probably!  It is designed to work with any theme that follows basic WordPress coding practices. 
 
 = I want the plugin to do _____.  Can you make it do that? =
-Probably!  I am definitely interested in making this as useful as possible for chambers of commerce, so please let me know what features you need!  You can use the contact form at [link](http://chamberdashboard.com/contact)
+Probably!  I am definitely interested in making this as useful as possible for chambers of commerce, so please let me know 
+what features you need!  You can use the contact form at [chamberdashboard.com/contact](http://chamberdashboard.com/contact)
 
 == Screenshots ==
 1. Entering business information
 
 == Changelog ==
-= 1 =
+= 1.0 =
 * First release
