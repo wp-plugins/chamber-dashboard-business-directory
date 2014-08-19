@@ -13,7 +13,7 @@ Create a directory of businesses.  Specifically designed for chambers of commerc
 == Description ==
 Chamber Dashboard Business Directory is a part of the Chamber Dashboard collection of plugins and themes designed to meet the needs of chambers of commerce.
 
-With Chamber Dashboard Business Directory, you can:
+= With Chamber Dashboard Business Directory, you can: =
 *   create a database of the businesses in your chamber
 *   display a business directory on your website
 *   customize what information is displayed about the businesses
@@ -65,6 +65,10 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.2 =
+* Added the ability to create custom fields for businesses
+* Bug fixes
+
 = 1.1 =
 * Added Google map to single business view
 * Added shortcode to create map of all businesses

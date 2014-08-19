@@ -65,6 +65,10 @@ function cdash_language_init() {
 }
 add_action('init', 'cdash_language_init');
 
+// ------------------------------------------------------------------------
+// SET UP CUSTOM POST TYPES AND TAXONOMIES
+// ------------------------------------------------------------------------
+
 // Register Custom Taxonomy - Business Cateogory
 function cdash_register_taxonomy_business_category() {
 
@@ -181,7 +185,10 @@ function cdash_register_cpt_business() {
 add_action( 'init', 'cdash_register_cpt_business', 0 );
 
 
-//Create metaboxes
+// ------------------------------------------------------------------------
+// SET UP METABOXES
+// ------------------------------------------------------------------------
+
 include_once 'wpalchemy/MetaBox.php';
 include_once 'wpalchemy/MediaAccess.php';
 define( 'MYPLUGINNAME_PATH', plugin_dir_path(__FILE__) );
@@ -231,7 +238,24 @@ $busnotes_metabox = new WPAlchemy_MetaBox(array
     'prefix' => '_cdash_'
 ));
 
-/* TODO - make a metabox for custom fields */
+$options = get_option('cdash_directory_options');
+if(!empty($options['bus_custom'])) {
+	// Create metabox for custom fields
+	$custom_metabox = new WPAlchemy_MetaBox(array
+	(
+	    'id' => 'custom_meta',
+	    'title' => 'Custom Fields',
+	    'types' => array('business'),
+	    'template' => MYPLUGINNAME_PATH . '/wpalchemy/buscustom.php',
+	    'mode' => WPALCHEMY_MODE_EXTRACT,
+	    'prefix' => '_cdash_'
+	));
+}
+
+
+// ------------------------------------------------------------------------
+// SINGLE BUSINESS VIEW
+// ------------------------------------------------------------------------
 
 // Enqueue stylesheet for single businesses
 function cdash_single_business_style() {
@@ -365,6 +389,18 @@ function cdash_single_business($content) {
 			$business_content .= "</div>";
 			}
 		}
+		if($options['bus_custom']) {
+			$customfields = $options['bus_custom'];
+			foreach($customfields as $field) { 
+				if($field['display_single'] !== "yes") {
+					continue;
+				} else {
+					global $custom_metabox;
+					$custommeta = $custom_metabox->the_meta();
+					$business_content .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$field['name']] . "</p>";
+				}
+			}
+		}
 		if ($options['sv_map'] == "1" ) {
 			$business_content .= "<div id='map-canvas' style='width: 100%; height: 300px; margin: 20px 0;'></div>";
 		}
@@ -378,7 +414,9 @@ function cdash_single_business($content) {
 add_filter('the_content', 'cdash_single_business');
 
 
-// Create shortcode for displaying business directory
+// ------------------------------------------------------------------------
+// BUSINESS DIRECTORY SHORTCODE
+// ------------------------------------------------------------------------
 
 function cdash_business_directory_shortcode( $atts ) {
 	// Set our default attributes
@@ -547,6 +585,19 @@ function cdash_business_directory_shortcode( $atts ) {
 						}
 				  	}
 			  	}
+			  	$options = get_option('cdash_directory_options');
+			  	if($options['bus_custom']) {
+					$customfields = $options['bus_custom'];
+					foreach($customfields as $field) { 
+						if($field['display_dir'] !== "yes") {
+							continue;
+						} else {
+							global $custom_metabox;
+							$custommeta = $custom_metabox->the_meta();
+							$business_list .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$field['name']] . "</p>";
+						}
+					}
+				}
 			  	$business_list .= "</div>";
 			endwhile;
 
@@ -614,7 +665,11 @@ function cdash_business_map_shortcode( $atts ) {
 				$long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'}; 
 				// TODO - let people upload different icons for each category
 				$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
-				$business_map .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5>" . $location['altname'] . "</h5> " . $location['address'] . "<br />" . $location['city'] . ", " . $location['state'] . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
+				if($single_link == "yes") {
+					$business_map .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5><a href=\x22" . get_the_permalink() . "\x22>" . get_the_title() . "</a></h5> " . $location['address'] . "<br />" . $location['city'] . ", " . $location['state'] . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
+				} else {
+					$business_map .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5>" . get_the_title() . "</h5> " . $location['address'] . "<br />" . $location['city'] . ", " . $location['state'] . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
+				}
 			}
 		endwhile;
 	endif;

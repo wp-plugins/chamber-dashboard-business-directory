@@ -80,6 +80,8 @@ function cdash_render_form() {
 		<div class="icon32" id="icon-options-general"><br></div>
 		<h2><?php _e('Chamber Dashboard Settings', 'cdash'); ?></h2>
 
+
+
 		<!-- Beginning of the Plugin Options Form -->
 		<form method="post" action="options.php">
 			<?php settings_fields('cdash_plugin_options'); ?>
@@ -137,6 +139,58 @@ function cdash_render_form() {
 					</td>
 				</tr>
 
+				<!-- Custom Fields -->
+				<tr>
+					<th scope="row"><?php _e('Custom Fields', 'cdash'); ?></th>
+					<td>
+						<span style="color:#666666;margin-left:2px;"><?php _e('If you need to store additional information about businesses, you can create custom fields here.'); ?></span><br />
+						<?php if(!empty($options['bus_custom'])) {
+							$customfields = $options['bus_custom'];
+							$i = 1;
+							foreach($customfields as $field) { ?>
+								<div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+									<p><strong><?php _e('Custom Field Name'); ?></strong></p>
+										<input type="text" size="30" name="cdash_directory_options[bus_custom][<?php echo $i; ?>][name]" value="<?php echo $field['name']; ?>" />
+									<p><strong><?php _e('Custom Field Type'); ?></strong></p>	
+										<select name='cdash_directory_options[bus_custom][<?php echo $i; ?>][type]'>
+											<option value=''></option>
+											<option value='text' <?php selected('text', $field['type']); ?>>Short Text Field</option>
+											<option value='textarea' <?php selected('textarea', $field['type']); ?>>Multi-line Text Area</option>
+										</select>
+									<p><strong><?php _e('Display in Business Directory?'); ?></strong></p>	
+										<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="yes" <?php checked('yes', $field['display_dir']); ?> /> Yes</label><br />
+										<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="no" <?php checked('no', $field['display_dir']); ?> /> No</label><br />
+
+									<p><strong><?php _e('Display in Single Business View?'); ?></strong></p>
+										<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="yes" <?php checked('yes', $field['display_single']); ?> /> Yes</label><br />
+										<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php checked('no', $field['display_single']); ?> /> No</label><br />	
+									<p><a href="#" class="repeat">Add Another</a></p>
+								</div>
+								<?php $i++;
+							}
+						} else { ?>
+							<div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+								<p><strong><?php _e('Custom Field Name'); ?></strong></p>
+									<input type="text" size="30" name="cdash_directory_options[bus_custom][1][name]" value="<?php echo $options['bus_custom'][1]['name']; ?>" />
+								<p><strong><?php _e('Custom Field Type'); ?></strong></p>	
+									<select name='cdash_directory_options[bus_custom][1][type]'>
+										<option value=''></option>
+										<option value='text' <?php selected('one', $options['bus_custom'][1]['type']); ?>>Short Text Field</option>
+										<option value='textarea' <?php selected('two', $options['bus_custom'][1]['type']); ?>>Multi-line Text Area</option>
+									</select>
+								<p><strong><?php _e('Display in Business Directory?'); ?></strong></p>	
+									<label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_dir']); ?> /> Yes</label><br />
+									<label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_dir']); ?> /> No</label><br />
+
+								<p><strong><?php _e('Display in Single Business View?'); ?></strong></p>
+									<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_single']); ?> /> Yes</label><br />
+									<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_single']); ?> /> No</label><br />	
+								<p><a href="#" class="repeat">Add Another</a></p>
+							</div>
+						<?php } ?>
+					</td>
+				</tr>	
+
 
 			</table>
 			<p class="submit">
@@ -144,10 +198,39 @@ function cdash_render_form() {
 			</p> 
 		</form>
 
+<script type="text/javascript">
+// Add a new repeating section
+var attrs = ['for', 'id', 'name'];
+function resetAttributeNames(section) { 
+    var tags = section.find('input, label'), idx = section.index();
+    tags.each(function() {
+      var $this = jQuery(this);
+      jQuery.each(attrs, function(i, attr) {
+        var attr_val = $this.attr(attr);
+        if (attr_val) {
+            $this.attr(attr, attr_val.replace(/\[bus_custom\]\[\d+\]\[/, '\[bus_custom\]\['+(idx + 1)+'\]\['))
+        }
+      })
+    })
+}
+                   
+jQuery('.repeat').click(function(e){
+        e.preventDefault();
+        var lastRepeatingGroup = jQuery('.repeating').last();
+        var cloned = lastRepeatingGroup.clone(true)  
+        cloned.insertAfter(lastRepeatingGroup);
+        cloned.find("input").val("");
+        cloned.find("select").val("");
+        cloned.find("input:radio").attr("checked", false);
+        resetAttributeNames(cloned)
+    });
 
+</script>
 	</div>
 	<?php	
 }
+
+
 
 // Sanitize and validate input. Accepts an array, return a sanitized array.
 function cdash_validate_options($input) {
