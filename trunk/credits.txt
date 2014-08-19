@@ -1,0 +1,5 @@
+Credits:
+
+WP Alchemy MetaBoxes: https://github.com/farinspace/wpalchemy
+
+Plugin Options Starter Kit: http://wordpress.org/plugins/plugin-options-starter-kit/
