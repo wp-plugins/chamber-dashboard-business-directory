@@ -4,7 +4,7 @@ Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 3.7
 Tested up to: 3.9.2
-Stable tag: trunk
+Stable tag: 1.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
