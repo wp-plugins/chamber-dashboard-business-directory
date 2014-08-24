@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.2
+Version: 1.3
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -95,7 +95,7 @@ function cdash_register_taxonomy_business_category() {
 		'public'                     => true,
 		'show_ui'                    => true,
 		'show_admin_column'          => true,
-		'show_in_nav_menus'          => false,
+		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
 	);
 	register_taxonomy( 'business_category', array( 'business' ), $args );
@@ -130,7 +130,7 @@ function cdash_register_taxonomy_membership_level() {
 		'public'                     => true,
 		'show_ui'                    => true,
 		'show_admin_column'          => true,
-		'show_in_nav_menus'          => false,
+		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
 	);
 	register_taxonomy( 'membership_level', array( 'business' ), $args );
@@ -413,6 +413,146 @@ function cdash_single_business($content) {
 }
 add_filter('the_content', 'cdash_single_business');
 
+// ------------------------------------------------------------------------
+// TAXONOMY VIEW
+// ------------------------------------------------------------------------
+
+function cdash_taxonomy_filter($content) {
+	if( is_tax('business_category') || is_tax('membership_level') ) {
+		$options = get_option('cdash_directory_options');
+
+		// make location/address metabox data available
+		global $buscontact_metabox;
+		$contactmeta = $buscontact_metabox->the_meta();
+
+		// make logo metabox data available
+		global $buslogo_metabox;
+		$logometa = $buslogo_metabox->the_meta();
+
+		global $post;
+
+		if (($options['tax_thumb']) == "1") { 
+			$tax_content .= get_the_post_thumbnail( $post->ID, 'full');
+		}
+		if (($options['tax_logo']) == "1") { 
+			$attr = array(
+				'class'	=> 'alignleft logo',
+			);
+			$tax_content .= wp_get_attachment_image($logometa['buslogo'], 'full', 0, $attr );
+		}
+		$tax_content .= $content; 
+		if (($options['tax_memberlevel']) == "1") { 
+			$id = get_the_id();
+			$levels = get_the_terms( $id, 'membership_level');
+			if($levels) {
+				$tax_content .= "<p class='membership'><span>Membership Level:</span>&nbsp;";
+				$i = 1;
+				foreach($levels as $level) {
+					if($i !== 1) {
+						$tax_content .= ",&nbsp;";
+					}
+					$tax_content .= $level->name;
+					$i++;
+				}
+			}
+		}
+		if (($options['tax_category']) == "1") { 
+			$id = get_the_id();
+			$buscats = get_the_terms( $id, 'business_category');
+			if($buscats) {
+				$tax_content .= "<p class='categories'><span>Categories:</span>&nbsp;";
+				$i = 1;
+				foreach($buscats as $buscat) {
+					if($i !== 1) {
+						$tax_content .= ",&nbsp;";
+					}
+					$tax_content .= $buscat->name;
+					$i++;
+				}
+			}
+		}
+		$locations = $contactmeta['location'];
+		foreach($locations as $location) {
+			if($location['donotdisplay'] == "1") {
+				continue;
+			} else {
+				if (($options['tax_name']) == "1" && isset($location['altname'])) { 
+					$tax_content .= "<div class='location'>";
+					$tax_content .= "<h3>" . $location['altname'] . "</h3>";
+				}
+				if (($options['tax_address']) == "1") { 
+					$tax_content .= "<p class='address'>";
+	 					if(isset($location['address'])) {
+							$address = $location['address'];
+							$tax_content .= str_replace("\n", '<br />', $address);
+						}
+						if(isset($location['city'])) {
+							$tax_content .= "<br />" . $location['city'] . ",&nbsp;";
+						}
+						if(isset($location['state'])) {
+							$tax_content .= $location['state'] . "&nbsp";
+						}
+						if(isset($location['zip'])) {
+							$tax_content .= $location['zip'];
+						} 
+					$tax_content .= "</p>";
+				}
+				if (($options['tax_url']) == "1") { 
+					$tax_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+				}
+				if (($options['tax_phone']) == "1" && isset($location['phone'])) { 
+					$tax_content .= "<p class='phone'>";
+						$i = 1;
+						$phones = $location['phone'];
+						foreach($phones as $phone) {
+							if($i !== 1) {
+								$tax_content .= "<br />";
+							}
+							$tax_content .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
+							if(isset($phone['phonetype'])) {
+								$tax_content .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+							}
+							$i++;
+						}
+					$tax_content .= "</p>";
+				}
+				if (($options['tax_email']) == "1" && isset($location['email'])) { 
+					$tax_content .= "<p class='email'>";
+						$i = 1;
+						$emails = $location['email'];
+						foreach($emails as $email) {
+							if($i !== 1) {
+								$tax_content .= "<br />";
+							}
+							$tax_content .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
+							if(isset($email['emailtype'])) {
+								$tax_content .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
+							}
+							$i++;
+						}
+					$tax_content .= "</p>";
+				}
+			$tax_content .= "</div>";
+			}
+		}
+		if($options['bus_custom']) {
+			$customfields = $options['bus_custom'];
+			foreach($customfields as $field) { 
+				if($field['display_dir'] !== "yes") {
+					continue;
+				} else {
+					global $custom_metabox;
+					$custommeta = $custom_metabox->the_meta();
+					$tax_content .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$field['name']] . "</p>";
+				}
+			}
+		}
+	$content = $tax_content;
+	}
+	return $content;
+}
+add_filter( 'the_content', 'cdash_taxonomy_filter' );
+add_filter( 'get_the_excerpt', 'cdash_taxonomy_filter' );
 
 // ------------------------------------------------------------------------
 // BUSINESS DIRECTORY SHORTCODE
@@ -435,6 +575,7 @@ function cdash_business_directory_shortcode( $atts ) {
 		), $atts )
 	);
 
+	// Enqueue stylesheet if the display format is columns instead of list
 	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
 	if($format !== 'list') {
 		wp_enqueue_script( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'js/cdash-business-directory.js' );

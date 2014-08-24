@@ -4,7 +4,7 @@ Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 3.7
 Tested up to: 3.9.2
-Stable tag: 1.2
+Stable tag: trunk
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -65,6 +65,10 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.3 = 
+* Created filters to allow use of theme archive pages for business category and membership level
+* Other small fixes
+
 = 1.2 =
 * Added the ability to create custom fields for businesses
 * Bug fixes
