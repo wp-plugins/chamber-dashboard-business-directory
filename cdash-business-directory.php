@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 0.1
+Version: 1.3
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -30,7 +30,7 @@ Author URI: http://wpalchemists.com
 // ------------------------------------------------------------------------
 
 
-function requires_wordpress_version() {
+function cdash_requires_wordpress_version() {
 	global $wp_version;
 	$plugin = plugin_basename( __FILE__ );
 	$plugin_data = get_plugin_data( __FILE__, false );
@@ -42,13 +42,10 @@ function requires_wordpress_version() {
 		}
 	}
 }
-add_action( 'admin_init', 'requires_wordpress_version' );
+add_action( 'admin_init', 'cdash_requires_wordpress_version' );
 
 // ------------------------------------------------------------------------
 // REGISTER HOOKS & CALLBACK FUNCTIONS:
-// ------------------------------------------------------------------------
-// HOOKS TO SETUP DEFAULT PLUGIN OPTIONS, HANDLE CLEAN-UP OF OPTIONS WHEN
-// PLUGIN IS DEACTIVATED AND DELETED, INITIALISE PLUGIN, ADD OPTIONS PAGE.
 // ------------------------------------------------------------------------
 
 // Set-up Action and Filter Hooks
@@ -67,6 +64,10 @@ function cdash_language_init() {
   load_plugin_textdomain( 'cdash', false, 'cdash-business-directory/languages' );
 }
 add_action('init', 'cdash_language_init');
+
+// ------------------------------------------------------------------------
+// SET UP CUSTOM POST TYPES AND TAXONOMIES
+// ------------------------------------------------------------------------
 
 // Register Custom Taxonomy - Business Cateogory
 function cdash_register_taxonomy_business_category() {
@@ -184,7 +185,10 @@ function cdash_register_cpt_business() {
 add_action( 'init', 'cdash_register_cpt_business', 0 );
 
 
-//Create metaboxes
+// ------------------------------------------------------------------------
+// SET UP METABOXES
+// ------------------------------------------------------------------------
+
 include_once 'wpalchemy/MetaBox.php';
 include_once 'wpalchemy/MediaAccess.php';
 define( 'MYPLUGINNAME_PATH', plugin_dir_path(__FILE__) );
@@ -234,7 +238,24 @@ $busnotes_metabox = new WPAlchemy_MetaBox(array
     'prefix' => '_cdash_'
 ));
 
-/* TODO - make a metabox for custom fields */
+$options = get_option('cdash_directory_options');
+if(!empty($options['bus_custom'])) {
+	// Create metabox for custom fields
+	$custom_metabox = new WPAlchemy_MetaBox(array
+	(
+	    'id' => 'custom_meta',
+	    'title' => 'Custom Fields',
+	    'types' => array('business'),
+	    'template' => MYPLUGINNAME_PATH . '/wpalchemy/buscustom.php',
+	    'mode' => WPALCHEMY_MODE_EXTRACT,
+	    'prefix' => '_cdash_'
+	));
+}
+
+
+// ------------------------------------------------------------------------
+// SINGLE BUSINESS VIEW
+// ------------------------------------------------------------------------
 
 // Enqueue stylesheet for single businesses
 function cdash_single_business_style() {
@@ -277,27 +298,31 @@ function cdash_single_business($content) {
 		if (($options['sv_memberlevel']) == "1") { 
 			$id = get_the_id();
 			$levels = get_the_terms( $id, 'membership_level');
-			$business_content .= "<p class='membership'><span>Membership Level:</span>&nbsp;";
-			$i = 1;
-			foreach($levels as $level) {
-				if($i !== 1) {
-					$business_content .= ",&nbsp;";
+			if($levels) {
+				$business_content .= "<p class='membership'><span>Membership Level:</span>&nbsp;";
+				$i = 1;
+				foreach($levels as $level) {
+					if($i !== 1) {
+						$business_content .= ",&nbsp;";
+					}
+					$business_content .= $level->name;
+					$i++;
 				}
-				$business_content .= $level->name;
-				$i++;
 			}
 		}
 		if (($options['sv_category']) == "1") { 
 			$id = get_the_id();
-			$levels = get_the_terms( $id, 'business_category');
-			$business_content .= "<p class='categories'><span>Categories:</span>&nbsp;";
-			$i = 1;
-			foreach($levels as $level) {
-				if($i !== 1) {
-					$business_content .= ",&nbsp;";
+			$buscats = get_the_terms( $id, 'business_category');
+			if($buscats) {
+				$business_content .= "<p class='categories'><span>Categories:</span>&nbsp;";
+				$i = 1;
+				foreach($buscats as $buscat) {
+					if($i !== 1) {
+						$business_content .= ",&nbsp;";
+					}
+					$business_content .= $buscat->name;
+					$i++;
 				}
-				$business_content .= $level->name;
-				$i++;
 			}
 		}
 		$locations = $contactmeta['location'];
@@ -361,7 +386,23 @@ function cdash_single_business($content) {
 						}
 					$business_content .= "</p>";
 				}
+			$business_content .= "</div>";
 			}
+		}
+		if($options['bus_custom']) {
+			$customfields = $options['bus_custom'];
+			foreach($customfields as $field) { 
+				if($field['display_single'] !== "yes") {
+					continue;
+				} else {
+					global $custom_metabox;
+					$custommeta = $custom_metabox->the_meta();
+					$business_content .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$field['name']] . "</p>";
+				}
+			}
+		}
+		if ($options['sv_map'] == "1" ) {
+			$business_content .= "<div id='map-canvas' style='width: 100%; height: 300px; margin: 20px 0;'></div>";
 		}
 		$business_content .= "</div>";
 	$content = $business_content;
@@ -372,8 +413,150 @@ function cdash_single_business($content) {
 }
 add_filter('the_content', 'cdash_single_business');
 
+// ------------------------------------------------------------------------
+// TAXONOMY VIEW
+// ------------------------------------------------------------------------
 
-// Create shortcode for displaying business directory
+function cdash_taxonomy_filter($content) {
+	if( is_tax('business_category') || is_tax('membership_level') ) {
+		$options = get_option('cdash_directory_options');
+
+		// make location/address metabox data available
+		global $buscontact_metabox;
+		$contactmeta = $buscontact_metabox->the_meta();
+
+		// make logo metabox data available
+		global $buslogo_metabox;
+		$logometa = $buslogo_metabox->the_meta();
+
+		global $post;
+
+		if (($options['tax_thumb']) == "1") { 
+			$tax_content .= get_the_post_thumbnail( $post->ID, 'full');
+		}
+		if (($options['tax_logo']) == "1") { 
+			$attr = array(
+				'class'	=> 'alignleft logo',
+			);
+			$tax_content .= wp_get_attachment_image($logometa['buslogo'], 'full', 0, $attr );
+		}
+		$tax_content .= $content; 
+		if (($options['tax_memberlevel']) == "1") { 
+			$id = get_the_id();
+			$levels = get_the_terms( $id, 'membership_level');
+			if($levels) {
+				$tax_content .= "<p class='membership'><span>Membership Level:</span>&nbsp;";
+				$i = 1;
+				foreach($levels as $level) {
+					if($i !== 1) {
+						$tax_content .= ",&nbsp;";
+					}
+					$tax_content .= $level->name;
+					$i++;
+				}
+			}
+		}
+		if (($options['tax_category']) == "1") { 
+			$id = get_the_id();
+			$buscats = get_the_terms( $id, 'business_category');
+			if($buscats) {
+				$tax_content .= "<p class='categories'><span>Categories:</span>&nbsp;";
+				$i = 1;
+				foreach($buscats as $buscat) {
+					if($i !== 1) {
+						$tax_content .= ",&nbsp;";
+					}
+					$tax_content .= $buscat->name;
+					$i++;
+				}
+			}
+		}
+		$locations = $contactmeta['location'];
+		foreach($locations as $location) {
+			if($location['donotdisplay'] == "1") {
+				continue;
+			} else {
+				if (($options['tax_name']) == "1" && isset($location['altname'])) { 
+					$tax_content .= "<div class='location'>";
+					$tax_content .= "<h3>" . $location['altname'] . "</h3>";
+				}
+				if (($options['tax_address']) == "1") { 
+					$tax_content .= "<p class='address'>";
+	 					if(isset($location['address'])) {
+							$address = $location['address'];
+							$tax_content .= str_replace("\n", '<br />', $address);
+						}
+						if(isset($location['city'])) {
+							$tax_content .= "<br />" . $location['city'] . ",&nbsp;";
+						}
+						if(isset($location['state'])) {
+							$tax_content .= $location['state'] . "&nbsp";
+						}
+						if(isset($location['zip'])) {
+							$tax_content .= $location['zip'];
+						} 
+					$tax_content .= "</p>";
+				}
+				if (($options['tax_url']) == "1") { 
+					$tax_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+				}
+				if (($options['tax_phone']) == "1" && isset($location['phone'])) { 
+					$tax_content .= "<p class='phone'>";
+						$i = 1;
+						$phones = $location['phone'];
+						foreach($phones as $phone) {
+							if($i !== 1) {
+								$tax_content .= "<br />";
+							}
+							$tax_content .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
+							if(isset($phone['phonetype'])) {
+								$tax_content .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+							}
+							$i++;
+						}
+					$tax_content .= "</p>";
+				}
+				if (($options['tax_email']) == "1" && isset($location['email'])) { 
+					$tax_content .= "<p class='email'>";
+						$i = 1;
+						$emails = $location['email'];
+						foreach($emails as $email) {
+							if($i !== 1) {
+								$tax_content .= "<br />";
+							}
+							$tax_content .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
+							if(isset($email['emailtype'])) {
+								$tax_content .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
+							}
+							$i++;
+						}
+					$tax_content .= "</p>";
+				}
+			$tax_content .= "</div>";
+			}
+		}
+		if($options['bus_custom']) {
+			$customfields = $options['bus_custom'];
+			foreach($customfields as $field) { 
+				if($field['display_dir'] !== "yes") {
+					continue;
+				} else {
+					global $custom_metabox;
+					$custommeta = $custom_metabox->the_meta();
+					$tax_content .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$field['name']] . "</p>";
+				}
+			}
+		}
+	$content = $tax_content;
+	}
+	return $content;
+}
+add_filter( 'the_content', 'cdash_taxonomy_filter' );
+add_filter( 'get_the_excerpt', 'cdash_taxonomy_filter' );
+
+// ------------------------------------------------------------------------
+// BUSINESS DIRECTORY SHORTCODE
+// ------------------------------------------------------------------------
 
 function cdash_business_directory_shortcode( $atts ) {
 	// Set our default attributes
@@ -392,6 +575,7 @@ function cdash_business_directory_shortcode( $atts ) {
 		), $atts )
 	);
 
+	// Enqueue stylesheet if the display format is columns instead of list
 	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
 	if($format !== 'list') {
 		wp_enqueue_script( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'js/cdash-business-directory.js' );
@@ -542,6 +726,19 @@ function cdash_business_directory_shortcode( $atts ) {
 						}
 				  	}
 			  	}
+			  	$options = get_option('cdash_directory_options');
+			  	if($options['bus_custom']) {
+					$customfields = $options['bus_custom'];
+					foreach($customfields as $field) { 
+						if($field['display_dir'] !== "yes") {
+							continue;
+						} else {
+							global $custom_metabox;
+							$custommeta = $custom_metabox->the_meta();
+							$business_list .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$field['name']] . "</p>";
+						}
+					}
+				}
 			  	$business_list .= "</div>";
 			endwhile;
 
@@ -566,3 +763,192 @@ function cdash_business_directory_shortcode( $atts ) {
 	wp_reset_postdata();
 }
 add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
+
+// Create shortcode for displaying map of businesses
+function cdash_business_map_shortcode( $atts ) {
+	// Set our default attributes
+	extract( shortcode_atts(
+		array(
+			'category' => '', // options: slug of any category
+			'level' => '', // options: sluf of any membership level
+			'single_link' => 'yes', // options: yes, no
+			'perpage' => '-1', // options: any number
+		), $atts )
+	);
+
+	$args = array( 
+		'post_type' => 'business',
+		'posts_per_page' => $perpage, 
+	    'business_category' => $category,	
+	    'membership_level' => $level,								 
+	);
+
+	$mapquery = new WP_Query( $args );
+	$business_map .= "<div id='map-canvas' style='width: 100%; height: 500px;'></div>";
+	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&sensor=false'></script>";
+	$business_map .= "<script type='text/javascript'>";
+	$business_map .= "function initialize() {
+				var locations = [";
+
+	// The Loop
+	if ( $mapquery->have_posts() ) :
+		while ( $mapquery->have_posts() ) : $mapquery->the_post();
+			global $buscontact_metabox;
+			$contactmeta = $buscontact_metabox->the_meta();
+			$locations = $contactmeta['location'];
+			foreach($locations as $location) {
+		    	$rawaddress = $location['address'] . $location['city'] . $location['state'] . $location['zip'];
+				$address = str_replace(' ', '+', $rawaddress);
+
+				$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
+				$json = json_decode($json);
+				$lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
+				$long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'}; 
+				// TODO - let people upload different icons for each category
+				$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
+				if($single_link == "yes") {
+					$business_map .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5><a href=\x22" . get_the_permalink() . "\x22>" . get_the_title() . "</a></h5> " . $location['address'] . "<br />" . $location['city'] . ", " . $location['state'] . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
+				} else {
+					$business_map .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5>" . get_the_title() . "</h5> " . $location['address'] . "<br />" . $location['city'] . ", " . $location['state'] . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
+				}
+			}
+		endwhile;
+	endif;
+
+	$business_map .= "];
+
+					var bounds = new google.maps.LatLngBounds();
+					var mapOptions = {
+					    // zoom: 13,
+					}
+					var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+					var infowindow = new google.maps.InfoWindow();
+					var marker, i;
+
+				    for (i = 0; i < locations.length; i++) {  
+				    	marker = new google.maps.Marker({
+				        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+				        map: map,
+				        icon: locations[i][3]
+				    	});
+
+						bounds.extend(marker.position);
+
+						google.maps.event.addListener(marker, 'click', (function(marker, i) {
+						    return function() {
+						        infowindow.setContent(locations[i][0]);
+						        infowindow.open(map, marker);
+						    }
+						})(marker, i));
+
+						map.fitBounds(bounds);
+
+					}
+				}
+
+			google.maps.event.addDomListener(window, 'load', initialize);
+
+		</script>";
+
+	return $business_map;
+	wp_reset_postdata();
+}
+add_shortcode( 'business_map', 'cdash_business_map_shortcode' );
+
+// Add map to single business view
+function cdash_single_business_map() {
+	$options = get_option('cdash_directory_options');
+	if( is_singular('business') && $options['sv_map'] == "1" ) { 
+		global $buscontact_metabox;
+		$contactmeta = $buscontact_metabox->the_meta();
+		$locations = $contactmeta['location']; ?>
+		<script type="text/javascript"
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&sensor=false">
+		</script>
+		<script type="text/javascript">
+
+			function initialize() {
+				var locations = [
+					<?php 
+					foreach($locations as $location) {
+				    	$rawaddress = $location['address'] . $location['city'] . $location['state'] . $location['zip'];
+						$address = str_replace(' ', '+', $rawaddress);
+
+						$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
+						$json = json_decode($json);
+						$lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
+						$long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'}; 
+						// TODO - let people upload different icons for each category
+						$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; ?>
+						['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $location["altname"]; ?></h5><?php echo $location["address"]; ?><br /><?php echo $location["city"]; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?></div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
+						
+					<?php } ?>
+
+					];
+
+					var bounds = new google.maps.LatLngBounds();
+					var mapOptions = {
+					    // zoom: 13,
+					}
+					var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+					var infowindow = new google.maps.InfoWindow();
+					var marker, i;
+
+				    for (i = 0; i < locations.length; i++) {  
+				    	marker = new google.maps.Marker({
+				        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+				        map: map,
+				        icon: locations[i][3]
+				    	});
+
+						bounds.extend(marker.position);
+
+						google.maps.event.addListener(marker, 'click', (function(marker, i) {
+						    return function() {
+						        infowindow.setContent(locations[i][0]);
+						        infowindow.open(map, marker);
+						    }
+						})(marker, i));
+
+						map.fitBounds(bounds);
+
+					}
+				}
+
+			google.maps.event.addDomListener(window, 'load', initialize);
+
+		</script>
+
+	<?php }
+}
+add_action('wp_footer', 'cdash_single_business_map');
+
+function cdash_info_window() {
+	global $post;
+	$output .= "<div style=\x22width: 200px; height: 150px\x22>";
+	$output .= $location['altname'];
+	$output .= "</div>";
+	return $output;
+}
+
+// add business category and member level slugs as body and post class
+function cdash_add_taxonomy_classes($classes) {
+	global $post;
+	$buscats = get_the_terms($post->ID, 'business_category');
+	if ($buscats) {
+		foreach($buscats as $taxonomy) {
+			$classes[] = $taxonomy->slug;
+		}
+	}
+	$buslevels = get_the_terms($post->ID, 'membership_level');
+	if ($buslevels) {
+		foreach($buslevels as $taxonomy) {
+			$classes[] = $taxonomy->slug;
+		}
+	}
+	return $classes;
+}
+add_filter('post_class', 'cdash_add_taxonomy_classes');
+add_filter('body_class', 'cdash_add_taxonomy_classes');
+
+?>
