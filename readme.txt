@@ -65,6 +65,11 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.4 =
+* Fixed bug where locations with "do not display" appeared on map anyway
+* Added business search form
+* other small fixes
+
 = 1.3 = 
 * Created filters to allow use of theme archive pages for business category and membership level
 * Other small fixes
