@@ -1,0 +1,464 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: cdash_business_directory\n"
+"POT-Creation-Date: 2014-08-23 17:00-0800\n"
+"PO-Revision-Date: 2014-08-23 17:01-0800\n"
+"Last-Translator: Morgan <morgan@wpalchemists.com>\n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.8\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ..\n"
+
+#: ../cdash-business-directory.php:78
+msgid "Business Category"
+msgstr ""
+
+#: ../cdash-business-directory.php:79
+msgid "All Business Categories"
+msgstr ""
+
+#: ../cdash-business-directory.php:80
+msgid "Parent Business Category"
+msgstr ""
+
+#: ../cdash-business-directory.php:81
+msgid "Parent Business Category:"
+msgstr ""
+
+#: ../cdash-business-directory.php:82
+msgid "New Business Category Name"
+msgstr ""
+
+#: ../cdash-business-directory.php:83
+msgid "Add New Business Category"
+msgstr ""
+
+#: ../cdash-business-directory.php:84
+msgid "Edit Business Category"
+msgstr ""
+
+#: ../cdash-business-directory.php:85
+msgid "Update Business Category"
+msgstr ""
+
+#: ../cdash-business-directory.php:86
+msgid "Separate Business Categories with commas"
+msgstr ""
+
+#: ../cdash-business-directory.php:87
+msgid "Search Business Categories"
+msgstr ""
+
+#: ../cdash-business-directory.php:88
+msgid "Add or remove Business Category"
+msgstr ""
+
+#: ../cdash-business-directory.php:89
+msgid "Choose from the most used Business Categories"
+msgstr ""
+
+#: ../cdash-business-directory.php:90 ../cdash-business-directory.php:125
+msgid "Not Found"
+msgstr ""
+
+#: ../cdash-business-directory.php:113
+msgid "Membership Level"
+msgstr ""
+
+#: ../cdash-business-directory.php:114
+msgid "All Membership Levels"
+msgstr ""
+
+#: ../cdash-business-directory.php:115
+msgid "Parent Membership Level"
+msgstr ""
+
+#: ../cdash-business-directory.php:116
+msgid "Parent Membership Level:"
+msgstr ""
+
+#: ../cdash-business-directory.php:117
+msgid "New Membership Level Name"
+msgstr ""
+
+#: ../cdash-business-directory.php:118
+msgid "Add New Membership Level"
+msgstr ""
+
+#: ../cdash-business-directory.php:119
+msgid "Edit Membership Level"
+msgstr ""
+
+#: ../cdash-business-directory.php:120
+msgid "Update Membership Level"
+msgstr ""
+
+#: ../cdash-business-directory.php:121
+msgid "Separate Membership Levels with commas"
+msgstr ""
+
+#: ../cdash-business-directory.php:122
+msgid "Search Membership Levels"
+msgstr ""
+
+#: ../cdash-business-directory.php:123
+msgid "Add or remove Membership Level"
+msgstr ""
+
+#: ../cdash-business-directory.php:124
+msgid "Choose from the most used Membership Levels"
+msgstr ""
+
+#: ../cdash-business-directory.php:149
+msgid "Businesses"
+msgstr ""
+
+#: ../cdash-business-directory.php:150
+msgid "Parent Business:"
+msgstr ""
+
+#: ../cdash-business-directory.php:151
+msgid "All Businesses"
+msgstr ""
+
+#: ../cdash-business-directory.php:152
+msgid "View Business"
+msgstr ""
+
+#: ../cdash-business-directory.php:153
+msgid "Add New Business"
+msgstr ""
+
+#: ../cdash-business-directory.php:154
+msgid "Add New"
+msgstr ""
+
+#: ../cdash-business-directory.php:155
+msgid "Edit Business"
+msgstr ""
+
+#: ../cdash-business-directory.php:156
+msgid "Update Business"
+msgstr ""
+
+#: ../cdash-business-directory.php:157
+msgid "Search Businesses"
+msgstr ""
+
+#: ../cdash-business-directory.php:158
+msgid "Not found"
+msgstr ""
+
+#: ../cdash-business-directory.php:159
+msgid "Not found in Trash"
+msgstr ""
+
+#: ../cdash-business-directory.php:162
+msgid "business"
+msgstr ""
+
+#: ../cdash-business-directory.php:163
+msgid "Businesses and Organizations"
+msgstr ""
+
+#: ../options.php:82
+msgid "Chamber Dashboard Settings"
+msgstr ""
+
+#: ../options.php:97
+msgid "Phone Number Types"
+msgstr ""
+
+#: ../options.php:100
+msgid ""
+"When you enter a phone number for a business, you can choose what type of "
+"phone number it is.  The default options are \"Main, Office, Cell\".  To "
+"change these options, enter a comma-separated list here.  (Note: your entry "
+"will over-ride the default, so if you still want main and/or office and/or "
+"cell, you will need to enter them.)"
+msgstr ""
+
+#: ../options.php:106
+msgid "Email Types"
+msgstr ""
+
+#: ../options.php:109
+msgid ""
+"When you enter an email address for a business, you can choose what type of "
+"email address it is.  The default options are \"Main, Sales, Accounting, HR"
+"\".  To change these options, enter a comma-separated list here.  (Note: "
+"your entry will over-ride the default, so if you still want main and/or "
+"sales and/or accounting and/or HR, you will need to enter them.)"
+msgstr ""
+
+#: ../options.php:117
+msgid "Single Business View Options"
+msgstr ""
+
+#: ../options.php:119
+msgid "What information would you like to display on the single business view?"
+msgstr ""
+
+#: ../options.php:120
+msgid " Description"
+msgstr ""
+
+#: ../options.php:121 ../options.php:139
+msgid ""
+" Location Name <em>Note: you can hide individual locations in the \"edit "
+"business\" view</em>"
+msgstr ""
+
+#: ../options.php:122 ../options.php:140
+msgid " Location Address"
+msgstr ""
+
+#: ../options.php:123
+msgid " Map"
+msgstr ""
+
+#: ../options.php:124 ../options.php:141
+msgid " Location Web Address"
+msgstr ""
+
+#: ../options.php:125 ../options.php:142
+msgid " Phone Number(s)"
+msgstr ""
+
+#: ../options.php:126 ../options.php:143
+msgid " Email Address(es)"
+msgstr ""
+
+#: ../options.php:127 ../options.php:144
+msgid " Logo"
+msgstr ""
+
+#: ../options.php:128 ../options.php:145
+msgid ""
+" Featured Image <em>Your theme might already display the featured image.  If "
+"it does not, you can check this box to display the featured image</em>"
+msgstr ""
+
+#: ../options.php:129
+msgid " Membership Level"
+msgstr ""
+
+#: ../options.php:130 ../options.php:147
+msgid " Business Categories"
+msgstr ""
+
+#: ../options.php:136
+msgid "Category/Membership Level View Options"
+msgstr ""
+
+#: ../options.php:138
+msgid ""
+"What information would you like to display on the category/membership level "
+"view?  Note: Chamber Dashboard might not be able to over-ride all of your "
+"theme settings (for instance, your theme might show the featured image on "
+"category pages).  If you don't like how your theme displays category and "
+"membership level pages, you might want to create custom pages using the "
+"[business_directory] shortcode.  This is more labor-intensive, but gives you "
+"more control over appearance."
+msgstr ""
+
+#: ../options.php:146
+msgid " Membership Leve"
+msgstr ""
+
+#: ../options.php:153
+msgid "Custom Fields"
+msgstr ""
+
+#: ../options.php:155
+msgid ""
+"If you need to store additional information about businesses, you can create "
+"custom fields here."
+msgstr ""
+
+#: ../options.php:161 ../options.php:182
+msgid "Custom Field Name"
+msgstr ""
+
+#: ../options.php:163 ../options.php:184
+msgid "Custom Field Type"
+msgstr ""
+
+#: ../options.php:166 ../options.php:187
+msgid "Short Text Field"
+msgstr ""
+
+#: ../options.php:167 ../options.php:188
+msgid "Multi-line Text Area"
+msgstr ""
+
+#: ../options.php:169 ../options.php:190
+msgid "Display in Business Directory?"
+msgstr ""
+
+#: ../options.php:170 ../options.php:174 ../options.php:191
+msgid " Yes"
+msgstr ""
+
+#: ../options.php:171 ../options.php:175 ../options.php:192
+msgid " No"
+msgstr ""
+
+#: ../options.php:173 ../options.php:194
+msgid "Display in Single Business View?"
+msgstr ""
+
+#: ../options.php:176 ../options.php:197
+msgid "Add Another"
+msgstr ""
+
+#: ../options.php:195
+msgid " /> Yes"
+msgstr ""
+
+#: ../options.php:196
+msgid " /> No"
+msgstr ""
+
+#: ../options.php:206
+msgid "Save Changes"
+msgstr ""
+
+#: ../options.php:257
+msgid "Settings"
+msgstr ""
+
+#: ../options.php:268
+msgid "Export"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:3
+msgid "Remove All Locations"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:11
+msgid "Location Name"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:16
+msgid ""
+"Check this if you do not want this location to display to the public on the "
+"website"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:20
+msgid "Address"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:28
+msgid "City"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:34
+msgid "State"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:40
+msgid "Zip"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:46
+msgid "Web Address"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:51
+msgid "Phone Number(s)"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:53
+msgid "Remove All Phone Numbers"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:58
+msgid "Phone Number"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:62
+msgid "Phone Number Type"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:75
+msgid "Remove This Phone Number"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:80
+msgid "Add Another Phone Number"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:84
+msgid "Email Address(es)"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:85
+msgid "Remove All Email Addresses"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:90
+msgid "Email Address"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:94
+msgid "Email Address Type"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:107
+msgid "Remove This Email Address"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:112
+msgid "Add Another Email Address"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:115
+msgid "Remove This Location"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:120
+msgid ""
+"If this business has multiple locations, but you want them all to appear in "
+"one business listing, add the other locations here.  If you want the other "
+"locations to have their own individual listing on the site, create a new "
+"business with this business as the parent."
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:121
+msgid "Add Another Location"
+msgstr ""
+
+#: ../wpalchemy/buscustom.php:20
+msgid "<p>The field "
+msgstr ""
+
+#: ../wpalchemy/busnotes.php:3
+msgid ""
+"These notes are for your internal use, and will never be displayed on the "
+"website."
+msgstr ""
+
+#: ../wpalchemy/busnotes.php:5
+msgid "Remove All Notes"
+msgstr ""
+
+#: ../wpalchemy/busnotes.php:12
+msgid "Date"
+msgstr ""
+
+#: ../wpalchemy/busnotes.php:15
+msgid "Note"
+msgstr ""
+
+#: ../wpalchemy/busnotes.php:24
+msgid "Add Another Note"
+msgstr ""
