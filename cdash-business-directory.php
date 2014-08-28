@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.4.1
+Version: 1.4.2
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -569,8 +569,8 @@ function cdash_taxonomy_filter($content) {
 			if($location['donotdisplay'] == "1") {
 				continue;
 			} else {
+				$tax_content .= "<div class='location'>";
 				if (($options['tax_name']) == "1" && isset($location['altname'])) { 
-					$tax_content .= "<div class='location'>";
 					$tax_content .= "<h3>" . $location['altname'] . "</h3>";
 				}
 				if (($options['tax_address']) == "1") { 
