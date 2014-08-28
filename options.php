@@ -4,9 +4,6 @@
 // --------------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_uninstall_hook(__FILE__, 'cdash_delete_plugin_options')
 // --------------------------------------------------------------------------------------
-// THIS FUNCTION RUNS WHEN THE USER DEACTIVATES AND DELETES THE PLUGIN. IT SIMPLY DELETES
-// THE PLUGIN OPTIONS DB ENTRY (WHICH IS AN ARRAY STORING ALL THE PLUGIN OPTIONS).
-// --------------------------------------------------------------------------------------
 
 // Delete options table entries ONLY when plugin deactivated AND deleted
 function cdash_delete_plugin_options() {
@@ -15,12 +12,6 @@ function cdash_delete_plugin_options() {
 
 // ------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_activation_hook(__FILE__, 'cdash_add_defaults')
-// ------------------------------------------------------------------------------
-// THIS FUNCTION RUNS WHEN THE PLUGIN IS ACTIVATED. IF THERE ARE NO THEME OPTIONS
-// CURRENTLY SET, OR THE USER HAS SELECTED THE CHECKBOX TO RESET OPTIONS TO THEIR
-// DEFAULTS THEN THE OPTIONS ARE SET/RESET.
-//
-// OTHERWISE, THE PLUGIN OPTIONS REMAIN UNCHANGED.
 // ------------------------------------------------------------------------------
 
 // Define default option settings
@@ -36,19 +27,7 @@ function cdash_add_defaults() {
 						"sv_url"		 => "1",
 						"sv_logo"		 => "1",
 						"sv_category"	 => "1",
-
-
-
-						// "chk_button1" => "1",
-						// "chk_button3" => "1",
-						// "textarea_one" => "This type of control allows a large amount of information to be entered all at once. Set the 'rows' and 'cols' attributes to set the width and height.",
-						// "textarea_two" => "This text area control uses the TinyMCE editor to make it super easy to add formatted content.",
-						// "textarea_three" => "Another TinyMCE editor! It is really easy now in WordPress 3.3 to add one or more instances of the built-in WP editor.",
-						// "txt_one" => "Enter whatever you like here..",
-						// "drp_select_box" => "four",
-						// "chk_default_options_db" => "",
-						// "rdo_group_one" => "one",
-						// "rdo_group_two" => "two"
+						"tax_logo"		 => "1"
 		);
 		update_option('cdash_directory_options', $arr);
 	}
@@ -70,9 +49,6 @@ function cdash_init(){
 // ------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: add_action('admin_menu', 'cdash_add_options_page');
 // ------------------------------------------------------------------------------
-// THIS FUNCTION RUNS WHEN THE 'admin_menu' HOOK FIRES, AND ADDS A NEW OPTIONS
-// PAGE FOR YOUR PLUGIN TO THE SETTINGS MENU.
-// ------------------------------------------------------------------------------
 
 // Add menu page
 function cdash_add_options_page() {
@@ -85,7 +61,7 @@ function cdash_add_options_page() {
 		'dashicons-admin-generic', 
 		85 
 	);
-	//add_options_page('Chamber Dashboard Settings', 'Chamber Dashboard', 'manage_options', __FILE__, 'cdash_render_form');
+//	add_submenu_page( '/cdash-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
 }
 
 // ------------------------------------------------------------------------------
@@ -105,156 +81,188 @@ function cdash_render_form() {
 		<div class="icon32" id="icon-options-general"><br></div>
 		<h2><?php _e('Chamber Dashboard Settings', 'cdash'); ?></h2>
 
-		<!-- Beginning of the Plugin Options Form -->
-		<form method="post" action="options.php">
-			<?php settings_fields('cdash_plugin_options'); ?>
-			<?php $options = get_option('cdash_directory_options'); ?>
 
-			<!-- Table Structure Containing Form Controls -->
-			<!-- Each Plugin Option Defined on a New Table Row -->
-			<table class="form-table">
+		<div id="main" style="width: 70%; min-width: 350px; float: left;">
+			<!-- Beginning of the Plugin Options Form -->
+			<form method="post" action="options.php">
+				<?php settings_fields('cdash_plugin_options'); ?>
+				<?php $options = get_option('cdash_directory_options'); ?>
 
-				<!-- Phone Number types -->
-				<tr>
-					<th scope="row"><?php _e('Phone Number Types', 'cdash'); ?></th>
-					<td>
-						<input type="text" size="57" name="cdash_directory_options[bus_phone_type]" value="<?php echo $options['bus_phone_type']; ?>" />
-						<br /><span style="color:#666666;margin-left:2px;"><?php _e('When you enter a phone number for a business, you can choose what type of phone number it is.  The default options are "Main, Office, Cell".  To change these options, enter a comma-separated list here.  (Note: your entry will over-ride the default, so if you still want main and/or office and/or cell, you will need to enter them.)', 'cdash'); ?></span>
-					</td>
-				</tr>
+				<!-- Table Structure Containing Form Controls -->
+				<!-- Each Plugin Option Defined on a New Table Row -->
+				<table class="form-table">
 
-				<!-- Email types -->
-				<tr>
-					<th scope="row"><?php _e('Email Types', 'cdash'); ?></th>
-					<td>
-						<input type="text" size="57" name="cdash_directory_options[bus_email_type]" value="<?php echo $options['bus_email_type']; ?>" />
-						<br /><span style="color:#666666;margin-left:2px;"><?php _e('When you enter an email address for a business, you can choose what type of email address it is.  The default options are "Main, Sales, Accounting, HR".  To change these options, enter a comma-separated list here.  (Note: your entry will over-ride the default, so if you still want main and/or sales and/or accounting and/or HR, you will need to enter them.)', 'cdash'); ?></span>
-					</td>
-				</tr>				
+					<!-- Phone Number types -->
+					<tr>
+						<th scope="row"><?php _e('Phone Number Types', 'cdash'); ?></th>
+						<td>
+							<input type="text" size="57" name="cdash_directory_options[bus_phone_type]" value="<?php echo $options['bus_phone_type']; ?>" />
+							<br /><span style="color:#666666;margin-left:2px;"><?php _e('When you enter a phone number for a business, you can choose what type of phone number it is.  The default options are "Main, Office, Cell".  To change these options, enter a comma-separated list here.  (Note: your entry will over-ride the default, so if you still want main and/or office and/or cell, you will need to enter them.)', 'cdash'); ?></span>
+						</td>
+					</tr>
 
-				<!-- TODO - make field for default city -->
+					<!-- Email types -->
+					<tr>
+						<th scope="row"><?php _e('Email Types', 'cdash'); ?></th>
+						<td>
+							<input type="text" size="57" name="cdash_directory_options[bus_email_type]" value="<?php echo $options['bus_email_type']; ?>" />
+							<br /><span style="color:#666666;margin-left:2px;"><?php _e('When you enter an email address for a business, you can choose what type of email address it is.  The default options are "Main, Sales, Accounting, HR".  To change these options, enter a comma-separated list here.  (Note: your entry will over-ride the default, so if you still want main and/or sales and/or accounting and/or HR, you will need to enter them.)', 'cdash'); ?></span>
+						</td>
+					</tr>				
 
-				<!-- Single View -->
-				<tr valign="top">
-					<th scope="row">Enable Single Business View</th>
-					<td>
-						<span style="color:#666666;margin-left:2px;">Do you want each business to have it's own individual page on your site?<br /></span>
-						<label><input name="cdash_directory_options[enable_single]" type="checkbox" value="1" <?php if (isset($options['enable_single'])) { checked('1', $options['enable_single']); } ?> /> Enable Single Business View</label><br />
-					</td>
-				</tr>
+					<!-- TODO - make field for default city -->
 
-				<!-- Single View Options -->
-				<tr valign="top">
-					<th scope="row">Single Business View Options</th>
-					<td>
-						<span style="color:#666666;margin-left:2px;">What information would you like to display on the single business view?</span><br />
-						<label><input name="cdash_directory_options[sv_description]" type="checkbox" value="1" <?php if (isset($options['sv_description'])) { checked('1', $options['sv_description']); } ?> /> Description</label><br />
-						<label><input name="cdash_directory_options[sv_name]" type="checkbox" value="1" <?php if (isset($options['sv_name'])) { checked('1', $options['sv_name']); } ?> /> Location Name <em>Note: you can hide individual locations in the "edit business" view</em></label><br />
-						<label><input name="cdash_directory_options[sv_address]" type="checkbox" value="1" <?php if (isset($options['sv_address'])) { checked('1', $options['sv_address']); } ?> /> Location Address</label><br />
-						<label><input name="cdash_directory_options[sv_url]" type="checkbox" value="1" <?php if (isset($options['sv_url'])) { checked('1', $options['sv_url']); } ?> /> Location Web Address</label><br />
-						<label><input name="cdash_directory_options[sv_phone]" type="checkbox" value="1" <?php if (isset($options['sv_phone'])) { checked('1', $options['sv_phone']); } ?> /> Phone Number(s)</label><br />
-						<label><input name="cdash_directory_options[sv_email]" type="checkbox" value="1" <?php if (isset($options['sv_email'])) { checked('1', $options['sv_email']); } ?> /> Email Address(es)</label><br />
-						<label><input name="cdash_directory_options[sv_logo]" type="checkbox" value="1" <?php if (isset($options['sv_logo'])) { checked('1', $options['sv_logo']); } ?> /> Logo</label><br />
-						<label><input name="cdash_directory_options[sv_thumb]" type="checkbox" value="1" <?php if (isset($options['sv_thumb'])) { checked('1', $options['sv_thumb']); } ?> /> Featured Image <em>Your theme might already display the featured image.  If it does not, you can check this box to display the featured image</em></label><br />
-						<label><input name="cdash_directory_options[sv_memberlevel]" type="checkbox" value="1" <?php if (isset($options['sv_memberlevel'])) { checked('1', $options['sv_memberlevel']); } ?> /> Membership Level</label><br />
-						<label><input name="cdash_directory_options[sv_category]" type="checkbox" value="1" <?php if (isset($options['sv_category'])) { checked('1', $options['sv_category']); } ?> /> Business Categories</label><br />
-					</td>
-				</tr>
+					<!-- Single View Options -->
+					<tr valign="top">
+						<th scope="row"><?php _e('Single Business View Options', 'cdash'); ?></th>
+						<td>
+							<span style="color:#666666;margin-left:2px;"><?php _e('What information would you like to display on the single business view?', 'cdash'); ?></span><br />
+							<label><input name="cdash_directory_options[sv_description]" type="checkbox" value="1" <?php if (isset($options['sv_description'])) { checked('1', $options['sv_description']); } ?> /><?php _e(' Description', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_name]" type="checkbox" value="1" <?php if (isset($options['sv_name'])) { checked('1', $options['sv_name']); } ?> /><?php _e(' Location Name <em>Note: you can hide individual locations in the "edit business" view</em>', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_address]" type="checkbox" value="1" <?php if (isset($options['sv_address'])) { checked('1', $options['sv_address']); } ?> /><?php _e(' Location Address', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_map]" type="checkbox" value="1" <?php if (isset($options['sv_map'])) { checked('1', $options['sv_map']); } ?> /><?php _e(' Map', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_url]" type="checkbox" value="1" <?php if (isset($options['sv_url'])) { checked('1', $options['sv_url']); } ?> /><?php _e(' Location Web Address', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_phone]" type="checkbox" value="1" <?php if (isset($options['sv_phone'])) { checked('1', $options['sv_phone']); } ?> /><?php _e(' Phone Number(s)', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_email]" type="checkbox" value="1" <?php if (isset($options['sv_email'])) { checked('1', $options['sv_email']); } ?> /><?php _e(' Email Address(es)', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_logo]" type="checkbox" value="1" <?php if (isset($options['sv_logo'])) { checked('1', $options['sv_logo']); } ?> /><?php _e(' Logo', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_thumb]" type="checkbox" value="1" <?php if (isset($options['sv_thumb'])) { checked('1', $options['sv_thumb']); } ?> /><?php _e(' Featured Image <em>Your theme might already display the featured image.  If it does not, you can check this box to display the featured image</em>', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_memberlevel]" type="checkbox" value="1" <?php if (isset($options['sv_memberlevel'])) { checked('1', $options['sv_memberlevel']); } ?> /><?php _e(' Membership Level', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_category]" type="checkbox" value="1" <?php if (isset($options['sv_category'])) { checked('1', $options['sv_category']); } ?> /><?php _e(' Business Categories', 'cdash'); ?></label><br />
+						</td>
+					</tr>
 
+					<!-- Category/Membership Level View Options -->
+					<tr valign="top">
+						<th scope="row"><?php _e('Category/Membership Level View Options', 'cdash'); ?></th>
+						<td>
+							<span style="color:#666666;margin-left:2px;"><?php _e('What information would you like to display on the category/membership level view?  Note: Chamber Dashboard might not be able to over-ride all of your theme settings (for instance, your theme might show the featured image on category pages).  If you don\'t like how your theme displays category and membership level pages, you might want to create custom pages using the [business_directory] shortcode.  This is more labor-intensive, but gives you more control over appearance.', 'cdash'); ?></span><br />
+							<label><input name="cdash_directory_options[tax_name]" type="checkbox" value="1" <?php if (isset($options['tax_name'])) { checked('1', $options['tax_name']); } ?> /><?php _e(' Location Name <em>Note: you can hide individual locations in the "edit business" view</em>', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[tax_address]" type="checkbox" value="1" <?php if (isset($options['tax_address'])) { checked('1', $options['tax_address']); } ?> /><?php _e(' Location Address', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[tax_url]" type="checkbox" value="1" <?php if (isset($options['tax_url'])) { checked('1', $options['tax_url']); } ?> /><?php _e(' Location Web Address', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[tax_phone]" type="checkbox" value="1" <?php if (isset($options['tax_phone'])) { checked('1', $options['tax_phone']); } ?> /><?php _e(' Phone Number(s)', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[tax_email]" type="checkbox" value="1" <?php if (isset($options['tax_email'])) { checked('1', $options['tax_email']); } ?> /><?php _e(' Email Address(es)', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[tax_logo]" type="checkbox" value="1" <?php if (isset($options['tax_logo'])) { checked('1', $options['tax_logo']); } ?> /><?php _e(' Logo', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[tax_thumb]" type="checkbox" value="1" <?php if (isset($options['tax_thumb'])) { checked('1', $options['tax_thumb']); } ?> /><?php _e(' Featured Image <em>Your theme might already display the featured image.  If it does not, you can check this box to display the featured image</em>', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[tax_memberlevel]" type="checkbox" value="1" <?php if (isset($options['tax_memberlevel'])) { checked('1', $options['tax_memberlevel']); } ?> /><?php _e(' Membership Leve', 'cdash'); ?>l</label><br />
+							<label><input name="cdash_directory_options[tax_category]" type="checkbox" value="1" <?php if (isset($options['tax_category'])) { checked('1', $options['tax_category']); } ?> /><?php _e(' Business Categories', 'cdash'); ?></label><br />
+						</td>
+					</tr>				
 
+					<!-- Custom Fields -->
+					<tr>
+						<th scope="row"><?php _e('Custom Fields', 'cdash'); ?></th>
+						<td>
+							<span style="color:#666666;margin-left:2px;"><?php _e('If you need to store additional information about businesses, you can create custom fields here.', 'cdash'); ?></span><br />
+							<?php if(!empty($options['bus_custom'])) {
+								$customfields = $options['bus_custom'];
+								$i = 1;
+								foreach($customfields as $field) { ?>
+									<div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+										<p><strong><?php _e('Custom Field Name', 'cdash'); ?></strong></p>
+											<input type="text" size="30" name="cdash_directory_options[bus_custom][<?php echo $i; ?>][name]" value="<?php echo $field['name']; ?>" />
+										<p><strong><?php _e('Custom Field Type', 'cdash'); ?></strong></p>	
+											<select name='cdash_directory_options[bus_custom][<?php echo $i; ?>][type]'>
+												<option value=''></option>
+												<option value='text' <?php selected('text', $field['type']); ?>><?php _e('Short Text Field', 'cdash'); ?></option>
+												<option value='textarea' <?php selected('textarea', $field['type']); ?>><?php _e('Multi-line Text Area', 'cdash'); ?></option>
+											</select>
+										<p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>	
+											<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="yes" <?php checked('yes', $field['display_dir']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
+											<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_dir]" type="radio" value="no" <?php checked('no', $field['display_dir']); ?> /><?php _e(' No', 'cdash'); ?></label><br />
 
-				<!-- Text Area Control 
-				<tr>
-					<th scope="row">Sample Text Area</th>
-					<td>
-						<textarea name="cdash_directory_options[textarea_one]" rows="7" cols="50" type='textarea'><?php echo $options['textarea_one']; ?></textarea><br /><span style="color:#666666;margin-left:2px;">Add a comment here to give extra information to Plugin users</span>
-					</td>
-				</tr>
+										<p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
+											<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="yes" <?php checked('yes', $field['display_single']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
+											<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php checked('no', $field['display_single']); ?> /><?php _e(' No', 'cdash'); ?></label><br />	
+										<p><a href="#" class="repeat"><?php _e('Add Another', 'cdash'); ?></a></p>
+									</div>
+									<?php $i++;
+								}
+							} else { ?>
+								<div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+									<p><strong><?php _e('Custom Field Name', 'cdash'); ?></strong></p>
+										<input type="text" size="30" name="cdash_directory_options[bus_custom][1][name]" value="<?php echo $options['bus_custom'][1]['name']; ?>" />
+									<p><strong><?php _e('Custom Field Type'); ?></strong></p>	
+										<select name='cdash_directory_options[bus_custom][1][type]'>
+											<option value=''></option>
+											<option value='text' <?php selected('one', $options['bus_custom'][1]['type']); ?>><?php _e('Short Text Field', 'cdash'); ?></option>
+											<option value='textarea' <?php selected('two', $options['bus_custom'][1]['type']); ?>><?php _e('Multi-line Text Area', 'cdash'); ?></option>
+										</select>
+									<p><strong><?php _e('Display in Business Directory?', 'cdash'); ?></strong></p>	
+										<label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_dir']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
+										<label><input name="cdash_directory_options[bus_custom][1][display_dir]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_dir']); ?> /><?php _e(' No', 'cdash'); ?></label><br />
 
-				Text Area Using the Built-in WP Editor 
-				<tr>
-					<th scope="row">Sample Text Area WP Editor 1</th>
-					<td>
-						<?php
-							$args = array("textarea_name" => "cdash_directory_options[textarea_two]");
-							wp_editor( $options['textarea_two'], "cdash_directory_options[textarea_two]", $args );
-						?>
-						<br /><span style="color:#666666;margin-left:2px;">Add a comment here to give extra information to Plugin users</span>
-					</td>
-				</tr>
-
-
-
-				Textbox Control 
-				<tr>
-					<th scope="row">Enter Some Information</th>
-					<td>
-						<input type="text" size="57" name="cdash_directory_options[txt_one]" value="<?php echo $options['txt_one']; ?>" />
-					</td>
-				</tr>
-
-				Radio Button Group 
-				<tr valign="top">
-					<th scope="row">Radio Button Group #1</th>
-					<td>
-						 First radio button
-						<label><input name="cdash_directory_options[rdo_group_one]" type="radio" value="one" <?php checked('one', $options['rdo_group_one']); ?> /> Radio Button #1 <span style="color:#666666;margin-left:32px;">[option specific comment could go here]</span></label><br />
-
-						Second radio button 
-						<label><input name="cdash_directory_options[rdo_group_one]" type="radio" value="two" <?php checked('two', $options['rdo_group_one']); ?> /> Radio Button #2 <span style="color:#666666;margin-left:32px;">[option specific comment could go here]</span></label><br /><span style="color:#666666;">General comment to explain more about this Plugin option.</span>
-					</td>
-				</tr> 
-
-				Checkbox Buttons 
-				<tr valign="top">
-					<th scope="row">Group of Checkboxes</th>
-					<td>
-						First checkbox button 
-						<label><input name="cdash_directory_options[chk_button1]" type="checkbox" value="1" <?php if (isset($options['chk_button1'])) { checked('1', $options['chk_button1']); } ?> /> Checkbox #1</label><br />
-
-						Second checkbox button 
-						<label><input name="cdash_directory_options[chk_button2]" type="checkbox" value="1" <?php if (isset($options['chk_button2'])) { checked('1', $options['chk_button2']); } ?> /> Checkbox #2 <em>(useful extra information can be added here)</em></label><br />
-
-
-					</td>
-				</tr>
-
-				Select Drop-Down Control
-				<tr>
-					<th scope="row">Sample Select Box</th>
-					<td>
-						<select name='cdash_directory_options[drp_select_box]'>
-							<option value='one' <?php selected('one', $options['drp_select_box']); ?>>One</option>
-							<option value='two' <?php selected('two', $options['drp_select_box']); ?>>Two</option>
-							<option value='three' <?php selected('three', $options['drp_select_box']); ?>>Three</option>
-							<option value='four' <?php selected('four', $options['drp_select_box']); ?>>Four</option>
-							<option value='five' <?php selected('five', $options['drp_select_box']); ?>>Five</option>
-							<option value='six' <?php selected('six', $options['drp_select_box']); ?>>Six</option>
-							<option value='seven' <?php selected('seven', $options['drp_select_box']); ?>>Seven</option>
-							<option value='eight' <?php selected('eight', $options['drp_select_box']); ?>>Eight</option>
-						</select>
-						<span style="color:#666666;margin-left:2px;">Add a comment here to explain more about how to use the option above</span>
-					</td>
-				</tr>
-
-				<tr><td colspan="2"><div style="margin-top:10px;"></div></td></tr>
-				<tr valign="top" style="border-top:#dddddd 1px solid;">
-					<th scope="row">Database Options</th>
-					<td>
-						<label><input name="cdash_directory_options[chk_default_options_db]" type="checkbox" value="1" <?php if (isset($options['chk_default_options_db'])) { checked('1', $options['chk_default_options_db']); } ?> /> Restore defaults upon plugin deactivation/reactivation</label>
-						<br /><span style="color:#666666;margin-left:2px;">Only check this if you want to reset plugin settings upon Plugin reactivation</span>
-					</td>
-				</tr> -->
-			</table>
-			<p class="submit">
-				<input type="submit" class="button-primary" value="<?php _e('Save Changes', 'cdash') ?>" />
-			</p> 
-		</form>
+									<p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
+										<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_single']); ?><?php _e(' /> Yes', 'cdash'); ?></label><br />
+										<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_single']); ?><?php _e(' /> No', 'cdash'); ?></label><br />	
+									<p><a href="#" class="repeat"><?php _e('Add Another', 'cdash'); ?></a></p>
+								</div>
+							<?php } ?>
+						</td>
+					</tr>	
 
 
+				</table>
+				<p class="submit">
+					<input type="submit" class="button-primary" value="<?php _e('Save Changes', 'cdash') ?>" />
+				</p> 
+			</form>
+
+			<script type="text/javascript">
+			// Add a new repeating section
+			var attrs = ['for', 'id', 'name'];
+			function resetAttributeNames(section) { 
+			    var tags = section.find('input, label'), idx = section.index();
+			    tags.each(function() {
+			      var $this = jQuery(this);
+			      jQuery.each(attrs, function(i, attr) {
+			        var attr_val = $this.attr(attr);
+			        if (attr_val) {
+			            $this.attr(attr, attr_val.replace(/\[bus_custom\]\[\d+\]\[/, '\[bus_custom\]\['+(idx + 1)+'\]\['))
+			        }
+			      })
+			    })
+			}
+			                   
+			jQuery('.repeat').click(function(e){
+			        e.preventDefault();
+			        var lastRepeatingGroup = jQuery('.repeating').last();
+			        var cloned = lastRepeatingGroup.clone(true)  
+			        cloned.insertAfter(lastRepeatingGroup);
+			        cloned.find("input").val("");
+			        cloned.find("select").val("");
+			        cloned.find("input:radio").attr("checked", false);
+			        resetAttributeNames(cloned)
+			    });
+
+			</script>
+		</div><!-- #main -->
+		<div id="sidebar" style="width: 28%; float: right; min-width: 150px;">
+			<h3>Documentation</h3>
+			<p>If you're looking for more information about how to use this plugin, visit the <a href="http://chamberdashboard.com/support/documentation/" target="_blank">Documentation page at ChamberDashboard.com</a></p>
+			<h3>Contact</h3>
+			<p>Don't hesitate to <a href="http://chamberdashboard.com/contact/" target="_blank">contact us</a> to request new features, ask questions, or just say hi.</p>
+			<h3>Donate</h3>
+			<p>All donations are tax-deductible and go to the <a href="http://fremont.com" target="_blank">Fremont Chamber of Commerce</a> to support further development of Chamber Dashboard.</p>
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+			<input type="hidden" name="cmd" value="_donations">
+			<input type="hidden" name="business" value="director@fremont.com">
+			<input type="hidden" name="lc" value="US">
+			<input type="hidden" name="item_name" value="Fremont Chamber of Commerce">
+			<input type="hidden" name="item_number" value="Chamber Dashboard">
+			<input type="hidden" name="no_note" value="0">
+			<input type="hidden" name="currency_code" value="USD">
+			<input type="hidden" name="bn" value="PP-DonationsBF:btn_donate_LG.gif:NonHostedGuest">
+			<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+			<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+			</form>
+
+		</div>
 	</div>
+
 	<?php	
 }
+
+
 
 // Sanitize and validate input. Accepts an array, return a sanitized array.
 function cdash_validate_options($input) {
@@ -269,11 +277,27 @@ function cdash_validate_options($input) {
 function cdash_plugin_action_links( $links, $file ) {
 
 	if ( $file == plugin_basename( __FILE__ ) ) {
-		$cdash_links = '<a href="'.get_admin_url().'options-general.php?page=plugin-options-starter-kit/plugin-options-starter-kit.php">'.__('Settings').'</a>';
+		$cdash_links = '<a href="'.get_admin_url().'options-general.php?page=cdash-business-directory/options.php">'.__('Settings').'</a>';
 		// make the 'Settings' link appear first
 		array_unshift( $links, $cdash_links );
 	}
 
 	return $links;
 }
+
+function cdash_export_form() { ?>
+		<div class="wrap">
+			<div class="icon32" id="icon-options-general"><br></div>
+			<h2><?php _e('Export', 'cdash'); ?></h2>
+			<form action="<?php echo plugin_dir_url( __FILE__ ); ?>export.php">
+
+			<input type="submit" value="Download CSV">
+			</form>
+		</div>
+			
+			
+			
+		
+
+<?php }
  ?>
