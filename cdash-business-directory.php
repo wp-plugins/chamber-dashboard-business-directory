@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.4.2
+Version: 1.5
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -282,20 +282,20 @@ function cdash_single_business($content) {
 
 		global $post;
 
-		$business_content .= "<div id='business'>";
-		if (($options['sv_thumb']) == "1") { 
+		$business_content = "<div id='business'>";
+		if (isset($options['sv_thumb']) && $options['sv_thumb'] == "1") { 
 			$business_content .= get_the_post_thumbnail( $post->ID, 'full');
 		}
-		if (($options['sv_logo']) == "1") { 
+		if (isset($options['sv_logo']) && $options['sv_logo'] == "1") { 
 			$attr = array(
 				'class'	=> 'alignleft logo',
 			);
 			$business_content .= wp_get_attachment_image($logometa['buslogo'], 'full', 0, $attr );
 		}
-		if (($options['sv_description']) == "1") { 
+		if (isset($options['sv_description']) && $options['sv_description'] == "1") { 
 			$business_content .= $content;
 		}
-		if (($options['sv_memberlevel']) == "1") { 
+		if (isset($options['sv_memberlevel']) && $options['sv_memberlevel'] == "1") { 
 			$id = get_the_id();
 			$levels = get_the_terms( $id, 'membership_level');
 			if($levels) {
@@ -310,7 +310,7 @@ function cdash_single_business($content) {
 				}
 			}
 		}
-		if (($options['sv_category']) == "1") { 
+		if (isset($options['sv_category']) && $options['sv_category'] == "1") { 
 			$id = get_the_id();
 			$buscats = get_the_terms( $id, 'business_category');
 			if($buscats) {
@@ -327,14 +327,14 @@ function cdash_single_business($content) {
 		}
 		$locations = $contactmeta['location'];
 		foreach($locations as $location) {
-			if($location['donotdisplay'] == "1") {
+			if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
 				continue;
 			} else {
 				$business_content .= "<div class='location'>";
-				if (($options['sv_name']) == "1" && isset($location['altname'])) { 
+				if (isset($options['sv_name']) && ($options['sv_name']) == "1" && isset($location['altname'])) { 
 					$business_content .= "<h3>" . $location['altname'] . "</h3>";
 				}
-				if (($options['sv_address']) == "1") { 
+				if (isset($options['sv_address']) && $options['sv_address'] == "1") { 
 					$business_content .= "<p class='address'>";
 	 					if(isset($location['address'])) {
 							$address = $location['address'];
@@ -351,10 +351,10 @@ function cdash_single_business($content) {
 						} 
 					$business_content .= "</p>";
 				}
-				if (($options['sv_url']) == "1") { 
+				if (isset($options['sv_url']) && $options['sv_url'] == "1" && isset($location['url'])) { 
 					$business_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
 				}
-				if (($options['sv_phone']) == "1" && isset($location['phone'])) { 
+				if (isset($options['sv_phone']) && $options['sv_phone'] == "1" && isset($location['phone'])) { 
 					$business_content .= "<p class='phone'>";
 						$i = 1;
 						$phones = $location['phone'];
@@ -370,7 +370,7 @@ function cdash_single_business($content) {
 						}
 					$business_content .= "</p>";
 				}
-				if (($options['sv_email']) == "1" && isset($location['email'])) { 
+				if (isset($options['sv_email']) && $options['sv_email'] == "1" && isset($location['email'])) { 
 					$business_content .= "<p class='email'>";
 						$i = 1;
 						$emails = $location['email'];
@@ -391,17 +391,19 @@ function cdash_single_business($content) {
 		}
 		if($options['bus_custom']) {
 			$customfields = $options['bus_custom'];
+			global $custom_metabox;
+			$custommeta = $custom_metabox->the_meta();
 			foreach($customfields as $field) { 
-				if($field['display_single'] !== "yes") {
+				if($field['display_dir'] !== "yes") {
 					continue;
 				} else {
-					global $custom_metabox;
-					$custommeta = $custom_metabox->the_meta();
-					$business_content .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$field['name']] . "</p>";
+					if(isset($custommeta[$field['name']]) && is_array($custommeta)) {
+						$business_content .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$field['name']] . "</p>";
+					}	
 				}
 			}
 		}
-		if ($options['sv_map'] == "1" ) {
+		if (isset($options['sv_map']) && $options['sv_map'] == "1" ) {
 			$business_content .= "<div id='map-canvas' style='width: 100%; height: 300px; margin: 20px 0;'></div>";
 		}
 		$business_content .= "</div>";
@@ -419,7 +421,7 @@ add_filter('the_content', 'cdash_single_business');
 
 function cdash_single_business_map() {
 	$options = get_option('cdash_directory_options');
-	if( is_singular('business') && $options['sv_map'] == "1" ) { 
+	if( is_singular('business') && isset($options['sv_map']) && $options['sv_map'] == "1" ) { 
 		global $buscontact_metabox;
 		$contactmeta = $buscontact_metabox->the_meta();
 		$locations = $contactmeta['location']; ?>
@@ -524,17 +526,18 @@ function cdash_taxonomy_filter($content) {
 
 		global $post;
 
-		if (($options['tax_thumb']) == "1") { 
+		$tax_content = '';
+		if (isset($options['tax_thumb']) && $options['tax_thumb'] == "1") { 
 			$tax_content .= get_the_post_thumbnail( $post->ID, 'full');
 		}
-		if (($options['tax_logo']) == "1") { 
+		if (isset($options['tax_logo']) && $options['tax_logo'] == "1") { 
 			$attr = array(
 				'class'	=> 'alignleft logo',
 			);
 			$tax_content .= wp_get_attachment_image($logometa['buslogo'], 'full', 0, $attr );
 		}
 		$tax_content .= $content; 
-		if (($options['tax_memberlevel']) == "1") { 
+		if (isset($options['tax_memberlevel']) && $options['tax_memberlevel'] == "1") { 
 			$id = get_the_id();
 			$levels = get_the_terms( $id, 'membership_level');
 			if($levels) {
@@ -549,7 +552,7 @@ function cdash_taxonomy_filter($content) {
 				}
 			}
 		}
-		if (($options['tax_category']) == "1") { 
+		if (isset($options['tax_category']) && $options['tax_category'] == "1") { 
 			$id = get_the_id();
 			$buscats = get_the_terms( $id, 'business_category');
 			if($buscats) {
@@ -566,14 +569,14 @@ function cdash_taxonomy_filter($content) {
 		}
 		$locations = $contactmeta['location'];
 		foreach($locations as $location) {
-			if($location['donotdisplay'] == "1") {
+			if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
 				continue;
 			} else {
 				$tax_content .= "<div class='location'>";
-				if (($options['tax_name']) == "1" && isset($location['altname'])) { 
+				if (isset($options['tax_name']) && $options['tax_name'] == "1" && isset($location['altname'])) { 
 					$tax_content .= "<h3>" . $location['altname'] . "</h3>";
 				}
-				if (($options['tax_address']) == "1") { 
+				if (isset($options['tax_address']) && $options['tax_address'] == "1") { 
 					$tax_content .= "<p class='address'>";
 	 					if(isset($location['address'])) {
 							$address = $location['address'];
@@ -590,10 +593,10 @@ function cdash_taxonomy_filter($content) {
 						} 
 					$tax_content .= "</p>";
 				}
-				if (($options['tax_url']) == "1") { 
+				if (isset($options['tax_url']) && $options['tax_url'] == "1") { 
 					$tax_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
 				}
-				if (($options['tax_phone']) == "1" && isset($location['phone'])) { 
+				if (isset($options['tax_phone']) && $options['tax_phone'] == "1" && isset($location['phone'])) { 
 					$tax_content .= "<p class='phone'>";
 						$i = 1;
 						$phones = $location['phone'];
@@ -609,7 +612,7 @@ function cdash_taxonomy_filter($content) {
 						}
 					$tax_content .= "</p>";
 				}
-				if (($options['tax_email']) == "1" && isset($location['email'])) { 
+				if (isset($options['tax_email']) && $options['tax_email'] == "1" && isset($location['email'])) { 
 					$tax_content .= "<p class='email'>";
 						$i = 1;
 						$emails = $location['email'];
@@ -630,13 +633,15 @@ function cdash_taxonomy_filter($content) {
 		}
 		if($options['bus_custom']) {
 			$customfields = $options['bus_custom'];
+			global $custom_metabox;
+			$custommeta = $custom_metabox->the_meta();
 			foreach($customfields as $field) { 
 				if($field['display_dir'] !== "yes") {
 					continue;
 				} else {
-					global $custom_metabox;
-					$custommeta = $custom_metabox->the_meta();
-					$tax_content .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$field['name']] . "</p>";
+					if(isset($custommeta[$field['name']]) && is_array($custommeta)) {
+						$tax_content .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$field['name']] . "</p>";
+					}	
 				}
 			}
 		}
@@ -695,6 +700,7 @@ function cdash_business_directory_shortcode( $atts ) {
 
 	// The Loop
 	if ( $businessquery->have_posts() ) :
+		$business_list = '';
 		$business_list .= "<div id='businesslist' class='" . $format . "'>";
 			while ( $businessquery->have_posts() ) : $businessquery->the_post();
 				$business_list .= "<div class='business'>";
@@ -822,13 +828,15 @@ function cdash_business_directory_shortcode( $atts ) {
 			  	$options = get_option('cdash_directory_options');
 			  	if($options['bus_custom']) {
 					$customfields = $options['bus_custom'];
+					global $custom_metabox;
+					$custommeta = $custom_metabox->the_meta();
 					foreach($customfields as $field) { 
 						if($field['display_dir'] !== "yes") {
 							continue;
 						} else {
-							global $custom_metabox;
-							$custommeta = $custom_metabox->the_meta();
-							$business_list .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$field['name']] . "</p>";
+							if(isset($custommeta[$field['name']]) && is_array($custommeta)) {
+								$business_list .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$field['name']] . "</p>";
+							}	
 						}
 					}
 				}
@@ -880,7 +888,7 @@ function cdash_business_map_shortcode( $atts ) {
 	);
 
 	$mapquery = new WP_Query( $args );
-	$business_map .= "<div id='map-canvas' style='width: 100%; height: 500px;'></div>";
+	$business_map = "<div id='map-canvas' style='width: 100%; height: 500px;'></div>";
 	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&sensor=false'></script>";
 	$business_map .= "<script type='text/javascript'>";
 	$business_map .= "function initialize() {
@@ -893,17 +901,17 @@ function cdash_business_map_shortcode( $atts ) {
 			$contactmeta = $buscontact_metabox->the_meta();
 			$locations = $contactmeta['location'];
 			foreach($locations as $location) {
-				if($location['donotdisplay'] == "1") {
+				if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
 					continue;
 				} else {
 			    	$rawaddress = $location['address'] . $location['city'] . $location['state'] . $location['zip'];
-					$address = str_replace(' ', '+', $rawaddress);
-
+					$address = urlencode($rawaddress);
 					$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
-					$json = json_decode($json);
-					$lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
-					$long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'}; 
-					// TODO - let people upload different icons for each category
+					$json = json_decode($json, true);
+					if(is_array($json) && $json['status'] !== 'ZERO_RESULTS') {
+						$lat = $json['results'][0]['geometry']['location']['lat'];
+						$long = $json['results'][0]['geometry']['location']['lng']; 
+					}
 					$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
 					if($single_link == "yes") {
 						$business_map .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5><a href=\x22" . get_the_permalink() . "\x22>" . get_the_title() . "</a></h5> " . $location['address'] . "<br />" . $location['city'] . ", " . $location['state'] . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
@@ -1126,13 +1134,15 @@ function cdash_business_search_shortcode() {
 				}
 				if($options['bus_custom']) {
 					$customfields = $options['bus_custom'];
+					global $custom_metabox;
+					$custommeta = $custom_metabox->the_meta();
 					foreach($customfields as $field) { 
 						if($field['display_dir'] !== "yes") {
 							continue;
 						} else {
-							global $custom_metabox;
-							$custommeta = $custom_metabox->the_meta();
-							$business_search .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$field['name']] . "</p>";
+							if(isset($custommeta[$field['name']]) && is_array($custommeta)) {
+								$business_search .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$field['name']] . "</p>";
+							}	
 						}
 					}
 				}

@@ -20,7 +20,7 @@
 .my_meta_control fieldset {
 	border: 1px solid #999;
 	padding: 10px;
-	border-radius: 6px;
+	border-radius: 3px;
 	margin-bottom: 10px;
 }
 
@@ -31,6 +31,19 @@
 .my_meta_control .half {
 	width: 45%;
 	float: left;
+}
+
+@media screen and (max-width: 1120px) {
+	.my_meta_control .half {
+		width: 40%;
+	}
+}
+
+@media screen and (max-width: 950px) {
+	.my_meta_control .half {
+		width: 80%;
+		float: none;
+	}
 }
 
 .my_meta_control .half.left {

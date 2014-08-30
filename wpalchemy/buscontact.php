@@ -22,11 +22,13 @@
 			<?php $metabox->the_field('address'); ?>
 			<textarea name="<?php $metabox->the_name(); ?>" rows="3"><?php $metabox->the_value(); ?></textarea>
 		</p>
+
+		<?php $options = get_option('cdash_directory_options'); ?>
  
 		<div class="third">
 			<?php $mb->the_field('city'); ?>
 			<label><?php _e('City', 'cdash'); ?></label>
-			<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+			<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p> 
 		</div>
 
 		<div class="third">
