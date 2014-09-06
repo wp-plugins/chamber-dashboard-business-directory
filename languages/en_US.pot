@@ -1,185 +1,220 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: cdash-business-directory\n"
-"POT-Creation-Date: 2014-08-06 16:47-0800\n"
-"PO-Revision-Date: 2014-08-06 16:47-0800\n"
+"Project-Id-Version: cdash 1.6\n"
+"POT-Creation-Date: 2014-09-05 16:38-0800\n"
+"PO-Revision-Date: 2014-09-05 16:45-0800\n"
 "Last-Translator: Morgan <morgan@wpalchemists.com>\n"
 "Language-Team: \n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.7\n"
+"X-Generator: Poedit 1.6.9\n"
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-KeywordsList: __();_e();__;_e\n"
+"X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: .\n"
-"X-Poedit-SearchPath-2: ..\n"
-"X-Poedit-SearchPath-3: ../wpalchemy\n"
-"X-Poedit-SearchPath-4: ..\\wpalchemy\n"
 
-#: ../cdash-business-directory.php:77
-msgid "Business Category"
+#: ../Tax-meta-class/Tax-meta-class.php:250
+msgid "Delete this image"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:250
+#: ../Tax-meta-class/Tax-meta-class.php:882
+msgid "Delete"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:357
+msgid "Cannot delete file. Something's wrong."
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:582
+#: ../Tax-meta-class/Tax-meta-class.php:629
+msgid "Remove"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:595
+msgid "Add"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:878
+msgid "Uploaded files"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:889
+msgid "Upload new files"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:895
+msgid "Add more files"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:947
+msgid "Select a color"
 msgstr ""
 
 #: ../cdash-business-directory.php:78
-msgid "All Business Categories"
+msgid "Business Category"
 msgstr ""
 
 #: ../cdash-business-directory.php:79
-msgid "Parent Business Category"
+msgid "All Business Categories"
 msgstr ""
 
 #: ../cdash-business-directory.php:80
-msgid "Parent Business Category:"
+msgid "Parent Business Category"
 msgstr ""
 
 #: ../cdash-business-directory.php:81
-msgid "New Business Category Name"
+msgid "Parent Business Category:"
 msgstr ""
 
 #: ../cdash-business-directory.php:82
-msgid "Add New Business Category"
+msgid "New Business Category Name"
 msgstr ""
 
 #: ../cdash-business-directory.php:83
-msgid "Edit Business Category"
+msgid "Add New Business Category"
 msgstr ""
 
 #: ../cdash-business-directory.php:84
-msgid "Update Business Category"
+msgid "Edit Business Category"
 msgstr ""
 
 #: ../cdash-business-directory.php:85
-msgid "Separate Business Categories with commas"
+msgid "Update Business Category"
 msgstr ""
 
 #: ../cdash-business-directory.php:86
-msgid "Search Business Categories"
+msgid "Separate Business Categories with commas"
 msgstr ""
 
 #: ../cdash-business-directory.php:87
-msgid "Add or remove Business Category"
+msgid "Search Business Categories"
 msgstr ""
 
 #: ../cdash-business-directory.php:88
+msgid "Add or remove Business Category"
+msgstr ""
+
+#: ../cdash-business-directory.php:89
 msgid "Choose from the most used Business Categories"
 msgstr ""
 
-#: ../cdash-business-directory.php:89 ../cdash-business-directory.php:124
+#: ../cdash-business-directory.php:90 ../cdash-business-directory.php:125
 msgid "Not Found"
 msgstr ""
 
-#: ../cdash-business-directory.php:112
+#: ../cdash-business-directory.php:113
 msgid "Membership Level"
 msgstr ""
 
-#: ../cdash-business-directory.php:113
+#: ../cdash-business-directory.php:114
 msgid "All Membership Levels"
 msgstr ""
 
-#: ../cdash-business-directory.php:114
+#: ../cdash-business-directory.php:115
 msgid "Parent Membership Level"
 msgstr ""
 
-#: ../cdash-business-directory.php:115
+#: ../cdash-business-directory.php:116
 msgid "Parent Membership Level:"
 msgstr ""
 
-#: ../cdash-business-directory.php:116
+#: ../cdash-business-directory.php:117
 msgid "New Membership Level Name"
 msgstr ""
 
-#: ../cdash-business-directory.php:117
+#: ../cdash-business-directory.php:118
 msgid "Add New Membership Level"
 msgstr ""
 
-#: ../cdash-business-directory.php:118
+#: ../cdash-business-directory.php:119
 msgid "Edit Membership Level"
 msgstr ""
 
-#: ../cdash-business-directory.php:119
+#: ../cdash-business-directory.php:120
 msgid "Update Membership Level"
 msgstr ""
 
-#: ../cdash-business-directory.php:120
+#: ../cdash-business-directory.php:121
 msgid "Separate Membership Levels with commas"
 msgstr ""
 
-#: ../cdash-business-directory.php:121
+#: ../cdash-business-directory.php:122
 msgid "Search Membership Levels"
 msgstr ""
 
-#: ../cdash-business-directory.php:122
+#: ../cdash-business-directory.php:123
 msgid "Add or remove Membership Level"
 msgstr ""
 
-#: ../cdash-business-directory.php:123
+#: ../cdash-business-directory.php:124
 msgid "Choose from the most used Membership Levels"
 msgstr ""
 
-#: ../cdash-business-directory.php:148
+#: ../cdash-business-directory.php:149
 msgid "Businesses"
 msgstr ""
 
-#: ../cdash-business-directory.php:149
+#: ../cdash-business-directory.php:150
 msgid "Parent Business:"
 msgstr ""
 
-#: ../cdash-business-directory.php:150
+#: ../cdash-business-directory.php:151
 msgid "All Businesses"
 msgstr ""
 
-#: ../cdash-business-directory.php:151
+#: ../cdash-business-directory.php:152
 msgid "View Business"
 msgstr ""
 
-#: ../cdash-business-directory.php:152
+#: ../cdash-business-directory.php:153
 msgid "Add New Business"
 msgstr ""
 
-#: ../cdash-business-directory.php:153
+#: ../cdash-business-directory.php:154
 msgid "Add New"
 msgstr ""
 
-#: ../cdash-business-directory.php:154
+#: ../cdash-business-directory.php:155
 msgid "Edit Business"
 msgstr ""
 
-#: ../cdash-business-directory.php:155
+#: ../cdash-business-directory.php:156
 msgid "Update Business"
 msgstr ""
 
-#: ../cdash-business-directory.php:156
+#: ../cdash-business-directory.php:157
 msgid "Search Businesses"
 msgstr ""
 
-#: ../cdash-business-directory.php:157
+#: ../cdash-business-directory.php:158
 msgid "Not found"
 msgstr ""
 
-#: ../cdash-business-directory.php:158
+#: ../cdash-business-directory.php:159
 msgid "Not found in Trash"
 msgstr ""
 
-#: ../cdash-business-directory.php:161
+#: ../cdash-business-directory.php:162
 msgid "business"
 msgstr ""
 
-#: ../cdash-business-directory.php:162
+#: ../cdash-business-directory.php:163
 msgid "Businesses and Organizations"
 msgstr ""
 
-#: ../options.php:106
+#: ../options.php:84
 msgid "Chamber Dashboard Settings"
 msgstr ""
 
-#: ../options.php:119
+#: ../options.php:99
 msgid "Phone Number Types"
 msgstr ""
 
-#: ../options.php:122
+#: ../options.php:102
 msgid ""
 "When you enter a phone number for a business, you can choose what type of "
 "phone number it is.  The default options are \"Main, Office, Cell\".  To "
@@ -188,11 +223,11 @@ msgid ""
 "cell, you will need to enter them.)"
 msgstr ""
 
-#: ../options.php:128
+#: ../options.php:108
 msgid "Email Types"
 msgstr ""
 
-#: ../options.php:131
+#: ../options.php:111
 msgid ""
 "When you enter an email address for a business, you can choose what type of "
 "email address it is.  The default options are \"Main, Sales, Accounting, HR"
@@ -201,101 +236,258 @@ msgid ""
 "sales and/or accounting and/or HR, you will need to enter them.)"
 msgstr ""
 
-#: ../options.php:250
+#: ../options.php:117
+msgid "Single Business View Options"
+msgstr ""
+
+#: ../options.php:119
+msgid "What information would you like to display on the single business view?"
+msgstr ""
+
+#: ../options.php:120
+msgid " Description"
+msgstr ""
+
+#: ../options.php:121 ../options.php:139
+msgid ""
+" Location Name <em>Note: you can hide individual locations in the \"edit "
+"business\" view</em>"
+msgstr ""
+
+#: ../options.php:122 ../options.php:140
+msgid " Location Address"
+msgstr ""
+
+#: ../options.php:123
+msgid " Map"
+msgstr ""
+
+#: ../options.php:124 ../options.php:141
+msgid " Location Web Address"
+msgstr ""
+
+#: ../options.php:125 ../options.php:142
+msgid " Phone Number(s)"
+msgstr ""
+
+#: ../options.php:126 ../options.php:143
+msgid " Email Address(es)"
+msgstr ""
+
+#: ../options.php:127 ../options.php:144
+msgid " Logo"
+msgstr ""
+
+#: ../options.php:128 ../options.php:145
+msgid ""
+" Featured Image <em>Your theme might already display the featured image.  If "
+"it does not, you can check this box to display the featured image</em>"
+msgstr ""
+
+#: ../options.php:129
+msgid " Membership Level"
+msgstr ""
+
+#: ../options.php:130 ../options.php:147
+msgid " Business Categories"
+msgstr ""
+
+#: ../options.php:136
+msgid "Category/Membership Level View Options"
+msgstr ""
+
+#: ../options.php:138
+msgid ""
+"What information would you like to display on the category/membership level "
+"view?  Note: Chamber Dashboard might not be able to over-ride all of your "
+"theme settings (for instance, your theme might show the featured image on "
+"category pages).  If you don't like how your theme displays category and "
+"membership level pages, you might want to create custom pages using the "
+"[business_directory] shortcode.  This is more labor-intensive, but gives you "
+"more control over appearance."
+msgstr ""
+
+#: ../options.php:146
+msgid " Membership Leve"
+msgstr ""
+
+#: ../options.php:153
+msgid "Custom Fields"
+msgstr ""
+
+#: ../options.php:155
+msgid ""
+"If you need to store additional information about businesses, you can create "
+"custom fields here."
+msgstr ""
+
+#: ../options.php:161 ../options.php:182
+msgid "Custom Field Name"
+msgstr ""
+
+#: ../options.php:163 ../options.php:184
+msgid "Custom Field Type"
+msgstr ""
+
+#: ../options.php:166 ../options.php:187
+msgid "Short Text Field"
+msgstr ""
+
+#: ../options.php:167 ../options.php:188
+msgid "Multi-line Text Area"
+msgstr ""
+
+#: ../options.php:169 ../options.php:190
+msgid "Display in Business Directory?"
+msgstr ""
+
+#: ../options.php:170 ../options.php:174 ../options.php:191
+msgid " Yes"
+msgstr ""
+
+#: ../options.php:171 ../options.php:175 ../options.php:192
+msgid " No"
+msgstr ""
+
+#: ../options.php:173 ../options.php:194
+msgid "Display in Single Business View?"
+msgstr ""
+
+#: ../options.php:176 ../options.php:197
+msgid "Add Another"
+msgstr ""
+
+#: ../options.php:195
+msgid " /> Yes"
+msgstr ""
+
+#: ../options.php:196
+msgid " /> No"
+msgstr ""
+
+#: ../options.php:206
 msgid "Save Changes"
 msgstr ""
 
-#: ../options.php:272
+#: ../options.php:280
 msgid "Settings"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:3 ..\wpalchemy/buscontact.php:3
+#: ../options.php:291
+msgid "Export"
+msgstr ""
+
+#: ../options.php:292
+msgid "Click the button below to download a CSV of all of your businesses."
+msgstr ""
+
+#: ../options.php:303
+msgid "Import"
+msgstr ""
+
+#: ../options.php:304
+msgid ""
+"You can import businesses from a CSV file.  First, you must format the CSV "
+"properly.  Your CSV must have the following columns in the following order, "
+"even if some of the columns are empty: <ul><li>Business Name</"
+"li><li>Description</li><li>Category (separate multiple with semicolons)</"
+"li><li>Membership Level (separate multiple with semicolons)</li><li>Location "
+"Name</li><li>Address</li><li>City</li><li>State</li><li>Zip</li><li>URL</"
+"li><li>Phone (separate multiple with semicolons)</li><li>Email (separate "
+"multiple with semicolons)</li></ul>"
+msgstr ""
+
+#: ../options.php:305
+msgid "Download a sample CSV to see how to format your file."
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:3
 msgid "Remove All Locations"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:11 ..\wpalchemy/buscontact.php:11
+#: ../wpalchemy/buscontact.php:11
 msgid "Location Name"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:16 ..\wpalchemy/buscontact.php:16
+#: ../wpalchemy/buscontact.php:16
 msgid ""
 "Check this if you do not want this location to display to the public on the "
 "website"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:20 ..\wpalchemy/buscontact.php:20
+#: ../wpalchemy/buscontact.php:20
 msgid "Address"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:28 ..\wpalchemy/buscontact.php:28
+#: ../wpalchemy/buscontact.php:30
 msgid "City"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:34 ..\wpalchemy/buscontact.php:34
+#: ../wpalchemy/buscontact.php:36
 msgid "State"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:40 ..\wpalchemy/buscontact.php:40
+#: ../wpalchemy/buscontact.php:42
 msgid "Zip"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:46 ..\wpalchemy/buscontact.php:46
+#: ../wpalchemy/buscontact.php:48
 msgid "Web Address"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:51 ..\wpalchemy/buscontact.php:51
+#: ../wpalchemy/buscontact.php:53
 msgid "Phone Number(s)"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:53 ..\wpalchemy/buscontact.php:53
+#: ../wpalchemy/buscontact.php:55
 msgid "Remove All Phone Numbers"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:58 ..\wpalchemy/buscontact.php:58
+#: ../wpalchemy/buscontact.php:60
 msgid "Phone Number"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:62 ..\wpalchemy/buscontact.php:62
+#: ../wpalchemy/buscontact.php:64
 msgid "Phone Number Type"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:75 ..\wpalchemy/buscontact.php:75
+#: ../wpalchemy/buscontact.php:77
 msgid "Remove This Phone Number"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:80 ..\wpalchemy/buscontact.php:80
+#: ../wpalchemy/buscontact.php:82
 msgid "Add Another Phone Number"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:84 ..\wpalchemy/buscontact.php:84
+#: ../wpalchemy/buscontact.php:86
 msgid "Email Address(es)"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:85 ..\wpalchemy/buscontact.php:85
+#: ../wpalchemy/buscontact.php:87
 msgid "Remove All Email Addresses"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:90 ..\wpalchemy/buscontact.php:90
+#: ../wpalchemy/buscontact.php:92
 msgid "Email Address"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:94 ..\wpalchemy/buscontact.php:94
+#: ../wpalchemy/buscontact.php:96
 msgid "Email Address Type"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:107 ..\wpalchemy/buscontact.php:107
+#: ../wpalchemy/buscontact.php:109
 msgid "Remove This Email Address"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:112 ..\wpalchemy/buscontact.php:112
+#: ../wpalchemy/buscontact.php:114
 msgid "Add Another Email Address"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:115 ..\wpalchemy/buscontact.php:115
+#: ../wpalchemy/buscontact.php:117
 msgid "Remove This Location"
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:120 ..\wpalchemy/buscontact.php:120
+#: ../wpalchemy/buscontact.php:122
 msgid ""
 "If this business has multiple locations, but you want them all to appear in "
 "one business listing, add the other locations here.  If you want the other "
@@ -303,28 +495,32 @@ msgid ""
 "business with this business as the parent."
 msgstr ""
 
-#: ../wpalchemy/buscontact.php:121 ..\wpalchemy/buscontact.php:121
+#: ../wpalchemy/buscontact.php:123
 msgid "Add Another Location"
 msgstr ""
 
-#: ../wpalchemy/busnotes.php:3 ..\wpalchemy/busnotes.php:3
+#: ../wpalchemy/buscustom.php:20
+msgid "<p>The field "
+msgstr ""
+
+#: ../wpalchemy/busnotes.php:3
 msgid ""
 "These notes are for your internal use, and will never be displayed on the "
 "website."
 msgstr ""
 
-#: ../wpalchemy/busnotes.php:5 ..\wpalchemy/busnotes.php:5
+#: ../wpalchemy/busnotes.php:5
 msgid "Remove All Notes"
 msgstr ""
 
-#: ../wpalchemy/busnotes.php:12 ..\wpalchemy/busnotes.php:12
+#: ../wpalchemy/busnotes.php:12
 msgid "Date"
 msgstr ""
 
-#: ../wpalchemy/busnotes.php:15 ..\wpalchemy/busnotes.php:15
+#: ../wpalchemy/busnotes.php:15
 msgid "Note"
 msgstr ""
 
-#: ../wpalchemy/busnotes.php:24 ..\wpalchemy/busnotes.php:24
+#: ../wpalchemy/busnotes.php:24
 msgid "Add Another Note"
 msgstr ""
