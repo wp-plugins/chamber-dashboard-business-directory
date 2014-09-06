@@ -66,6 +66,12 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.6.2 =
+* Small bug fixes
+
+= 1.6.1 = 
+* Cleaned up some debugging code
+
 = 1.6 = 
 * Added ability to import business from a CSV
 

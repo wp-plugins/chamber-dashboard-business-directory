@@ -266,10 +266,10 @@ function cdash_render_form() {
 
 // Sanitize and validate input. Accepts an array, return a sanitized array.
 function cdash_validate_options($input) {
-	 // strip html from textboxes
-	$input['textarea_one'] =  wp_filter_nohtml_kses($input['textarea_one']); // Sanitize textarea input (strip html tags, and escape characters)
 	$input['bus_phone_type'] =  wp_filter_nohtml_kses($input['bus_phone_type']); 
-	$input['txt_one'] =  wp_filter_nohtml_kses($input['txt_one']); // Sanitize textbox input (strip html tags, and escape characters)
+	$input['bus_email_type'] =  wp_filter_nohtml_kses($input['bus_email_type']);
+	// $input['txt_one'] =  wp_filter_nohtml_kses($input['txt_one']); // Sanitize textbox input (strip html tags, and escape characters)
+	// $input['textarea_one'] =  wp_filter_nohtml_kses($input['textarea_one']); // Sanitize textarea input (strip html tags, and escape characters)
 	return $input;
 }
 

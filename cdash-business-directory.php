@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.6.1
+Version: 1.6.2
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -192,7 +192,7 @@ add_action( 'init', 'cdash_register_cpt_business', 0 );
 
 include_once 'wpalchemy/MetaBox.php';
 include_once 'wpalchemy/MediaAccess.php';
-define( 'MYPLUGINNAME_PATH', plugin_dir_path(__FILE__) );
+define( 'CDASH_PATH', plugin_dir_path(__FILE__) );
 
 $wpalchemy_media_access = new WPAlchemy_MediaAccess();
 
@@ -212,7 +212,7 @@ $buscontact_metabox = new WPAlchemy_MetaBox(array
     'id' => 'buscontact_meta',
     'title' => 'Locations',
     'types' => array('business'),
-    'template' => MYPLUGINNAME_PATH . '/wpalchemy/buscontact.php',
+    'template' => CDASH_PATH . '/wpalchemy/buscontact.php',
     'mode' => WPALCHEMY_MODE_EXTRACT,
     'prefix' => '_cdash_'
 ));
@@ -223,7 +223,7 @@ $buslogo_metabox = new WPAlchemy_MetaBox(array
     'id' => 'buslogo_meta',
     'title' => 'Logo',
     'types' => array('business'),
-    'template' => MYPLUGINNAME_PATH . '/wpalchemy/buslogo.php',
+    'template' => CDASH_PATH . '/wpalchemy/buslogo.php',
     'mode' => WPALCHEMY_MODE_EXTRACT,
     'prefix' => '_cdash_'
 ));
@@ -234,7 +234,7 @@ $busnotes_metabox = new WPAlchemy_MetaBox(array
     'id' => 'busnotes_meta',
     'title' => 'Notes',
     'types' => array('business'),
-    'template' => MYPLUGINNAME_PATH . '/wpalchemy/busnotes.php',
+    'template' => CDASH_PATH . '/wpalchemy/busnotes.php',
     'mode' => WPALCHEMY_MODE_EXTRACT,
     'prefix' => '_cdash_'
 ));
@@ -247,7 +247,7 @@ if(!empty($options['bus_custom'])) {
 	    'id' => 'custom_meta',
 	    'title' => 'Custom Fields',
 	    'types' => array('business'),
-	    'template' => MYPLUGINNAME_PATH . '/wpalchemy/buscustom.php',
+	    'template' => CDASH_PATH . '/wpalchemy/buscustom.php',
 	    'mode' => WPALCHEMY_MODE_EXTRACT,
 	    'prefix' => '_cdash_'
 	));
@@ -742,13 +742,15 @@ function cdash_business_directory_shortcode( $atts ) {
 			  	if($image == "logo") {
 			  		global $buslogo_metabox;
 					$logometa = $buslogo_metabox->the_meta();
-				  	$logoattr = array(
-						'class'	=> 'alignleft logo',
-					);
-					if($single_link == "yes") {
-						$business_list .= "<a href='" . get_the_permalink() . "'>" . wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr ) . "</a>";
-					} else {
-						$business_list .= wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr );
+					if(isset($logometa['buslogo'])) {
+					  	$logoattr = array(
+							'class'	=> 'alignleft logo',
+						);
+						if($single_link == "yes") {
+							$business_list .= "<a href='" . get_the_permalink() . "'>" . wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr ) . "</a>";
+						} else {
+							$business_list .= wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr );
+						}
 					}
 			  	} elseif($image == "featured") {
 			  		$thumbattr = array(
