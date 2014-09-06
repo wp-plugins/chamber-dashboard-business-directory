@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.5
+Version: 1.6.1
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -171,7 +171,8 @@ function cdash_register_cpt_business() {
 		'show_in_nav_menus'   => true,
 		'show_in_admin_bar'   => true,
 		'menu_position'       => 5,
-		'menu_icon'           => 'dashicons-shop',
+		//'menu_icon'           => 'dashicons-shop',
+		'menu_icon'           => 'dashicons-flag',
 		'can_export'          => true,
 		'has_archive'         => true,
 		'exclude_from_search' => false,
@@ -254,6 +255,29 @@ if(!empty($options['bus_custom'])) {
 
 
 // ------------------------------------------------------------------------
+// ADD CUSTOM META DATA TO TAXONOMIES - http://en.bainternet.info/wordpress-taxonomies-extra-fields-the-easy-way/
+// ------------------------------------------------------------------------
+
+//include the main class file
+require_once( plugin_dir_path( __FILE__ ) . "/Tax-meta-class/Tax-meta-class.php");
+
+// configure custom fields
+$config = array(
+   'id' => 'business_category_meta',
+   'title' => 'Business Category Information',
+   'pages' => array('business_category'),
+   'context' => 'normal',
+   'fields' => array(),
+   'local_images' => true,
+   'use_with_theme' => false
+);
+
+$buscat_meta = new Tax_Meta_Class($config);
+$buscat_meta->addImage('category_map_icon',array('name'=> 'Map Icon '));
+$buscat_meta->Finish();
+
+
+// ------------------------------------------------------------------------
 // SINGLE BUSINESS VIEW
 // ------------------------------------------------------------------------
 
@@ -270,6 +294,9 @@ add_action( 'wp_enqueue_scripts', 'cdash_single_business_style' );
 
 function cdash_single_business($content) {
 	if( is_singular('business') ) {
+		$post_id = get_the_id();
+		$meta = get_post_custom($post_id); 
+
 		$options = get_option('cdash_directory_options');
 
 		// make location/address metabox data available
@@ -286,7 +313,7 @@ function cdash_single_business($content) {
 		if (isset($options['sv_thumb']) && $options['sv_thumb'] == "1") { 
 			$business_content .= get_the_post_thumbnail( $post->ID, 'full');
 		}
-		if (isset($options['sv_logo']) && $options['sv_logo'] == "1") { 
+		if (isset($options['sv_logo']) && isset($logometa['buslogo']) && $options['sv_logo'] == "1") { 
 			$attr = array(
 				'class'	=> 'alignleft logo',
 			);
@@ -325,68 +352,70 @@ function cdash_single_business($content) {
 				}
 			}
 		}
-		$locations = $contactmeta['location'];
-		foreach($locations as $location) {
-			if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
-				continue;
-			} else {
-				$business_content .= "<div class='location'>";
-				if (isset($options['sv_name']) && ($options['sv_name']) == "1" && isset($location['altname'])) { 
-					$business_content .= "<h3>" . $location['altname'] . "</h3>";
-				}
-				if (isset($options['sv_address']) && $options['sv_address'] == "1") { 
-					$business_content .= "<p class='address'>";
-	 					if(isset($location['address'])) {
-							$address = $location['address'];
-							$business_content .= str_replace("\n", '<br />', $address);
-						}
-						if(isset($location['city'])) {
-							$business_content .= "<br />" . $location['city'] . ",&nbsp;";
-						}
-						if(isset($location['state'])) {
-							$business_content .= $location['state'] . "&nbsp";
-						}
-						if(isset($location['zip'])) {
-							$business_content .= $location['zip'];
-						} 
-					$business_content .= "</p>";
-				}
-				if (isset($options['sv_url']) && $options['sv_url'] == "1" && isset($location['url'])) { 
-					$business_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
-				}
-				if (isset($options['sv_phone']) && $options['sv_phone'] == "1" && isset($location['phone'])) { 
-					$business_content .= "<p class='phone'>";
-						$i = 1;
-						$phones = $location['phone'];
-						foreach($phones as $phone) {
-							if($i !== 1) {
-								$business_content .= "<br />";
+		if(isset($contactmeta['location'])) {
+			$locations = $contactmeta['location'];
+			foreach($locations as $location) {
+				if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
+					continue;
+				} else {
+					$business_content .= "<div class='location'>";
+					if (isset($options['sv_name']) && ($options['sv_name']) == "1" && isset($location['altname'])) { 
+						$business_content .= "<h3>" . $location['altname'] . "</h3>";
+					}
+					if (isset($options['sv_address']) && $options['sv_address'] == "1") { 
+						$business_content .= "<p class='address'>";
+		 					if(isset($location['address'])) {
+								$address = $location['address'];
+								$business_content .= str_replace("\n", '<br />', $address);
 							}
-							$business_content .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
-							if(isset($phone['phonetype'])) {
-								$business_content .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+							if(isset($location['city'])) {
+								$business_content .= "<br />" . $location['city'] . ",&nbsp;";
 							}
-							$i++;
-						}
-					$business_content .= "</p>";
+							if(isset($location['state'])) {
+								$business_content .= $location['state'] . "&nbsp";
+							}
+							if(isset($location['zip'])) {
+								$business_content .= $location['zip'];
+							} 
+						$business_content .= "</p>";
+					}
+					if (isset($options['sv_url']) && $options['sv_url'] == "1" && isset($location['url'])) { 
+						$business_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+					}
+					if (isset($options['sv_phone']) && $options['sv_phone'] == "1" && isset($location['phone'])) { 
+						$business_content .= "<p class='phone'>";
+							$i = 1;
+							$phones = $location['phone'];
+							foreach($phones as $phone) {
+								if($i !== 1) {
+									$business_content .= "<br />";
+								}
+								$business_content .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
+								if(isset($phone['phonetype'])) {
+									$business_content .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+								}
+								$i++;
+							}
+						$business_content .= "</p>";
+					}
+					if (isset($options['sv_email']) && $options['sv_email'] == "1" && isset($location['email'])) { 
+						$business_content .= "<p class='email'>";
+							$i = 1;
+							$emails = $location['email'];
+							foreach($emails as $email) {
+								if($i !== 1) {
+									$business_content .= "<br />";
+								}
+								$business_content .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
+								if(isset($email['emailtype'])) {
+									$business_content .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
+								}
+								$i++;
+							}
+						$business_content .= "</p>";
+					}
+				$business_content .= "</div>";
 				}
-				if (isset($options['sv_email']) && $options['sv_email'] == "1" && isset($location['email'])) { 
-					$business_content .= "<p class='email'>";
-						$i = 1;
-						$emails = $location['email'];
-						foreach($emails as $email) {
-							if($i !== 1) {
-								$business_content .= "<br />";
-							}
-							$business_content .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
-							if(isset($email['emailtype'])) {
-								$business_content .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
-							}
-							$i++;
-						}
-					$business_content .= "</p>";
-				}
-			$business_content .= "</div>";
 			}
 		}
 		if($options['bus_custom']) {
@@ -800,14 +829,14 @@ function cdash_business_directory_shortcode( $atts ) {
 			  		}
 			  		if(in_array("category", $displayopts)) {
 						$id = get_the_id();
-						$levels = get_the_terms( $id, 'business_category');
+						$buscats = get_the_terms( $id, 'business_category');
 						$business_list .= "<p class='categories'><span>Categories:</span>&nbsp;";
 						$i = 1;
-						foreach($levels as $level) {
+						foreach($buscats as $buscat) {
 							if($i !== 1) {
 								$business_list .= ",&nbsp;";
 							}
-							$business_list .= $level->name;
+							$business_list .= $buscat->name;
 							$i++;
 						}
 				  	}
@@ -904,6 +933,7 @@ function cdash_business_map_shortcode( $atts ) {
 				if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
 					continue;
 				} else {
+					// Get the latitude and longitude from the address
 			    	$rawaddress = $location['address'] . $location['city'] . $location['state'] . $location['zip'];
 					$address = urlencode($rawaddress);
 					$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
@@ -912,7 +942,20 @@ function cdash_business_map_shortcode( $atts ) {
 						$lat = $json['results'][0]['geometry']['location']['lat'];
 						$long = $json['results'][0]['geometry']['location']['lng']; 
 					}
-					$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
+					// Get the map icon
+					$id = get_the_id();
+					$buscats = get_the_terms( $id, 'business_category');
+					foreach($buscats as $buscat) {
+						$buscatid = $buscat->term_id;
+						$iconid = get_tax_meta($buscatid,'category_map_icon');
+						if($iconid !== '') {
+							$icon = $iconid['src'];
+						}
+					}
+					if(!isset($icon)) {
+						$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
+					}
+					// Create the pop-up info window
 					if($single_link == "yes") {
 						$business_map .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5><a href=\x22" . get_the_permalink() . "\x22>" . get_the_title() . "</a></h5> " . $location['address'] . "<br />" . $location['city'] . ", " . $location['state'] . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
 					} else {

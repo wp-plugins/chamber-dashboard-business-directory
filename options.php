@@ -62,6 +62,7 @@ function cdash_add_options_page() {
 		85 
 	);
 	add_submenu_page( '/cdash-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
+	add_submenu_page( '/cdash-business-directory/options.php', 'Import', 'Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
 }
 
 
@@ -285,19 +286,111 @@ function cdash_plugin_action_links( $links, $file ) {
 }
 
 function cdash_export_form() { ?>
-		<div class="wrap">
-			<div class="icon32" id="icon-options-general"><br></div>
-			<h2><?php _e('Export', 'cdash'); ?></h2>
-			<p>Click the button below to download a CSV of all of your businesses.</p>
-			<form action="<?php echo plugin_dir_url( __FILE__ ); ?>export.php">
+	<div class="wrap">
+		<div class="icon32" id="icon-options-general"><br></div>
+		<h2><?php _e('Export', 'cdash'); ?></h2>
+		<p><?php _e('Click the button below to download a CSV of all of your businesses.', 'cdash'); ?></p>
+		<form action="<?php echo plugin_dir_url( __FILE__ ); ?>export.php">
 
-			<input type="submit" value="Download CSV">
-			</form>
-		</div>
-			
-			
-			
-		
-
+		<input type="submit" value="Download CSV">
+		</form>
+	</div>
 <?php }
+
+function cdash_import_form() { ?>
+	<div class="wrap">
+		<div class="icon32" id="icon-options-general"><br></div>
+			<h2><?php _e('Import', 'cdash'); ?></h2>
+			<p><?php _e('You can import businesses from a CSV file.  First, you must format the CSV properly.  Your CSV must have the following columns in the following order, even if some of the columns are empty: <ul><li>Business Name</li><li>Description</li><li>Category (separate multiple with semicolons)</li><li>Membership Level (separate multiple with semicolons)</li><li>Location Name</li><li>Address</li><li>City</li><li>State</li><li>Zip</li><li>URL</li><li>Phone (separate multiple with semicolons)</li><li>Email (separate multiple with semicolons)</li></ul>', 'cdash'); ?></p>
+			<p><a href="<?php echo plugin_dir_url( __FILE__ ); ?>cdash-import-sample.zip"><?php _e('Download a sample CSV to see how to format your file.', 'cdash'); ?></a></p>
+			<?php wp_import_upload_form('admin.php?page=chamber-dashboard-import'); ?>
+		</div> 
+
+	<?php $file = wp_import_handle_upload();
+
+	if(isset($file['file'])) {
+
+		$row = 0;
+		if (($handle = fopen($file['file'], "r")) !== FALSE) {
+		    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+		    	
+		    	if($row == 0) {
+		    		// Don't do anything with the header row
+		    		$row++;
+		    		continue;
+		    	} else {
+		    		$row++;
+					// Get the post data
+					$businessinfo = array (
+						'post_type'     => 'business',
+						'post_title'    => $data[0],
+						'post_content' 	=> $data[1],
+						'post_status'   => 'publish',
+						);
+					// Create a business
+					$newbusiness = wp_insert_post($businessinfo, true);
+					// Add business categories
+					if(isset($data[2])) {
+						$categories = explode(';', $data[2]);
+						wp_set_object_terms( $newbusiness, $categories, 'business_category' );
+					}
+					// Add membership levels
+					if(isset($data[3])) {
+						$levels = explode(';', $data[3]);
+						wp_set_object_terms( $newbusiness, $levels, 'membership_level' );
+					}
+					// add a serialised array for wpalchemy to work - see http://www.2scopedesign.co.uk/wpalchemy-and-front-end-posts/
+					$fields = array('_cdash_location');
+					$str = $fields;
+					update_post_meta( $newbusiness, 'buscontact_meta_fields', $str );
+
+					// Get all the phone numbers and put them in the array format wpalchemy expects
+					$numbers = array();
+					if(isset($data[10]) && !empty($data[10])) {
+						$tempnums = explode(';', $data[10]);
+						foreach ($tempnums as $number) {
+							$numbers[]['phonenumber'] = $number;
+						}
+					} else {
+						$numbers = '';
+					}
+
+					// Get all the email addresses and put them in the array format wpalchemy expects
+					$emails = array();
+					if(isset($data[11]) && !empty($data[11])) {
+						$tempmails = explode(';', $data[11]);
+						foreach ($tempmails as $email) {
+							$emails[]['emailaddress'] = $email;
+						}
+					} else {
+						$emails = '';
+					}
+
+					// Create the array of location information for wpalchemy
+					$locationfields = array(
+							array(
+							'altname' 	=> $data[4],
+							'address'	=> $data[5],
+							'city'		=> $data[6],
+							'state'		=> $data[7],
+							'zip'		=> $data[8],
+							'url'		=> $data[9],
+							'phone'		=> $numbers,
+							'email'		=> $emails,
+							)
+						);
+
+					// Add all of the post meta data in one fell swoop
+					add_post_meta( $newbusiness, '_cdash_location', $locationfields );
+				}
+		    }
+		    $success = $row - 1;
+		    echo "<p style='font-size:1.2em;'>" . $success . " businesses successfully imported!</p>";
+		    fclose($handle);
+		}
+	}
+	
+}
+
+
  ?>
