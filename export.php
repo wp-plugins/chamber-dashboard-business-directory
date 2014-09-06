@@ -38,6 +38,7 @@ endif;
 // Get a list of headers we need for each business
 $header = array(
 	'Business Name',
+	'Description',
 	'Category',
 	'Membership Level',
 );
@@ -72,6 +73,7 @@ while ( $exportquery->have_posts() ) : $exportquery->the_post();
 	$levellist = implode(", ", $levels);
 	$fields = array(
 		get_the_title(),
+		get_the_content(),
 		$catlist,
 		$levellist,
 		);
