@@ -315,26 +315,31 @@ function cdash_import_form() { ?>
 		    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 		    	
 		    	if($row == 0) {
+		    		// Don't do anything with the header row
 		    		$row++;
 		    		continue;
 		    	} else {
 		    		$row++;
-			        $businessinfo = array (
-			        	'post_type'     => 'business',
+					// Get the post data
+					$businessinfo = array (
+						'post_type'     => 'business',
 						'post_title'    => $data[0],
 						'post_content' 	=> $data[1],
 						'post_status'   => 'publish',
-			        	);
-			        $newbusiness = wp_insert_post($businessinfo, true);
-			        if(isset($data[2])) {
-			        	$categories = explode(';', $data[2]);
-			        	wp_set_object_terms( $newbusiness, $categories, 'business_category' );
-			        }
-			        if(isset($data[3])) {
-			        	$levels = explode(';', $data[3]);
-			        	wp_set_object_terms( $newbusiness, $levels, 'membership_level' );
-			        }
-			        // add a serialised array for wpalchemy to work - see http://www.2scopedesign.co.uk/wpalchemy-and-front-end-posts/
+						);
+					// Create a business
+					$newbusiness = wp_insert_post($businessinfo, true);
+					// Add business categories
+					if(isset($data[2])) {
+						$categories = explode(';', $data[2]);
+						wp_set_object_terms( $newbusiness, $categories, 'business_category' );
+					}
+					// Add membership levels
+					if(isset($data[3])) {
+						$levels = explode(';', $data[3]);
+						wp_set_object_terms( $newbusiness, $levels, 'membership_level' );
+					}
+					// add a serialised array for wpalchemy to work - see http://www.2scopedesign.co.uk/wpalchemy-and-front-end-posts/
 					$fields = array('_cdash_location');
 					$str = $fields;
 					update_post_meta( $newbusiness, 'buscontact_meta_fields', $str );
