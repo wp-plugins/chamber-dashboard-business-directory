@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.6.4
+Version: 1.6.5
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -61,7 +61,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'options.php' );
 
 // Initialize language so it can be translated
 function cdash_language_init() {
-  load_plugin_textdomain( 'cdash', false, 'cdash-business-directory/languages' );
+  load_plugin_textdomain( 'cdash', false, 'chamber-dashboard-business-directory/languages' );
 }
 add_action('init', 'cdash_language_init');
 
@@ -204,7 +204,7 @@ function cdash_metabox_stylesheet()
 {
     if ( is_admin() )
     {
-        wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/cdash-business-directory/wpalchemy/meta.css' );
+        wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/chamber-dashboard-business-directory/wpalchemy/meta.css' );
     }
 }
 add_action( 'init', 'cdash_metabox_stylesheet' );
@@ -488,7 +488,7 @@ function cdash_single_business_map() {
 								}
 							}
 							if(!isset($icon)) {
-								$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
+								$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
 							}
 							if(isset($location['altname'])) {
 								$name = $location['altname'];
@@ -975,7 +975,7 @@ function cdash_business_map_shortcode( $atts ) {
 						}
 					}
 					if(!isset($icon)) {
-						$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
+						$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
 					}
 					// Create the pop-up info window
 					if($single_link == "yes") {

@@ -66,6 +66,9 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.6.5 =
+* fixed icon URL
+
 = 1.6.4 =
 * fixed bug with map on single business view
 
