@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.6.5
+Version: 1.6.6
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -278,6 +278,41 @@ $config = array(
 $buscat_meta = new Tax_Meta_Class($config);
 $buscat_meta->addImage('category_map_icon',array('name'=> 'Map Icon '));
 $buscat_meta->Finish();
+
+
+// ------------------------------------------------------------------------
+// ADD COLUMNS TO BUSINESSES OVERVIEW PAGE
+// ------------------------------------------------------------------------
+
+function cdash_business_overview_columns_headers($defaults) {
+    $defaults['phone'] = 'Phone Number(s)';
+    return $defaults;
+}
+
+function cdash_business_overview_columns($column_name, $post_ID) {
+	global $buscontact_metabox;
+	$contactmeta = $buscontact_metabox->the_meta();
+    if ($column_name == 'phone') {
+    	$phonenumbers = '';
+    	$locations = $contactmeta['location'];
+		foreach($locations as $location) {
+			if(isset($location['phone'])) {
+				$phones = $location['phone'];
+				foreach($phones as $phone) {
+					$phonenumbers .= $phone['phonenumber'];
+					if(isset($phone['phonetype'])) {
+						$phonenumbers .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+					}
+					$phonenumbers .= "<br />";
+				}
+			}
+		}
+        echo $phonenumbers;
+    }    
+}
+
+add_filter('manage_business_posts_columns', 'cdash_business_overview_columns_headers', 10);
+add_action('manage_business_posts_custom_column', 'cdash_business_overview_columns', 10, 2);
 
 
 // ------------------------------------------------------------------------
