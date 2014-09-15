@@ -66,6 +66,9 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.6.7 =
+* fixed JavaScript error on grid layout
+
 = 1.6.6 =
 * fixed a few more URL bugs
 * added phone number to business overview page
