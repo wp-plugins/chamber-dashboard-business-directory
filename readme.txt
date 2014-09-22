@@ -23,6 +23,8 @@ You can learn more at [chamberdashboard.com](http://chamberdashboard.com)
 
 For full instructions about how to use the plugin, go to [Chamber Dashboard Documentation](http://chamberdashboard.com/support/documentation)
 
+If you want to track the people associated with businesses in your organization, check out [the Chamber Dashboard CRM](https://wordpress.org/plugins/chamber-dashboard-crm/) plugin!
+
 More features coming soon!  Chamber Dashboard is in the early stages of its development.  By the end of 2014, it will include membership management, event sign-up and management, and much more.
 
 == Installation ==
@@ -66,6 +68,19 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.6.8 =
+* minor bug fixes
+
+= 1.6.7 =
+* fixed JavaScript error on grid layout
+
+= 1.6.6 =
+* fixed a few more URL bugs
+* added phone number to business overview page
+
+= 1.6.5 =
+* fixed icon URL
+
 = 1.6.4 =
 * fixed bug with map on single business view
 
