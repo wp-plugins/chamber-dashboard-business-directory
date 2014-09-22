@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.6.7
+Version: 1.6.8
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -418,7 +418,7 @@ function cdash_single_business($content) {
 						$business_content .= "</p>";
 					}
 					if (isset($options['sv_url']) && $options['sv_url'] == "1" && isset($location['url'])) { 
-						$business_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+						$business_content .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 					}
 					if (isset($options['sv_phone']) && $options['sv_phone'] == "1" && isset($location['phone'])) { 
 						$business_content .= "<p class='phone'>";
@@ -678,7 +678,7 @@ function cdash_taxonomy_filter($content) {
 					$tax_content .= "</p>";
 				}
 				if (isset($options['tax_url']) && $options['tax_url'] == "1") { 
-					$tax_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+					$tax_content .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 				}
 				if (isset($options['tax_phone']) && $options['tax_phone'] == "1" && isset($location['phone'])) { 
 					$tax_content .= "<p class='phone'>";
@@ -881,7 +881,7 @@ function cdash_business_directory_shortcode( $atts ) {
 							}
 					  	} 
 					  	if(in_array("url", $displayopts)) {
-					  		$business_list .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+					  		$business_list .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 					  	} 
 			  		}
 			  		if(in_array("category", $displayopts)) {
@@ -1193,7 +1193,7 @@ function cdash_business_search_shortcode() {
 							$business_search .= "</p>";
 						}
 						if (($options['tax_url']) == "1") { 
-							$business_search .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+							$business_search .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 						}
 						if (($options['tax_phone']) == "1" && isset($location['phone'])) { 
 							$business_search .= "<p class='phone'>";

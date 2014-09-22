@@ -152,13 +152,14 @@ function cdash_render_form() {
 					<tr>
 						<th scope="row"><?php _e('Custom Fields', 'cdash'); ?></th>
 						<td>
-							<span style="color:#666666;margin-left:2px;"><?php _e('If you need to store additional information about businesses, you can create custom fields here.', 'cdash'); ?></span><br />
+							<p><span style="color:#666666;margin-left:2px;"><?php _e('If you need to store additional information about businesses, you can create custom fields here.', 'cdash'); ?></span></p><br />
 							<?php if(!empty($options['bus_custom'])) {
 								$customfields = $options['bus_custom'];
 								$i = 1;
 								foreach($customfields as $field) { ?>
 									<div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
 										<p><strong><?php _e('Custom Field Name', 'cdash'); ?></strong></p>
+										<p><span style="color:#666666;margin-left:2px;"><?php _e('<strong>Note:</strong> If you change the name of an existing custom field, you will lose all data stored in that field!', 'cdash'); ?></span></p>
 											<input type="text" size="30" name="cdash_directory_options[bus_custom][<?php echo $i; ?>][name]" value="<?php echo $field['name']; ?>" />
 										<p><strong><?php _e('Custom Field Type', 'cdash'); ?></strong></p>	
 											<select name='cdash_directory_options[bus_custom][<?php echo $i; ?>][type]'>
@@ -242,9 +243,9 @@ function cdash_render_form() {
 			<h3><?php _e('Contact', 'cdash'); ?></h3>
 			<p><?php _e('Don\'t hesitate to <a href="http://chamberdashboard.com/contact/" target="_blank">contact us</a> to request new features, ask questions, or just say hi.', 'cdash'); ?></p>
 			<h3><?php _e('Other Chamber Dashboard Plugins', 'cdash'); ?></h3>
-			<p><?php _e('This plugin is designed to work with the Chamber Dashboard CRM plugin - keep track of the people associated with your businesses!', 'cdash'); ?></p> 
+			<p><?php _e('This plugin is designed to work with the <a href="https://wordpress.org/plugins/chamber-dashboard-crm/" target="_blank">Chamber Dashboard CRM plugin</a> - keep track of the people associated with your businesses!', 'cdash'); ?></p> 
 			<h3><?php _e('Donate', 'cdash'); ?></h3>
-			<p><?php _e('All donations are tax-deductible and go to the <a href="http://fremont.com" target="_blank">Fremont Chamber of Commerce</a> to support further development of Chamber Dashboard.', 'cdash'); ?></p>
+			<p><?php _e('All donations go to the <a href="http://fremont.com" target="_blank">Fremont Chamber of Commerce</a> to support further development of Chamber Dashboard.', 'cdash'); ?></p>
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 			<input type="hidden" name="cmd" value="_donations">
 			<input type="hidden" name="business" value="director@fremont.com">
