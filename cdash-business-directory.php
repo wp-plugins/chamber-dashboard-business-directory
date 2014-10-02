@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.6.4
+Version: 1.6.9
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -50,6 +50,7 @@ add_action( 'admin_init', 'cdash_requires_wordpress_version' );
 
 // Set-up Action and Filter Hooks
 register_activation_hook(__FILE__, 'cdash_add_defaults');
+register_activation_hook(__FILE__, 'cdash_activation_transient');
 register_uninstall_hook(__FILE__, 'cdash_delete_plugin_options');
 add_action('admin_init', 'cdash_init' );
 add_action('admin_menu', 'cdash_add_options_page');
@@ -58,10 +59,18 @@ add_filter( 'plugin_action_links', 'cdash_plugin_action_links', 10, 2 );
 // Require options stuff
 require_once( plugin_dir_path( __FILE__ ) . 'options.php' );
 
+// set up a transient on activation so we know whether or not to show the welcome screen
+function cdash_activation_transient() {
+	set_transient('_cdash_activation_redirect', 1, 3600);
+}
+// Require welcome page
+require_once( plugin_dir_path( __FILE__ ) . 'welcome-page.php' );
+
+
 
 // Initialize language so it can be translated
 function cdash_language_init() {
-  load_plugin_textdomain( 'cdash', false, 'cdash-business-directory/languages' );
+  load_plugin_textdomain( 'cdash', false, 'chamber-dashboard-business-directory/languages' );
 }
 add_action('init', 'cdash_language_init');
 
@@ -204,7 +213,7 @@ function cdash_metabox_stylesheet()
 {
     if ( is_admin() )
     {
-        wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/cdash-business-directory/wpalchemy/meta.css' );
+        wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/chamber-dashboard-business-directory/wpalchemy/meta.css' );
     }
 }
 add_action( 'init', 'cdash_metabox_stylesheet' );
@@ -278,6 +287,41 @@ $config = array(
 $buscat_meta = new Tax_Meta_Class($config);
 $buscat_meta->addImage('category_map_icon',array('name'=> 'Map Icon '));
 $buscat_meta->Finish();
+
+
+// ------------------------------------------------------------------------
+// ADD COLUMNS TO BUSINESSES OVERVIEW PAGE
+// ------------------------------------------------------------------------
+
+function cdash_business_overview_columns_headers($defaults) {
+    $defaults['phone'] = 'Phone Number(s)';
+    return $defaults;
+}
+
+function cdash_business_overview_columns($column_name, $post_ID) {
+	global $buscontact_metabox;
+	$contactmeta = $buscontact_metabox->the_meta();
+    if ($column_name == 'phone') {
+    	$phonenumbers = '';
+    	$locations = $contactmeta['location'];
+		foreach($locations as $location) {
+			if(isset($location['phone'])) {
+				$phones = $location['phone'];
+				foreach($phones as $phone) {
+					$phonenumbers .= $phone['phonenumber'];
+					if(isset($phone['phonetype'])) {
+						$phonenumbers .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+					}
+					$phonenumbers .= "<br />";
+				}
+			}
+		}
+        echo $phonenumbers;
+    }    
+}
+
+add_filter('manage_business_posts_columns', 'cdash_business_overview_columns_headers', 10);
+add_action('manage_business_posts_custom_column', 'cdash_business_overview_columns', 10, 2);
 
 
 // ------------------------------------------------------------------------
@@ -383,7 +427,7 @@ function cdash_single_business($content) {
 						$business_content .= "</p>";
 					}
 					if (isset($options['sv_url']) && $options['sv_url'] == "1" && isset($location['url'])) { 
-						$business_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+						$business_content .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 					}
 					if (isset($options['sv_phone']) && $options['sv_phone'] == "1" && isset($location['phone'])) { 
 						$business_content .= "<p class='phone'>";
@@ -488,7 +532,7 @@ function cdash_single_business_map() {
 								}
 							}
 							if(!isset($icon)) {
-								$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
+								$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
 							}
 							if(isset($location['altname'])) {
 								$name = $location['altname'];
@@ -643,7 +687,7 @@ function cdash_taxonomy_filter($content) {
 					$tax_content .= "</p>";
 				}
 				if (isset($options['tax_url']) && $options['tax_url'] == "1") { 
-					$tax_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+					$tax_content .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 				}
 				if (isset($options['tax_phone']) && $options['tax_phone'] == "1" && isset($location['phone'])) { 
 					$tax_content .= "<p class='phone'>";
@@ -846,7 +890,7 @@ function cdash_business_directory_shortcode( $atts ) {
 							}
 					  	} 
 					  	if(in_array("url", $displayopts)) {
-					  		$business_list .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+					  		$business_list .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 					  	} 
 			  		}
 			  		if(in_array("category", $displayopts)) {
@@ -909,9 +953,8 @@ function cdash_business_directory_shortcode( $atts ) {
 			}
 
 		$business_list .= "</div>";
+		return $business_list;
 	endif;
-
-	return $business_list;
 	wp_reset_postdata();
 }
 add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
@@ -937,6 +980,8 @@ function cdash_business_map_shortcode( $atts ) {
 	    'business_category' => $category,	
 	    'membership_level' => $level,								 
 	);
+
+	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
 
 	$mapquery = new WP_Query( $args );
 	$business_map = "<div id='map-canvas' style='width: 100%; height: 500px;'></div>";
@@ -975,7 +1020,7 @@ function cdash_business_map_shortcode( $atts ) {
 						}
 					}
 					if(!isset($icon)) {
-						$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
+						$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
 					}
 					// Create the pop-up info window
 					if($single_link == "yes") {
@@ -1159,7 +1204,7 @@ function cdash_business_search_shortcode() {
 							$business_search .= "</p>";
 						}
 						if (($options['tax_url']) == "1") { 
-							$business_search .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+							$business_search .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 						}
 						if (($options['tax_phone']) == "1" && isset($location['phone'])) { 
 							$business_search .= "<p class='phone'>";
@@ -1262,19 +1307,22 @@ add_shortcode( 'business_search', 'cdash_business_search_shortcode' );
 
 function cdash_add_taxonomy_classes($classes) {
 	global $post;
-	$buscats = get_the_terms($post->ID, 'business_category');
-	if ($buscats) {
-		foreach($buscats as $taxonomy) {
-			$classes[] = $taxonomy->slug;
+	if($post) {
+		$buscats = get_the_terms($post->ID, 'business_category');
+		if ($buscats) {
+			foreach($buscats as $taxonomy) {
+				$classes[] = $taxonomy->slug;
+			}
 		}
-	}
-	$buslevels = get_the_terms($post->ID, 'membership_level');
-	if ($buslevels) {
-		foreach($buslevels as $taxonomy) {
-			$classes[] = $taxonomy->slug;
+		$buslevels = get_the_terms($post->ID, 'membership_level');
+		if ($buslevels) {
+			foreach($buslevels as $taxonomy) {
+				$classes[] = $taxonomy->slug;
+			}
 		}
+		return $classes;
 	}
-	return $classes;
+
 }
 add_filter('post_class', 'cdash_add_taxonomy_classes');
 add_filter('body_class', 'cdash_add_taxonomy_classes');
