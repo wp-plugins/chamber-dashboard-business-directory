@@ -39,15 +39,15 @@ More features coming soon!  Chamber Dashboard is in the early stages of its deve
 
 1. Navigate to the \'Add New\' in the plugins dashboard
 2. Navigate to the \'Upload\' area
-3. Select `cdash-business-directory.zip` from your computer
+3. Select `chamber-dashboard-business-directory.zip` from your computer
 4. Click \'Install Now\'
 5. Activate the plugin in the Plugin dashboard
 
 = Using FTP =
 
-1. Download `cdash-business-directory.zip`
-2. Extract the `cdash-business-directory` directory to your computer
-3. Upload the `cdash-business-directory` directory to the `/wp-content/plugins/` directory
+1. Download `chamber-dashboard-business-directory.zip`
+2. Extract the `chamber-dashboard-business-directory` directory to your computer
+3. Upload the `chamber-dashboard-business-directory` directory to the `/wp-content/plugins/` directory
 4. Activate the plugin in the Plugin dashboard
 
 
@@ -68,6 +68,10 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.6.9 =
+* minor bug fixes
+* added welcome page
+
 = 1.6.8 =
 * minor bug fixes
 

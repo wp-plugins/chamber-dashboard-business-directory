@@ -237,13 +237,15 @@ function cdash_render_form() {
 
 			</script>
 		</div><!-- #main -->
-		<div id="sidebar" style="width: 28%; float: right; min-width: 150px;">
+		<div id="sidebar" style="width: 28%; float: right; min-width: 150px; background: #fff; border: 1px solid #999;">
 			<h3><?php _e('Documentation', 'cdash'); ?></h3>
 			<p><?php _e('If you\'re looking for more information about how to use this plugin, visit the <a href="http://chamberdashboard.com/support/documentation/" target="_blank">Documentation page at ChamberDashboard.com', 'cdash'); ?></a></p>
 			<h3><?php _e('Contact', 'cdash'); ?></h3>
 			<p><?php _e('Don\'t hesitate to <a href="http://chamberdashboard.com/contact/" target="_blank">contact us</a> to request new features, ask questions, or just say hi.', 'cdash'); ?></p>
 			<h3><?php _e('Other Chamber Dashboard Plugins', 'cdash'); ?></h3>
 			<p><?php _e('This plugin is designed to work with the <a href="https://wordpress.org/plugins/chamber-dashboard-crm/" target="_blank">Chamber Dashboard CRM plugin</a> - keep track of the people associated with your businesses!', 'cdash'); ?></p> 
+			<h3><?php _e('Showcase', 'cdash'); ?></h3>
+			<p><?php _e('We would like to showcase sites that are using Chamber Dashboard on our website! <a href="http://chamberdashboard.com/contact/" target="_blank">Contact us</a> to tell us about your site!', 'cdash'); ?></p>
 			<h3><?php _e('Donate', 'cdash'); ?></h3>
 			<p><?php _e('All donations go to the <a href="http://fremont.com" target="_blank">Fremont Chamber of Commerce</a> to support further development of Chamber Dashboard.', 'cdash'); ?></p>
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">

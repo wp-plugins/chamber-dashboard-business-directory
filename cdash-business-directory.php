@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.6.8
+Version: 1.6.9
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -50,6 +50,7 @@ add_action( 'admin_init', 'cdash_requires_wordpress_version' );
 
 // Set-up Action and Filter Hooks
 register_activation_hook(__FILE__, 'cdash_add_defaults');
+register_activation_hook(__FILE__, 'cdash_activation_transient');
 register_uninstall_hook(__FILE__, 'cdash_delete_plugin_options');
 add_action('admin_init', 'cdash_init' );
 add_action('admin_menu', 'cdash_add_options_page');
@@ -57,6 +58,14 @@ add_filter( 'plugin_action_links', 'cdash_plugin_action_links', 10, 2 );
 
 // Require options stuff
 require_once( plugin_dir_path( __FILE__ ) . 'options.php' );
+
+// set up a transient on activation so we know whether or not to show the welcome screen
+function cdash_activation_transient() {
+	set_transient('_cdash_activation_redirect', 1, 3600);
+}
+// Require welcome page
+require_once( plugin_dir_path( __FILE__ ) . 'welcome-page.php' );
+
 
 
 // Initialize language so it can be translated
@@ -972,6 +981,8 @@ function cdash_business_map_shortcode( $atts ) {
 	    'membership_level' => $level,								 
 	);
 
+	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
+
 	$mapquery = new WP_Query( $args );
 	$business_map = "<div id='map-canvas' style='width: 100%; height: 500px;'></div>";
 	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&sensor=false'></script>";
@@ -1296,19 +1307,22 @@ add_shortcode( 'business_search', 'cdash_business_search_shortcode' );
 
 function cdash_add_taxonomy_classes($classes) {
 	global $post;
-	$buscats = get_the_terms($post->ID, 'business_category');
-	if ($buscats) {
-		foreach($buscats as $taxonomy) {
-			$classes[] = $taxonomy->slug;
+	if($post) {
+		$buscats = get_the_terms($post->ID, 'business_category');
+		if ($buscats) {
+			foreach($buscats as $taxonomy) {
+				$classes[] = $taxonomy->slug;
+			}
 		}
-	}
-	$buslevels = get_the_terms($post->ID, 'membership_level');
-	if ($buslevels) {
-		foreach($buslevels as $taxonomy) {
-			$classes[] = $taxonomy->slug;
+		$buslevels = get_the_terms($post->ID, 'membership_level');
+		if ($buslevels) {
+			foreach($buslevels as $taxonomy) {
+				$classes[] = $taxonomy->slug;
+			}
 		}
+		return $classes;
 	}
-	return $classes;
+
 }
 add_filter('post_class', 'cdash_add_taxonomy_classes');
 add_filter('body_class', 'cdash_add_taxonomy_classes');
