@@ -1,5 +1,5 @@
 <?php
-/* Options Page */
+/* Options Page for Chamber Dashboard Business Directory */
 
 // --------------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_uninstall_hook(__FILE__, 'cdash_delete_plugin_options')
@@ -17,7 +17,7 @@ function cdash_delete_plugin_options() {
 // Define default option settings
 function cdash_add_defaults() {
 	$tmp = get_option('cdash_directory_options');
-    if(($tmp['chk_default_options_db']=='1')||(!is_array($tmp))) {
+    if(!is_array($tmp)) {
 		delete_option('cdash_directory_options'); // so we don't have to reset all the 'off' checkboxes too! (don't think this is needed but leave for now)
 		$arr = array(	"bus_phone_type" => "Main, Office, Cell",
 						"bus_email_type" => "Main, Sales, Accounting, HR",
@@ -56,13 +56,13 @@ function cdash_add_options_page() {
 		'Chamber Dashboard', 
 		'Chamber Dashboard', 
 		'manage_options', 
-		'/cdash-business-directory/options.php', 
+		'/chamber-dashboard-business-directory/options.php', 
 		'cdash_render_form', 
 		'dashicons-admin-generic', 
 		85 
 	);
-	add_submenu_page( '/cdash-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
-	add_submenu_page( '/cdash-business-directory/options.php', 'Import', 'Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
+	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
+	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Import', 'Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
 }
 
 
@@ -81,7 +81,7 @@ function cdash_render_form() {
 		
 		<!-- Display Plugin Icon, Header, and Description -->
 		<div class="icon32" id="icon-options-general"><br></div>
-		<h2><?php _e('Chamber Dashboard Settings', 'cdash'); ?></h2>
+		<h2><?php _e('Chamber Dashboard Business Directory Settings', 'cdash'); ?></h2>
 
 
 		<div id="main" style="width: 70%; min-width: 350px; float: left;">
@@ -152,13 +152,14 @@ function cdash_render_form() {
 					<tr>
 						<th scope="row"><?php _e('Custom Fields', 'cdash'); ?></th>
 						<td>
-							<span style="color:#666666;margin-left:2px;"><?php _e('If you need to store additional information about businesses, you can create custom fields here.', 'cdash'); ?></span><br />
+							<p><span style="color:#666666;margin-left:2px;"><?php _e('If you need to store additional information about businesses, you can create custom fields here.', 'cdash'); ?></span></p><br />
 							<?php if(!empty($options['bus_custom'])) {
 								$customfields = $options['bus_custom'];
 								$i = 1;
 								foreach($customfields as $field) { ?>
 									<div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
 										<p><strong><?php _e('Custom Field Name', 'cdash'); ?></strong></p>
+										<p><span style="color:#666666;margin-left:2px;"><?php _e('<strong>Note:</strong> If you change the name of an existing custom field, you will lose all data stored in that field!', 'cdash'); ?></span></p>
 											<input type="text" size="30" name="cdash_directory_options[bus_custom][<?php echo $i; ?>][name]" value="<?php echo $field['name']; ?>" />
 										<p><strong><?php _e('Custom Field Type', 'cdash'); ?></strong></p>	
 											<select name='cdash_directory_options[bus_custom][<?php echo $i; ?>][type]'>
@@ -236,13 +237,17 @@ function cdash_render_form() {
 
 			</script>
 		</div><!-- #main -->
-		<div id="sidebar" style="width: 28%; float: right; min-width: 150px;">
-			<h3>Documentation</h3>
-			<p>If you're looking for more information about how to use this plugin, visit the <a href="http://chamberdashboard.com/support/documentation/" target="_blank">Documentation page at ChamberDashboard.com</a></p>
-			<h3>Contact</h3>
-			<p>Don't hesitate to <a href="http://chamberdashboard.com/contact/" target="_blank">contact us</a> to request new features, ask questions, or just say hi.</p>
-			<h3>Donate</h3>
-			<p>All donations are tax-deductible and go to the <a href="http://fremont.com" target="_blank">Fremont Chamber of Commerce</a> to support further development of Chamber Dashboard.</p>
+		<div id="sidebar" style="width: 28%; float: right; min-width: 150px; background: #fff; border: 1px solid #999;">
+			<h3><?php _e('Documentation', 'cdash'); ?></h3>
+			<p><?php _e('If you\'re looking for more information about how to use this plugin, visit the <a href="http://chamberdashboard.com/support/documentation/" target="_blank">Documentation page at ChamberDashboard.com', 'cdash'); ?></a></p>
+			<h3><?php _e('Contact', 'cdash'); ?></h3>
+			<p><?php _e('Don\'t hesitate to <a href="http://chamberdashboard.com/contact/" target="_blank">contact us</a> to request new features, ask questions, or just say hi.', 'cdash'); ?></p>
+			<h3><?php _e('Other Chamber Dashboard Plugins', 'cdash'); ?></h3>
+			<p><?php _e('This plugin is designed to work with the <a href="https://wordpress.org/plugins/chamber-dashboard-crm/" target="_blank">Chamber Dashboard CRM plugin</a> - keep track of the people associated with your businesses!', 'cdash'); ?></p> 
+			<h3><?php _e('Showcase', 'cdash'); ?></h3>
+			<p><?php _e('We would like to showcase sites that are using Chamber Dashboard on our website! <a href="http://chamberdashboard.com/contact/" target="_blank">Contact us</a> to tell us about your site!', 'cdash'); ?></p>
+			<h3><?php _e('Donate', 'cdash'); ?></h3>
+			<p><?php _e('All donations go to the <a href="http://fremont.com" target="_blank">Fremont Chamber of Commerce</a> to support further development of Chamber Dashboard.', 'cdash'); ?></p>
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 			<input type="hidden" name="cmd" value="_donations">
 			<input type="hidden" name="business" value="director@fremont.com">
@@ -277,7 +282,7 @@ function cdash_validate_options($input) {
 function cdash_plugin_action_links( $links, $file ) {
 
 	if ( $file == plugin_basename( __FILE__ ) ) {
-		$cdash_links = '<a href="'.get_admin_url().'options-general.php?page=cdash-business-directory/options.php">'.__('Settings').'</a>';
+		$cdash_links = '<a href="'.get_admin_url().'options-general.php?page=chamber-dashboard-business-directory/options.php">'.__('Settings').'</a>';
 		// make the 'Settings' link appear first
 		array_unshift( $links, $cdash_links );
 	}
@@ -392,5 +397,4 @@ function cdash_import_form() { ?>
 	
 }
 
-
- ?>
+?>
