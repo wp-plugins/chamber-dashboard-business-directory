@@ -69,6 +69,9 @@ Probably!  I am definitely interested in making this as useful as possible for c
 
 == Changelog ==
 = 1.6.9 =
+* made more strings translatable
+
+= 1.6.9 =
 * minor bug fixes
 * added welcome page
 
