@@ -68,7 +68,10 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
-= 1.6.9 =
+= 1.6.11 =
+* made even more strings translatable
+
+= 1.6.10 =
 * made more strings translatable
 
 = 1.6.9 =

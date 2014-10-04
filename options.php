@@ -237,7 +237,7 @@ function cdash_render_form() {
 
 			</script>
 		</div><!-- #main -->
-		<div id="sidebar" style="width: 28%; float: right; min-width: 150px; background: #fff; border: 1px solid #999;">
+		<div id="sidebar" style="width: 28%; float: right; min-width: 150px; background: #fff; border: 1px solid #999; padding: 6px">
 			<h3><?php _e('Documentation', 'cdash'); ?></h3>
 			<p><?php _e('If you\'re looking for more information about how to use this plugin, visit the <a href="http://chamberdashboard.com/support/documentation/" target="_blank">Documentation page at ChamberDashboard.com', 'cdash'); ?></a></p>
 			<h3><?php _e('Contact', 'cdash'); ?></h3>

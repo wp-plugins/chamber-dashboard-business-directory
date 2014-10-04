@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.6.10
+Version: 1.6.11
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -106,6 +106,9 @@ function cdash_register_taxonomy_business_category() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
+		'rewrite' => array (
+            'slug' => _x( 'business_category', 'business_category', 'cdash' )
+        )
 	);
 	register_taxonomy( 'business_category', array( 'business' ), $args );
 
@@ -141,6 +144,9 @@ function cdash_register_taxonomy_membership_level() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
+		'rewrite' => array (
+            'slug' => _x( 'membership_level', 'membership_level', 'cdash' )
+        )
 	);
 	register_taxonomy( 'membership_level', array( 'business' ), $args );
 
@@ -187,6 +193,9 @@ function cdash_register_cpt_business() {
 		'exclude_from_search' => false,
 		'publicly_queryable'  => true,
 		'capability_type'     => 'page',
+		'rewrite' => array (
+            'slug' => _x( 'business', 'business', 'cdash' )
+        )
 	);
 	register_post_type( 'business', $args );
 
