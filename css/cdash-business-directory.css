@@ -80,3 +80,14 @@ clear: both;
 	text-align: center;
 	margin: 20px 0;
 }
+
+#map-canvas img { max-width: none !important; height: auto; } 
+
+@media screen and (max-width: 700px) {
+#businesslist.grid2 .business,
+#businesslist.grid3 .business,
+#businesslist.grid4 .business {
+	width: 100%;
+	float: none;
+	}
+}
