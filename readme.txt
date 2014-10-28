@@ -19,6 +19,7 @@ Chamber Dashboard Business Directory is a part of the Chamber Dashboard collecti
 *   customize what information is displayed about the businesses
 *   export a CSV of the business in your directory
 
+
 You can learn more at [chamberdashboard.com](http://chamberdashboard.com)
 
 For full instructions about how to use the plugin, go to [Chamber Dashboard Documentation](http://chamberdashboard.com/support/documentation)
@@ -68,6 +69,10 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.7 =
+* fixed typos
+* added category shortcode thanks to Justin Ribeiro https://github.com/justinribeiro/chamber-dashboard-business-directory/tree/add-category-shortcode
+
 = 1.6.11 =
 * made even more strings translatable
 

@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.6.11
+Version: 1.7
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -905,7 +905,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			  		if(in_array("category", $displayopts)) {
 						$id = get_the_id();
 						$buscats = get_the_terms( $id, 'business_category');
-						$business_list .= "<p class='categories'><span>" . _e('Categories:', 'cdash') / "</span>&nbsp;";
+						$business_list .= "<p class='categories'><span>" . _e('Categories:', 'cdash') . "</span>&nbsp;";
 						$i = 1;
 						foreach($buscats as $buscat) {
 							if($i !== 1) {
@@ -918,7 +918,7 @@ function cdash_business_directory_shortcode( $atts ) {
 				  	if(in_array("level", $displayopts)) {
 						$id = get_the_id();
 						$levels = get_the_terms( $id, 'membership_level');
-						$business_list .= "<p class='membership'><span>" . _e('Membership Level:', 'cdash') / "</span>&nbsp;";
+						$business_list .= "<p class='membership'><span>" . _e('Membership Level:', 'cdash') . "</span>&nbsp;";
 						$i = 1;
 						foreach($levels as $level) {
 							if($i !== 1) {
@@ -1309,6 +1309,41 @@ function cdash_business_search_shortcode() {
 	return $business_search;
 }
 add_shortcode( 'business_search', 'cdash_business_search_shortcode' );
+
+// ------------------------------------------------------------------------
+// Business Category shortcode = [business_categories]
+// Thanks to https://github.com/justinribeiro/chamber-dashboard-business-directory/blob/add-category-shortcode/cdash-business-directory.php
+// Structure:
+// <ul class="business-categories">
+// <li class="cat-item cat-item-[ID]"><a href="[LINK]">[NAME]</a></li>
+// </ul>
+//
+// ------------------------------------------------------------------------
+function cdash_business_categories_shortcode( $atts ) {
+	// Set our default attributes
+	extract( shortcode_atts(
+		array(
+		'orderby' => 'name', // options: date, modified, menu_order, rand
+		'showcount' => 0,
+		'padcounts' => 0,
+		'hierarchical' => 1,
+		'title' => ''
+		), $atts )
+	);
+	$taxonomy = 'business_category';
+	$args = array(
+		'taxonomy' => $taxonomy,
+		'orderby' => $orderby,
+		'show_count' => $showcount,
+		'pad_counts' => $padcounts,
+		'hierarchical' => $hierarchical,
+		'title_li' => $title
+	);
+	echo '<ul class="business-categories">';
+	wp_list_categories($args);
+	echo '</ul>';
+}
+add_shortcode( 'business_categories', 'cdash_business_categories_shortcode' );
 
 // ------------------------------------------------------------------------
 // add business category and member level slugs as body and post class
