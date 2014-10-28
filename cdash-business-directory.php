@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.6.4
+Version: 1.7
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -50,6 +50,7 @@ add_action( 'admin_init', 'cdash_requires_wordpress_version' );
 
 // Set-up Action and Filter Hooks
 register_activation_hook(__FILE__, 'cdash_add_defaults');
+register_activation_hook(__FILE__, 'cdash_activation_transient');
 register_uninstall_hook(__FILE__, 'cdash_delete_plugin_options');
 add_action('admin_init', 'cdash_init' );
 add_action('admin_menu', 'cdash_add_options_page');
@@ -58,10 +59,18 @@ add_filter( 'plugin_action_links', 'cdash_plugin_action_links', 10, 2 );
 // Require options stuff
 require_once( plugin_dir_path( __FILE__ ) . 'options.php' );
 
+// set up a transient on activation so we know whether or not to show the welcome screen
+function cdash_activation_transient() {
+	set_transient('_cdash_activation_redirect', 1, 3600);
+}
+// Require welcome page
+require_once( plugin_dir_path( __FILE__ ) . 'welcome-page.php' );
+
+
 
 // Initialize language so it can be translated
 function cdash_language_init() {
-  load_plugin_textdomain( 'cdash', false, 'cdash-business-directory/languages' );
+  load_plugin_textdomain( 'cdash', false, 'chamber-dashboard-business-directory/languages' );
 }
 add_action('init', 'cdash_language_init');
 
@@ -97,6 +106,9 @@ function cdash_register_taxonomy_business_category() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
+		'rewrite' => array (
+            'slug' => _x( 'business_category', 'business_category', 'cdash' )
+        )
 	);
 	register_taxonomy( 'business_category', array( 'business' ), $args );
 
@@ -132,6 +144,9 @@ function cdash_register_taxonomy_membership_level() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
+		'rewrite' => array (
+            'slug' => _x( 'membership_level', 'membership_level', 'cdash' )
+        )
 	);
 	register_taxonomy( 'membership_level', array( 'business' ), $args );
 
@@ -178,6 +193,9 @@ function cdash_register_cpt_business() {
 		'exclude_from_search' => false,
 		'publicly_queryable'  => true,
 		'capability_type'     => 'page',
+		'rewrite' => array (
+            'slug' => _x( 'business', 'business', 'cdash' )
+        )
 	);
 	register_post_type( 'business', $args );
 
@@ -204,7 +222,7 @@ function cdash_metabox_stylesheet()
 {
     if ( is_admin() )
     {
-        wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/cdash-business-directory/wpalchemy/meta.css' );
+        wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/chamber-dashboard-business-directory/wpalchemy/meta.css' );
     }
 }
 add_action( 'init', 'cdash_metabox_stylesheet' );
@@ -281,6 +299,41 @@ $buscat_meta->Finish();
 
 
 // ------------------------------------------------------------------------
+// ADD COLUMNS TO BUSINESSES OVERVIEW PAGE
+// ------------------------------------------------------------------------
+
+function cdash_business_overview_columns_headers($defaults) {
+    $defaults['phone'] = 'Phone Number(s)';
+    return $defaults;
+}
+
+function cdash_business_overview_columns($column_name, $post_ID) {
+	global $buscontact_metabox;
+	$contactmeta = $buscontact_metabox->the_meta();
+    if ($column_name == 'phone') {
+    	$phonenumbers = '';
+    	$locations = $contactmeta['location'];
+		foreach($locations as $location) {
+			if(isset($location['phone'])) {
+				$phones = $location['phone'];
+				foreach($phones as $phone) {
+					$phonenumbers .= $phone['phonenumber'];
+					if(isset($phone['phonetype'])) {
+						$phonenumbers .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+					}
+					$phonenumbers .= "<br />";
+				}
+			}
+		}
+        echo $phonenumbers;
+    }    
+}
+
+add_filter('manage_business_posts_columns', 'cdash_business_overview_columns_headers', 10);
+add_action('manage_business_posts_custom_column', 'cdash_business_overview_columns', 10, 2);
+
+
+// ------------------------------------------------------------------------
 // SINGLE BUSINESS VIEW
 // ------------------------------------------------------------------------
 
@@ -329,7 +382,7 @@ function cdash_single_business($content) {
 			$id = get_the_id();
 			$levels = get_the_terms( $id, 'membership_level');
 			if($levels) {
-				$business_content .= "<p class='membership'><span>Membership Level:</span>&nbsp;";
+				$business_content .= "<p class='membership'><span>" . _e('Membership Level:', 'cdash') . "</span>&nbsp;";
 				$i = 1;
 				foreach($levels as $level) {
 					if($i !== 1) {
@@ -344,7 +397,7 @@ function cdash_single_business($content) {
 			$id = get_the_id();
 			$buscats = get_the_terms( $id, 'business_category');
 			if($buscats) {
-				$business_content .= "<p class='categories'><span>Categories:</span>&nbsp;";
+				$business_content .= "<p class='categories'><span>" . _e('Categories:', 'cdash') . "</span>&nbsp;";
 				$i = 1;
 				foreach($buscats as $buscat) {
 					if($i !== 1) {
@@ -383,7 +436,7 @@ function cdash_single_business($content) {
 						$business_content .= "</p>";
 					}
 					if (isset($options['sv_url']) && $options['sv_url'] == "1" && isset($location['url'])) { 
-						$business_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+						$business_content .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 					}
 					if (isset($options['sv_phone']) && $options['sv_phone'] == "1" && isset($location['phone'])) { 
 						$business_content .= "<p class='phone'>";
@@ -488,7 +541,7 @@ function cdash_single_business_map() {
 								}
 							}
 							if(!isset($icon)) {
-								$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
+								$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
 							}
 							if(isset($location['altname'])) {
 								$name = $location['altname'];
@@ -590,7 +643,7 @@ function cdash_taxonomy_filter($content) {
 			$id = get_the_id();
 			$levels = get_the_terms( $id, 'membership_level');
 			if($levels) {
-				$tax_content .= "<p class='membership'><span>Membership Level:</span>&nbsp;";
+				$tax_content .= "<p class='membership'><span>" . _e('Membership Level:', 'cdash') . "</span>&nbsp;";
 				$i = 1;
 				foreach($levels as $level) {
 					if($i !== 1) {
@@ -605,7 +658,7 @@ function cdash_taxonomy_filter($content) {
 			$id = get_the_id();
 			$buscats = get_the_terms( $id, 'business_category');
 			if($buscats) {
-				$tax_content .= "<p class='categories'><span>Categories:</span>&nbsp;";
+				$tax_content .= "<p class='categories'><span>" . _e('Categories:', 'cdash') . "</span>&nbsp;";
 				$i = 1;
 				foreach($buscats as $buscat) {
 					if($i !== 1) {
@@ -643,7 +696,7 @@ function cdash_taxonomy_filter($content) {
 					$tax_content .= "</p>";
 				}
 				if (isset($options['tax_url']) && $options['tax_url'] == "1") { 
-					$tax_content .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+					$tax_content .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 				}
 				if (isset($options['tax_phone']) && $options['tax_phone'] == "1" && isset($location['phone'])) { 
 					$tax_content .= "<p class='phone'>";
@@ -846,13 +899,13 @@ function cdash_business_directory_shortcode( $atts ) {
 							}
 					  	} 
 					  	if(in_array("url", $displayopts)) {
-					  		$business_list .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+					  		$business_list .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 					  	} 
 			  		}
 			  		if(in_array("category", $displayopts)) {
 						$id = get_the_id();
 						$buscats = get_the_terms( $id, 'business_category');
-						$business_list .= "<p class='categories'><span>Categories:</span>&nbsp;";
+						$business_list .= "<p class='categories'><span>" . _e('Categories:', 'cdash') . "</span>&nbsp;";
 						$i = 1;
 						foreach($buscats as $buscat) {
 							if($i !== 1) {
@@ -865,7 +918,7 @@ function cdash_business_directory_shortcode( $atts ) {
 				  	if(in_array("level", $displayopts)) {
 						$id = get_the_id();
 						$levels = get_the_terms( $id, 'membership_level');
-						$business_list .= "<p class='membership'><span>Membership Level:</span>&nbsp;";
+						$business_list .= "<p class='membership'><span>" . _e('Membership Level:', 'cdash') . "</span>&nbsp;";
 						$i = 1;
 						foreach($levels as $level) {
 							if($i !== 1) {
@@ -909,9 +962,8 @@ function cdash_business_directory_shortcode( $atts ) {
 			}
 
 		$business_list .= "</div>";
+		return $business_list;
 	endif;
-
-	return $business_list;
 	wp_reset_postdata();
 }
 add_shortcode( 'business_directory', 'cdash_business_directory_shortcode' );
@@ -937,6 +989,8 @@ function cdash_business_map_shortcode( $atts ) {
 	    'business_category' => $category,	
 	    'membership_level' => $level,								 
 	);
+
+	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
 
 	$mapquery = new WP_Query( $args );
 	$business_map = "<div id='map-canvas' style='width: 100%; height: 500px;'></div>";
@@ -975,7 +1029,7 @@ function cdash_business_map_shortcode( $atts ) {
 						}
 					}
 					if(!isset($icon)) {
-						$icon = plugins_url() . '/cdash-business-directory/images/map_marker.png'; 
+						$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
 					}
 					// Create the pop-up info window
 					if($single_link == "yes") {
@@ -1074,8 +1128,8 @@ function cdash_business_search_shortcode() {
 		if ( $search_query->have_posts() ) :
 			// Display the search results
 			$business_search .= "<div id='search-results'>";
-			$business_search .= "<h2>Search Results</h2>";
-			$business_search .= "<p><a href='#business-search'>Search again</a></p>";
+			$business_search .= "<h2>" . _e('Search Results', 'cdash') . "</h2>";
+			$business_search .= "<p><a href='#business-search'>" . _e('Search again', 'cdash') . "</a></p>";
 			while ( $search_query->have_posts() ) : $search_query->the_post();
 
 				$business_search .= "<div class='search-result'>";
@@ -1106,7 +1160,7 @@ function cdash_business_search_shortcode() {
 					$id = get_the_id();
 					$levels = get_the_terms( $id, 'membership_level');
 					if($levels) {
-						$business_search .= "<p class='membership'><span>Membership Level:</span>&nbsp;";
+						$business_search .= "<p class='membership'><span>" . _e('Membership Level:', 'cdash') . "</span>&nbsp;";
 						$i = 1;
 						foreach($levels as $level) {
 							if($i !== 1) {
@@ -1121,7 +1175,7 @@ function cdash_business_search_shortcode() {
 					$id = get_the_id();
 					$buscats = get_the_terms( $id, 'business_category');
 					if($buscats) {
-						$business_search .= "<p class='categories'><span>Categories:</span>&nbsp;";
+						$business_search .= "<p class='categories'><span>" . _e('Categories:', 'cdash') . "</span>&nbsp;";
 						$i = 1;
 						foreach($buscats as $buscat) {
 							if($i !== 1) {
@@ -1159,7 +1213,7 @@ function cdash_business_search_shortcode() {
 							$business_search .= "</p>";
 						}
 						if (($options['tax_url']) == "1") { 
-							$business_search .= "<p class='website'><a href='" . $location['url'] . " target='_blank'>" . $location['url'] . "</a></p>";
+							$business_search .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 						}
 						if (($options['tax_phone']) == "1" && isset($location['phone'])) { 
 							$business_search .= "<p class='phone'>";
@@ -1234,21 +1288,21 @@ function cdash_business_search_shortcode() {
 	} 
 
 	// Search form
-	$business_search .= "<div id='business-search'><h3>Search</h3>";
+	$business_search .= "<div id='business-search'><h3>" . _e('Search', 'cdash') . "</h3>";
 	$business_search .= "<form method='get' action='" . get_the_permalink() . "'>";
-	$business_search .= "<p><label>Search Term</label><br /><input type='text' value='' name='searchtext' id='searchtext' /></p>";
+	$business_search .= "<p><label>" . _e('Search Term', 'cdash') . "</label><br /><input type='text' value='' name='searchtext' id='searchtext' /></p>";
 	// $business_search .= "<p><label>Business Name</label><br /><input type='text' value='' name='business_name' id='business_name' /></p>";
 		// searching by business name seems like a good idea, but you can only query the slug, so if the name isn't exactly like the slug, it won't find anything
 	// $business_search .= "<p><label>City</label><br /><input type='text' value='' name='city' id='city' /></p>";
 		// I would really like to be able to search by city, but since WPAlchemy serializes the locations array, I don't think this is possible
-	$business_search .= "<p><label>Business Category</label><br /><select name='buscat'><option value=''>";
+	$business_search .= "<p><label>" . _e('Business Category', 'cdash') . "</label><br /><select name='buscat'><option value=''>";
 	$terms = get_terms( 'business_category', 'hide_empty=0' );
         foreach ($terms as $term) {
             $business_search .= "<option value='" . $term->slug . "'>" . $term->name;
         } 
     $business_search .= "</select></p>";
 	
-	$business_search .= "<input type='submit' value='Search'>";
+	$business_search .= "<input type='submit' value='" . _e('Search', 'cdash') . ">";
 	$business_search .= "</form>";
 	$business_search .= "</div>";
 
@@ -1257,24 +1311,62 @@ function cdash_business_search_shortcode() {
 add_shortcode( 'business_search', 'cdash_business_search_shortcode' );
 
 // ------------------------------------------------------------------------
+// Business Category shortcode = [business_categories]
+// Thanks to https://github.com/justinribeiro/chamber-dashboard-business-directory/blob/add-category-shortcode/cdash-business-directory.php
+// Structure:
+// <ul class="business-categories">
+// <li class="cat-item cat-item-[ID]"><a href="[LINK]">[NAME]</a></li>
+// </ul>
+//
+// ------------------------------------------------------------------------
+function cdash_business_categories_shortcode( $atts ) {
+	// Set our default attributes
+	extract( shortcode_atts(
+		array(
+		'orderby' => 'name', // options: date, modified, menu_order, rand
+		'showcount' => 0,
+		'padcounts' => 0,
+		'hierarchical' => 1,
+		'title' => ''
+		), $atts )
+	);
+	$taxonomy = 'business_category';
+	$args = array(
+		'taxonomy' => $taxonomy,
+		'orderby' => $orderby,
+		'show_count' => $showcount,
+		'pad_counts' => $padcounts,
+		'hierarchical' => $hierarchical,
+		'title_li' => $title
+	);
+	echo '<ul class="business-categories">';
+	wp_list_categories($args);
+	echo '</ul>';
+}
+add_shortcode( 'business_categories', 'cdash_business_categories_shortcode' );
+
+// ------------------------------------------------------------------------
 // add business category and member level slugs as body and post class
 // ------------------------------------------------------------------------
 
 function cdash_add_taxonomy_classes($classes) {
 	global $post;
-	$buscats = get_the_terms($post->ID, 'business_category');
-	if ($buscats) {
-		foreach($buscats as $taxonomy) {
-			$classes[] = $taxonomy->slug;
+	if($post) {
+		$buscats = get_the_terms($post->ID, 'business_category');
+		if ($buscats) {
+			foreach($buscats as $taxonomy) {
+				$classes[] = $taxonomy->slug;
+			}
 		}
-	}
-	$buslevels = get_the_terms($post->ID, 'membership_level');
-	if ($buslevels) {
-		foreach($buslevels as $taxonomy) {
-			$classes[] = $taxonomy->slug;
+		$buslevels = get_the_terms($post->ID, 'membership_level');
+		if ($buslevels) {
+			foreach($buslevels as $taxonomy) {
+				$classes[] = $taxonomy->slug;
+			}
 		}
+		return $classes;
 	}
-	return $classes;
+
 }
 add_filter('post_class', 'cdash_add_taxonomy_classes');
 add_filter('body_class', 'cdash_add_taxonomy_classes');
