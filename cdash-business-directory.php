@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.7
+Version: 1.7.1
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -382,7 +382,7 @@ function cdash_single_business($content) {
 			$id = get_the_id();
 			$levels = get_the_terms( $id, 'membership_level');
 			if($levels) {
-				$business_content .= "<p class='membership'><span>" . _e('Membership Level:', 'cdash') . "</span>&nbsp;";
+				$business_content .= "<p class='membership'><span>" . __('Membership Level:', 'cdash') . "</span>&nbsp;";
 				$i = 1;
 				foreach($levels as $level) {
 					if($i !== 1) {
@@ -397,7 +397,7 @@ function cdash_single_business($content) {
 			$id = get_the_id();
 			$buscats = get_the_terms( $id, 'business_category');
 			if($buscats) {
-				$business_content .= "<p class='categories'><span>" . _e('Categories:', 'cdash') . "</span>&nbsp;";
+				$business_content .= "<p class='categories'><span>" . __('Categories:', 'cdash') . "</span>&nbsp;";
 				$i = 1;
 				foreach($buscats as $buscat) {
 					if($i !== 1) {
@@ -643,7 +643,7 @@ function cdash_taxonomy_filter($content) {
 			$id = get_the_id();
 			$levels = get_the_terms( $id, 'membership_level');
 			if($levels) {
-				$tax_content .= "<p class='membership'><span>" . _e('Membership Level:', 'cdash') . "</span>&nbsp;";
+				$tax_content .= "<p class='membership'><span>" . __('Membership Level:', 'cdash') . "</span>&nbsp;";
 				$i = 1;
 				foreach($levels as $level) {
 					if($i !== 1) {
@@ -658,7 +658,7 @@ function cdash_taxonomy_filter($content) {
 			$id = get_the_id();
 			$buscats = get_the_terms( $id, 'business_category');
 			if($buscats) {
-				$tax_content .= "<p class='categories'><span>" . _e('Categories:', 'cdash') . "</span>&nbsp;";
+				$tax_content .= "<p class='categories'><span>" . __('Categories:', 'cdash') . "</span>&nbsp;";
 				$i = 1;
 				foreach($buscats as $buscat) {
 					if($i !== 1) {
@@ -842,7 +842,7 @@ function cdash_business_directory_shortcode( $atts ) {
 					$contactmeta = $buscontact_metabox->the_meta();
 				  	$locations = $contactmeta['location'];
 					foreach($locations as $location) {
-						if($location['donotdisplay'] == "1") {
+						if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
 							continue;
 						} else {
 						  	if(in_array("location_name", $displayopts)) {
@@ -865,7 +865,7 @@ function cdash_business_directory_shortcode( $atts ) {
 									} 
 								$business_list .= "</p>";
 						  	}
-						  	if(in_array("phone", $displayopts)) {
+						  	if(in_array("phone", $displayopts) && isset($location['phone'])) {
 								$business_list .= "<p class='phone'>";
 									$i = 1;
 									$phones = $location['phone'];
@@ -898,14 +898,14 @@ function cdash_business_directory_shortcode( $atts ) {
 								$business_list .= "</p>";
 							}
 					  	} 
-					  	if(in_array("url", $displayopts)) {
+					  	if(in_array("url", $displayopts) && isset($location['url'])) {
 					  		$business_list .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 					  	} 
 			  		}
 			  		if(in_array("category", $displayopts)) {
 						$id = get_the_id();
 						$buscats = get_the_terms( $id, 'business_category');
-						$business_list .= "<p class='categories'><span>" . _e('Categories:', 'cdash') . "</span>&nbsp;";
+						$business_list .= "<p class='categories'><span>" . __('Categories:', 'cdash') . "</span>&nbsp;";
 						$i = 1;
 						foreach($buscats as $buscat) {
 							if($i !== 1) {
@@ -918,7 +918,7 @@ function cdash_business_directory_shortcode( $atts ) {
 				  	if(in_array("level", $displayopts)) {
 						$id = get_the_id();
 						$levels = get_the_terms( $id, 'membership_level');
-						$business_list .= "<p class='membership'><span>" . _e('Membership Level:', 'cdash') . "</span>&nbsp;";
+						$business_list .= "<p class='membership'><span>" . __('Membership Level:', 'cdash') . "</span>&nbsp;";
 						$i = 1;
 						foreach($levels as $level) {
 							if($i !== 1) {
@@ -1094,6 +1094,7 @@ add_shortcode( 'business_map', 'cdash_business_map_shortcode' );
 // ------------------------------------------------------------------------
 
 function cdash_business_search_shortcode() {
+	$business_search = "";
 	// Search results 
 	if($_GET) {
 		// Get the search terms
@@ -1128,8 +1129,8 @@ function cdash_business_search_shortcode() {
 		if ( $search_query->have_posts() ) :
 			// Display the search results
 			$business_search .= "<div id='search-results'>";
-			$business_search .= "<h2>" . _e('Search Results', 'cdash') . "</h2>";
-			$business_search .= "<p><a href='#business-search'>" . _e('Search again', 'cdash') . "</a></p>";
+			$business_search .= "<h2>" . __('Search Results', 'cdash') . "</h2>";
+			$business_search .= "<p><a href='#business-search'>" . __('Search again', 'cdash') . "</a></p>";
 			while ( $search_query->have_posts() ) : $search_query->the_post();
 
 				$business_search .= "<div class='search-result'>";
@@ -1160,7 +1161,7 @@ function cdash_business_search_shortcode() {
 					$id = get_the_id();
 					$levels = get_the_terms( $id, 'membership_level');
 					if($levels) {
-						$business_search .= "<p class='membership'><span>" . _e('Membership Level:', 'cdash') . "</span>&nbsp;";
+						$business_search .= "<p class='membership'><span>" . __('Membership Level:', 'cdash') . "</span>&nbsp;";
 						$i = 1;
 						foreach($levels as $level) {
 							if($i !== 1) {
@@ -1175,7 +1176,7 @@ function cdash_business_search_shortcode() {
 					$id = get_the_id();
 					$buscats = get_the_terms( $id, 'business_category');
 					if($buscats) {
-						$business_search .= "<p class='categories'><span>" . _e('Categories:', 'cdash') . "</span>&nbsp;";
+						$business_search .= "<p class='categories'><span>" . __('Categories:', 'cdash') . "</span>&nbsp;";
 						$i = 1;
 						foreach($buscats as $buscat) {
 							if($i !== 1) {
@@ -1288,21 +1289,21 @@ function cdash_business_search_shortcode() {
 	} 
 
 	// Search form
-	$business_search .= "<div id='business-search'><h3>" . _e('Search', 'cdash') . "</h3>";
+	$business_search .= "<div id='business-search'><h3>" . __('Search', 'cdash') . "</h3>";
 	$business_search .= "<form method='get' action='" . get_the_permalink() . "'>";
-	$business_search .= "<p><label>" . _e('Search Term', 'cdash') . "</label><br /><input type='text' value='' name='searchtext' id='searchtext' /></p>";
+	$business_search .= "<p><label>" . __('Search Term', 'cdash') . "</label><br /><input type='text' value='' name='searchtext' id='searchtext' /></p>";
 	// $business_search .= "<p><label>Business Name</label><br /><input type='text' value='' name='business_name' id='business_name' /></p>";
 		// searching by business name seems like a good idea, but you can only query the slug, so if the name isn't exactly like the slug, it won't find anything
 	// $business_search .= "<p><label>City</label><br /><input type='text' value='' name='city' id='city' /></p>";
 		// I would really like to be able to search by city, but since WPAlchemy serializes the locations array, I don't think this is possible
-	$business_search .= "<p><label>" . _e('Business Category', 'cdash') . "</label><br /><select name='buscat'><option value=''>";
+	$business_search .= "<p><label>" . __('Business Category', 'cdash') . "</label><br /><select name='buscat'><option value=''>";
 	$terms = get_terms( 'business_category', 'hide_empty=0' );
         foreach ($terms as $term) {
             $business_search .= "<option value='" . $term->slug . "'>" . $term->name;
         } 
     $business_search .= "</select></p>";
 	
-	$business_search .= "<input type='submit' value='" . _e('Search', 'cdash') . ">";
+	$business_search .= "<input type='submit' value='" . __('Search', 'cdash') . "'>";
 	$business_search .= "</form>";
 	$business_search .= "</div>";
 
