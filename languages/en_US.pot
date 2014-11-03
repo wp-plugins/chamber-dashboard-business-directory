@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: cdash 1.6\n"
-"POT-Creation-Date: 2014-09-05 16:38-0800\n"
-"PO-Revision-Date: 2014-09-05 16:45-0800\n"
+"Project-Id-Version: cdash 1.6.9\n"
+"POT-Creation-Date: 2014-10-02 11:29-0800\n"
+"PO-Revision-Date: 2014-10-02 11:30-0800\n"
 "Last-Translator: Morgan <morgan@wpalchemists.com>\n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -13,8 +13,8 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __;_e\n"
-"X-Poedit-SearchPath-0: ..\n"
-"X-Poedit-SearchPath-1: .\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ..\n"
 
 #: ../Tax-meta-class/Tax-meta-class.php:250
 msgid "Delete this image"
@@ -54,160 +54,160 @@ msgstr ""
 msgid "Select a color"
 msgstr ""
 
-#: ../cdash-business-directory.php:78
+#: ../cdash-business-directory.php:87
 msgid "Business Category"
 msgstr ""
 
-#: ../cdash-business-directory.php:79
+#: ../cdash-business-directory.php:88
 msgid "All Business Categories"
 msgstr ""
 
-#: ../cdash-business-directory.php:80
+#: ../cdash-business-directory.php:89
 msgid "Parent Business Category"
 msgstr ""
 
-#: ../cdash-business-directory.php:81
+#: ../cdash-business-directory.php:90
 msgid "Parent Business Category:"
 msgstr ""
 
-#: ../cdash-business-directory.php:82
+#: ../cdash-business-directory.php:91
 msgid "New Business Category Name"
 msgstr ""
 
-#: ../cdash-business-directory.php:83
+#: ../cdash-business-directory.php:92
 msgid "Add New Business Category"
 msgstr ""
 
-#: ../cdash-business-directory.php:84
+#: ../cdash-business-directory.php:93
 msgid "Edit Business Category"
 msgstr ""
 
-#: ../cdash-business-directory.php:85
+#: ../cdash-business-directory.php:94
 msgid "Update Business Category"
 msgstr ""
 
-#: ../cdash-business-directory.php:86
+#: ../cdash-business-directory.php:95
 msgid "Separate Business Categories with commas"
 msgstr ""
 
-#: ../cdash-business-directory.php:87
+#: ../cdash-business-directory.php:96
 msgid "Search Business Categories"
 msgstr ""
 
-#: ../cdash-business-directory.php:88
+#: ../cdash-business-directory.php:97
 msgid "Add or remove Business Category"
 msgstr ""
 
-#: ../cdash-business-directory.php:89
+#: ../cdash-business-directory.php:98
 msgid "Choose from the most used Business Categories"
 msgstr ""
 
-#: ../cdash-business-directory.php:90 ../cdash-business-directory.php:125
+#: ../cdash-business-directory.php:99 ../cdash-business-directory.php:134
 msgid "Not Found"
 msgstr ""
 
-#: ../cdash-business-directory.php:113
+#: ../cdash-business-directory.php:122
 msgid "Membership Level"
 msgstr ""
 
-#: ../cdash-business-directory.php:114
+#: ../cdash-business-directory.php:123
 msgid "All Membership Levels"
 msgstr ""
 
-#: ../cdash-business-directory.php:115
+#: ../cdash-business-directory.php:124
 msgid "Parent Membership Level"
 msgstr ""
 
-#: ../cdash-business-directory.php:116
+#: ../cdash-business-directory.php:125
 msgid "Parent Membership Level:"
 msgstr ""
 
-#: ../cdash-business-directory.php:117
+#: ../cdash-business-directory.php:126
 msgid "New Membership Level Name"
 msgstr ""
 
-#: ../cdash-business-directory.php:118
+#: ../cdash-business-directory.php:127
 msgid "Add New Membership Level"
 msgstr ""
 
-#: ../cdash-business-directory.php:119
+#: ../cdash-business-directory.php:128
 msgid "Edit Membership Level"
 msgstr ""
 
-#: ../cdash-business-directory.php:120
+#: ../cdash-business-directory.php:129
 msgid "Update Membership Level"
 msgstr ""
 
-#: ../cdash-business-directory.php:121
+#: ../cdash-business-directory.php:130
 msgid "Separate Membership Levels with commas"
 msgstr ""
 
-#: ../cdash-business-directory.php:122
+#: ../cdash-business-directory.php:131
 msgid "Search Membership Levels"
 msgstr ""
 
-#: ../cdash-business-directory.php:123
+#: ../cdash-business-directory.php:132
 msgid "Add or remove Membership Level"
 msgstr ""
 
-#: ../cdash-business-directory.php:124
+#: ../cdash-business-directory.php:133
 msgid "Choose from the most used Membership Levels"
 msgstr ""
 
-#: ../cdash-business-directory.php:149
+#: ../cdash-business-directory.php:158
 msgid "Businesses"
 msgstr ""
 
-#: ../cdash-business-directory.php:150
+#: ../cdash-business-directory.php:159
 msgid "Parent Business:"
 msgstr ""
 
-#: ../cdash-business-directory.php:151
+#: ../cdash-business-directory.php:160
 msgid "All Businesses"
 msgstr ""
 
-#: ../cdash-business-directory.php:152
+#: ../cdash-business-directory.php:161
 msgid "View Business"
 msgstr ""
 
-#: ../cdash-business-directory.php:153
+#: ../cdash-business-directory.php:162
 msgid "Add New Business"
 msgstr ""
 
-#: ../cdash-business-directory.php:154
+#: ../cdash-business-directory.php:163
 msgid "Add New"
 msgstr ""
 
-#: ../cdash-business-directory.php:155
+#: ../cdash-business-directory.php:164
 msgid "Edit Business"
 msgstr ""
 
-#: ../cdash-business-directory.php:156
+#: ../cdash-business-directory.php:165
 msgid "Update Business"
 msgstr ""
 
-#: ../cdash-business-directory.php:157
+#: ../cdash-business-directory.php:166
 msgid "Search Businesses"
 msgstr ""
 
-#: ../cdash-business-directory.php:158
+#: ../cdash-business-directory.php:167
 msgid "Not found"
 msgstr ""
 
-#: ../cdash-business-directory.php:159
+#: ../cdash-business-directory.php:168
 msgid "Not found in Trash"
 msgstr ""
 
-#: ../cdash-business-directory.php:162
+#: ../cdash-business-directory.php:171
 msgid "business"
 msgstr ""
 
-#: ../cdash-business-directory.php:163
+#: ../cdash-business-directory.php:172
 msgid "Businesses and Organizations"
 msgstr ""
 
 #: ../options.php:84
-msgid "Chamber Dashboard Settings"
+msgid "Chamber Dashboard Business Directory Settings"
 msgstr ""
 
 #: ../options.php:99
@@ -321,71 +321,132 @@ msgid ""
 "custom fields here."
 msgstr ""
 
-#: ../options.php:161 ../options.php:182
+#: ../options.php:161 ../options.php:183
 msgid "Custom Field Name"
 msgstr ""
 
-#: ../options.php:163 ../options.php:184
+#: ../options.php:162
+msgid ""
+"<strong>Note:</strong> If you change the name of an existing custom field, "
+"you will lose all data stored in that field!"
+msgstr ""
+
+#: ../options.php:164 ../options.php:185
 msgid "Custom Field Type"
 msgstr ""
 
-#: ../options.php:166 ../options.php:187
+#: ../options.php:167 ../options.php:188
 msgid "Short Text Field"
 msgstr ""
 
-#: ../options.php:167 ../options.php:188
+#: ../options.php:168 ../options.php:189
 msgid "Multi-line Text Area"
 msgstr ""
 
-#: ../options.php:169 ../options.php:190
+#: ../options.php:170 ../options.php:191
 msgid "Display in Business Directory?"
 msgstr ""
 
-#: ../options.php:170 ../options.php:174 ../options.php:191
+#: ../options.php:171 ../options.php:175 ../options.php:192
 msgid " Yes"
 msgstr ""
 
-#: ../options.php:171 ../options.php:175 ../options.php:192
+#: ../options.php:172 ../options.php:176 ../options.php:193
 msgid " No"
 msgstr ""
 
-#: ../options.php:173 ../options.php:194
+#: ../options.php:174 ../options.php:195
 msgid "Display in Single Business View?"
 msgstr ""
 
-#: ../options.php:176 ../options.php:197
+#: ../options.php:177 ../options.php:198
 msgid "Add Another"
 msgstr ""
 
-#: ../options.php:195
+#: ../options.php:196
 msgid " /> Yes"
 msgstr ""
 
-#: ../options.php:196
+#: ../options.php:197
 msgid " /> No"
 msgstr ""
 
-#: ../options.php:206
+#: ../options.php:207
 msgid "Save Changes"
 msgstr ""
 
-#: ../options.php:280
+#: ../options.php:241 ../welcome-page.php:31
+msgid "Documentation"
+msgstr ""
+
+#: ../options.php:242
+msgid ""
+"If you're looking for more information about how to use this plugin, visit "
+"the <a href=\"http://chamberdashboard.com/support/documentation/\" target="
+"\"_blank\">Documentation page at ChamberDashboard.com"
+msgstr ""
+
+#: ../options.php:243
+msgid "Contact"
+msgstr ""
+
+#: ../options.php:244
+msgid ""
+"Don't hesitate to <a href=\"http://chamberdashboard.com/contact/\" target="
+"\"_blank\">contact us</a> to request new features, ask questions, or just "
+"say hi."
+msgstr ""
+
+#: ../options.php:245 ../welcome-page.php:68
+msgid "Other Chamber Dashboard Plugins"
+msgstr ""
+
+#: ../options.php:246
+msgid ""
+"This plugin is designed to work with the <a href=\"https://wordpress.org/"
+"plugins/chamber-dashboard-crm/\" target=\"_blank\">Chamber Dashboard CRM "
+"plugin</a> - keep track of the people associated with your businesses!"
+msgstr ""
+
+#: ../options.php:247
+msgid "Showcase"
+msgstr ""
+
+#: ../options.php:248
+msgid ""
+"We would like to showcase sites that are using Chamber Dashboard on our "
+"website! <a href=\"http://chamberdashboard.com/contact/\" target=\"_blank"
+"\">Contact us</a> to tell us about your site!"
+msgstr ""
+
+#: ../options.php:249
+msgid "Donate"
+msgstr ""
+
+#: ../options.php:250
+msgid ""
+"All donations go to the <a href=\"http://fremont.com\" target=\"_blank"
+"\">Fremont Chamber of Commerce</a> to support further development of Chamber "
+"Dashboard."
+msgstr ""
+
+#: ../options.php:285 ../welcome-page.php:30
 msgid "Settings"
 msgstr ""
 
-#: ../options.php:291
+#: ../options.php:296
 msgid "Export"
 msgstr ""
 
-#: ../options.php:292
+#: ../options.php:297
 msgid "Click the button below to download a CSV of all of your businesses."
 msgstr ""
 
-#: ../options.php:303
+#: ../options.php:308
 msgid "Import"
 msgstr ""
 
-#: ../options.php:304
+#: ../options.php:309
 msgid ""
 "You can import businesses from a CSV file.  First, you must format the CSV "
 "properly.  Your CSV must have the following columns in the following order, "
@@ -397,8 +458,106 @@ msgid ""
 "multiple with semicolons)</li></ul>"
 msgstr ""
 
-#: ../options.php:305
+#: ../options.php:310
 msgid "Download a sample CSV to see how to format your file."
+msgstr ""
+
+#: ../welcome-page.php:3 ../welcome-page.php:22
+msgid "Welcome to Chamber Dashboard Business Directory"
+msgstr ""
+
+#: ../welcome-page.php:26
+msgid "Power your Chamber of Commerce with Chamber Dashboard"
+msgstr ""
+
+#: ../welcome-page.php:32
+msgid "Support"
+msgstr ""
+
+#: ../welcome-page.php:37
+msgid "About Chamber Dashboard"
+msgstr ""
+
+#: ../welcome-page.php:43
+msgid "Main Features"
+msgstr ""
+
+#: ../welcome-page.php:48
+msgid "Create Your Directory"
+msgstr ""
+
+#: ../welcome-page.php:49
+msgid ""
+"Build a website to showcase your members' businesses more effectively.  "
+"Customize your listings to meet member needs."
+msgstr ""
+
+#: ../welcome-page.php:53
+msgid "Import Existing Member Listings"
+msgstr ""
+
+#: ../welcome-page.php:54
+msgid ""
+"Easily import listings from or export listings to a CSV file.  Customize "
+"your listings to meet member needs."
+msgstr ""
+
+#: ../welcome-page.php:58
+msgid "Display Directory on your Website"
+msgstr ""
+
+#: ../welcome-page.php:59
+msgid ""
+"Display member businesses as a complete, searchable directory or single "
+"listing. Turn your site into a community resource of local business "
+"connections."
+msgstr ""
+
+#: ../welcome-page.php:69
+msgid ""
+"The Business Directory is just one in a suite of plugins designed to make "
+"your Chamber or organization an easy to manage, central source of "
+"information regarding local businesses, event management and professional "
+"communication."
+msgstr ""
+
+#: ../welcome-page.php:73
+msgid "Chamber Dashboard CRM"
+msgstr ""
+
+#: ../welcome-page.php:74
+msgid ""
+"Customer Relationship Management has evolved. Organizations today need tools "
+"that enhance customer interaction from marketing to sales to follow up "
+"services. This plugin creates a directory of the people associated with your "
+"organization and allows you to track the progression of your relationship "
+"with them."
+msgstr ""
+
+#: ../welcome-page.php:77
+msgid "Chamber Dashboard Events Calendar - Coming Soon!"
+msgstr ""
+
+#: ../welcome-page.php:78
+msgid ""
+"Create an events calendar on your site. Track event registrations and "
+"attendees, connect and encourage members to grow their professional "
+"networks. "
+msgstr ""
+
+#: ../welcome-page.php:82
+msgid "Chamber Dashboard Member Management - Coming Soon!"
+msgstr ""
+
+#: ../welcome-page.php:83
+msgid ""
+"Streamline management of your organization. The Member Management plugin "
+"allows you to track membership levels, accept online member payments, and "
+"more, freeing you up to work with your members on your core mission."
+msgstr ""
+
+#: ../welcome-page.php:91
+msgid "Go to Chamber Dashboard Settings"
 msgstr ""
 
 #: ../wpalchemy/buscontact.php:3
