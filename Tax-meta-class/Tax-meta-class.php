@@ -247,7 +247,7 @@ class Tax_Meta_Class {
       $li    = "<li id='item_{$attachment_id}'>";
       $li   .= "<img src='{$attachment['url']}' alt='image_{$attachment_id}' />";
       //$li   .= "<a title='" . __( 'Delete this image' ) . "' class='at-delete-file' href='#' rel='{$nonce}|{$term_id}|{$id}|{$attachment_id}'>" . __( 'Delete' ) . "</a>";
-      $li   .= "<a title='" . __( 'Delete this image','tax-meta') . "' class='at-delete-file' href='#' rel='{$nonce}|{$term_id}|{$id}|{$attachment_id}'><img src='" . $this->SelfPath. "/images/delete-16.png' alt='" . __( 'Delete','tax-meta') . "' /></a>";
+      $li   .= "<a title='" . __( 'Delete this image','cdash') . "' class='at-delete-file' href='#' rel='{$nonce}|{$term_id}|{$id}|{$attachment_id}'><img src='" . $this->SelfPath. "/images/delete-16.png' alt='" . __( 'Delete','cdash') . "' /></a>";
       $li   .= "<input type='hidden' name='{$id}[]' value='{$attachment_id}' />";
       $li   .= "</li>";
       $html .= $li;
@@ -354,7 +354,7 @@ class Tax_Meta_Class {
       echo json_encode( array('status' => 'success' ));
       die();
     }else{
-      echo json_encode(array('message' => __( 'Cannot delete file. Something\'s wrong.','tax-meta')));
+      echo json_encode(array('message' => __( 'Cannot delete file. Something\'s wrong.','cdash')));
       die();
     }
   }
@@ -579,7 +579,7 @@ class Tax_Meta_Class {
         }else{
           echo 'http://i.imgur.com/g8Duj.png';
         }
-        echo '" alt="'.__('Remove','tax-meta').'" title="'.__('Remove','tax-meta').'" id="remove-'.$field['id'].'"></div>';
+        echo '" alt="'.__('Remove','cdash').'" title="'.__('Remove','cdash').'" id="remove-'.$field['id'].'"></div>';
         $c = $c + 1;
         
         }
@@ -592,7 +592,7 @@ class Tax_Meta_Class {
     }else{
       echo 'http://i.imgur.com/w5Tuc.png';
     }
-    echo '" alt="'.__('Add','tax-meta').'" title="'.__('Add','tax-meta').'" id="add-'.$field['id'].'"><br/></div>';
+    echo '" alt="'.__('Add','cdash').'" title="'.__('Add','cdash').'" id="add-'.$field['id'].'"><br/></div>';
     
     //create all fields once more for js function and catch with object buffer
     ob_start();
@@ -626,7 +626,7 @@ class Tax_Meta_Class {
     }else{
       echo 'http://i.imgur.com/g8Duj.png';
     }
-    echo '" alt="'.__('Remove','tax-meta').'" title="'.__('Remove','tax-meta').'" id="remove-'.$field['id'].'"></div>';
+    echo '" alt="'.__('Remove','cdash').'" title="'.__('Remove','cdash').'" id="remove-'.$field['id'].'"></div>';
     $counter = 'countadd_'.$field['id'];
     $js_code = ob_get_clean ();
     $js_code = str_replace("\n","",$js_code);
@@ -875,24 +875,24 @@ class Tax_Meta_Class {
 
       if ( !empty( $meta )  && count($meta) > 0 && !$this->is_array_empty($meta) ) {
         $nonce = wp_create_nonce( 'at_ajax_delete_file' );
-        echo '<div style="margin-bottom: 10px"><strong>' . __('Uploaded files','tax-meta') . '</strong></div>';
+        echo '<div style="margin-bottom: 10px"><strong>' . __('Uploaded files','cdash') . '</strong></div>';
         echo '<ol class="at-upload">';
         foreach ( $meta as $att ) {
           // if (wp_attachment_is_image($att)) continue; // what's image uploader for?
-          echo "<li>" . wp_get_attachment_link( $att, '' , false, false, ' ' ) . " (<a class='at-delete-file' href='#' rel='{$nonce}||{$field['id']}|{$att}'>" . __( 'Delete','tax-meta' ) . "</a>)</li>";
+          echo "<li>" . wp_get_attachment_link( $att, '' , false, false, ' ' ) . " (<a class='at-delete-file' href='#' rel='{$nonce}||{$field['id']}|{$att}'>" . __( 'Delete','cdash' ) . "</a>)</li>";
         }
         echo '</ol>';
       }
 
       // show form upload
     echo "<div class='at-file-upload-label'> \n
-      <strong>" . __( 'Upload new files','tax-meta' ) . "</strong>\n
+      <strong>" . __( 'Upload new files','cdash' ) . "</strong>\n
     </div>\n";
     echo "<div class='new-files'>\n
       <div class='file-input'>\n
         <input type='file' name='{$field['id']}[]' />\n
       </div><!-- End .file-input -->\n
-      <a class='at-add-file button' href='#'>" . __( 'Add more files','tax-meta' ) . "</a>\n
+      <a class='at-add-file button' href='#'>" . __( 'Add more files','cdash' ) . "</a>\n
       </div><!-- End .new-files -->\n";
     echo "</td>";
     $this->show_field_end( $field, $meta );
@@ -944,7 +944,7 @@ class Tax_Meta_Class {
     $this->show_field_begin( $field, $meta );
       echo "<input class='at-color' type='text' name='{$field['id']}' id='{$field['id']}' value='{$meta}' size='8' />";
     //  echo "<a href='#' class='at-color-select button' rel='{$field['id']}'>" . __( 'Select a color' ) . "</a>";
-      echo "<input type='button' class='at-color-select button' rel='{$field['id']}' value='" . __( 'Select a color','tax-meta' ) . "'/>";
+      echo "<input type='button' class='at-color-select button' rel='{$field['id']}' value='" . __( 'Select a color','cdash' ) . "'/>";
       echo "<div style='display:none' class='at-color-picker' rel='{$field['id']}'></div>";
     $this->show_field_end($field, $meta);
     
