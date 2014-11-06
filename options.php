@@ -27,7 +27,10 @@ function cdash_add_defaults() {
 						"sv_url"		 => "1",
 						"sv_logo"		 => "1",
 						"sv_category"	 => "1",
-						"tax_logo"		 => "1"
+						"tax_name"		 => "1",
+						"tax_address"	 => "1",
+						"tax_url" 		 => "1",
+						"tax_logo"		 => "1",
 		);
 		update_option('cdash_directory_options', $arr);
 	}

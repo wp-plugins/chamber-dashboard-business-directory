@@ -50,6 +50,14 @@ clear: both;
 	margin-bottom: 15px;
 }
 
+#businesslist.grid2:after,
+#businesslist.grid3:after,
+#businesslist.grid4:after {
+	display: table;
+content: '';
+clear: both;
+}
+
 #businesslist.grid2 .business {
 	width: 45%;
 	margin-right: 2%;
@@ -79,6 +87,7 @@ clear: both;
 #businesslist .pagination {
 	text-align: center;
 	margin: 20px 0;
+	clear: both;
 }
 
 #map-canvas img { max-width: none !important; height: auto; } 

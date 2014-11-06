@@ -69,6 +69,9 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.7.2 =
+* lots of bug fixes
+
 = 1.7.1 =
 * fixed issues with labels echoing in the wrong place
 * fixed typo that broke search form
