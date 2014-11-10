@@ -1,0 +1,73 @@
+.my_meta_control label { 
+	display:block; 
+	font-weight:bold; 
+	font-size: 1.2em;
+	margin-bottom: 8px;
+}
+ 
+.my_meta_control .explain { 
+	color:#595959; 
+	margin: 0;
+	font-style: italic;
+}
+ 
+.my_meta_control textarea, .my_meta_control input[type='text']
+{ margin-bottom:3px; width:99%; }
+ 
+.my_meta_control h4
+{ color:#999; font-size:1em; margin:15px 6px; text-transform:uppercase; }
+
+.my_meta_control fieldset {
+	border: 1px solid #999;
+	padding: 10px;
+	border-radius: 3px;
+	margin-bottom: 10px;
+}
+
+.my_meta_control .button {
+	margin-bottom: 10px;
+}
+
+.my_meta_control .half {
+	width: 45%;
+	float: left;
+}
+
+@media screen and (max-width: 1120px) {
+	.my_meta_control .half {
+		width: 40%;
+	}
+}
+
+@media screen and (max-width: 950px) {
+	.my_meta_control .half {
+		width: 80%;
+		float: none;
+	}
+}
+
+.my_meta_control .half.left {
+	margin-right: 2%;
+}
+
+.my_meta_control .third {
+	width: 30%;
+	float: left;
+}
+
+.my_meta_control .location,
+.my_meta_control .note {
+	background: #F1F1F1;
+	padding: 10px;
+	margin-bottom: 15px;
+}
+
+.clearfix {
+	clear: both;
+}
+
+.clearfix:after {
+	display: table;
+content: '';
+clear: both;
+}
