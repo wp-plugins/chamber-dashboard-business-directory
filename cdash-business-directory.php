@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.7.2
+Version: 1.7.3
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -316,12 +316,14 @@ function cdash_business_overview_columns($column_name, $post_ID) {
 		foreach($locations as $location) {
 			if(isset($location['phone'])) {
 				$phones = $location['phone'];
-				foreach($phones as $phone) {
-					$phonenumbers .= $phone['phonenumber'];
-					if(isset($phone['phonetype'])) {
-						$phonenumbers .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+				if(is_array($phones)) {
+					foreach($phones as $phone) {
+						$phonenumbers .= $phone['phonenumber'];
+						if(isset($phone['phonetype'])) {
+							$phonenumbers .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+						}
+						$phonenumbers .= "<br />";
 					}
-					$phonenumbers .= "<br />";
 				}
 			}
 		}
@@ -536,30 +538,43 @@ function cdash_single_business_map() {
 						$address = urlencode($rawaddress);
 						$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
 						$json = json_decode($json, true);
-						if(is_array($json) && $json['status'] !== 'ZERO_RESULTS') {
+						if(is_array($json) && $json['status'] == 'OK') {
 							$lat = $json['results'][0]['geometry']['location']['lat'];
 							$long = $json['results'][0]['geometry']['location']['lng']; 
-						}
-						// get the map icon
-						$id = get_the_id();
-						$buscats = get_the_terms( $id, 'business_category');
-						foreach($buscats as $buscat) {
-							$buscatid = $buscat->term_id;
-							$iconid = get_tax_meta($buscatid,'category_map_icon');
-							if($iconid !== '') {
-								$icon = $iconid['src'];
+							// get the map icon
+							$id = get_the_id();
+							$buscats = get_the_terms( $id, 'business_category');
+							foreach($buscats as $buscat) {
+								$buscatid = $buscat->term_id;
+								$iconid = get_tax_meta($buscatid,'category_map_icon');
+								if($iconid !== '') {
+									$icon = $iconid['src'];
+								}
 							}
+							if(!isset($icon)) {
+								$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
+							}
+							if(isset($location['altname'])) {
+								$htmlname = $location['altname'];
+								$poptitle = htmlentities($htmlname, ENT_QUOTES);
+							} else {
+								$htmltitle = htmlentities(get_the_title(), ENT_QUOTES);
+								$poptitle = htmlentities($htmltitle, ENT_QUOTES);
+							}
+							// get other information for the pop-up window
+							$htmladdress = htmlentities($location['address'], ENT_QUOTES);
+							$popaddress = htmlentities($htmladdress, ENT_QUOTES); // why do I have to do this twice?  I have no idea, but it works... :P
+							$htmlcity = htmlentities($location['city'], ENT_QUOTES);
+							$popcity = htmlentities($htmlcity, ENT_QUOTES);
+							$htmlstate = htmlentities($location['state'], ENT_QUOTES);
+							$popstate = htmlentities($htmlstate, ENT_QUOTES);
+							?>
+							['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $poptitle; ?></h5><?php echo $popaddress; ?><br /><?php echo $popcity; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?></div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
+							<?php
 						}
-						if(!isset($icon)) {
-							$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
-						}
-						if(isset($location['altname'])) {
-							$name = $location['altname'];
-						} else {
-							$name = get_the_title();
-						}?>
-						['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $name; ?></h5><?php echo $location["address"]; ?><br /><?php echo $location["city"]; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?></div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
-					<?php }
+		
+
+					}
 				} ?>
 
 				];
@@ -855,7 +870,7 @@ function cdash_business_directory_shortcode( $atts ) {
 							continue;
 						} else {
 						  	if(in_array("location_name", $displayopts)) {
-						  		$business_list .= "<p class='location-name'>" . $location['altname'] . "</p>";
+						  		// $business_list .= "<p class='location-name'>" . $location['altname'] . "</p>";
 						  	}
 						  	if(in_array("address", $displayopts)) {
 								$business_list .= "<p class='address'>";
@@ -986,7 +1001,7 @@ function cdash_business_map_shortcode( $atts ) {
 	extract( shortcode_atts(
 		array(
 			'category' => '', // options: slug of any category
-			'level' => '', // options: sluf of any membership level
+			'level' => '', // options: slug of any membership level
 			'single_link' => 'yes', // options: yes, no
 			'perpage' => '-1', // options: any number
 		), $atts )
@@ -1014,37 +1029,50 @@ function cdash_business_map_shortcode( $atts ) {
 			global $buscontact_metabox;
 			$contactmeta = $buscontact_metabox->the_meta();
 			$locations = $contactmeta['location'];
-			foreach($locations as $location) {
-				if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
-					continue;
-				} else {
-					// Get the latitude and longitude from the address
-			    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
-					$address = urlencode($rawaddress);
-					$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
-					$json = json_decode($json, true);
-					if(is_array($json) && $json['status'] !== 'ZERO_RESULTS') {
-						$lat = $json['results'][0]['geometry']['location']['lat'];
-						$long = $json['results'][0]['geometry']['location']['lng']; 
-					}
-					// Get the map icon
-					$id = get_the_id();
-					$buscats = get_the_terms( $id, 'business_category');
-					foreach($buscats as $buscat) {
-						$buscatid = $buscat->term_id;
-						$iconid = get_tax_meta($buscatid,'category_map_icon');
-						if($iconid !== '') {
-							$icon = $iconid['src'];
+			if(!empty($locations)) {
+				foreach($locations as $location) {
+					if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
+						continue;
+					} elseif(isset($location['address'])) {
+						// Get the latitude and longitude from the address
+				    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
+						$address = urlencode($rawaddress);
+						$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
+						$json = json_decode($json, true);
+						if(is_array($json) && $json['status'] == 'OK') {
+							$lat = $json['results'][0]['geometry']['location']['lat'];
+							$long = $json['results'][0]['geometry']['location']['lng']; 
+							// Get the map icon
+							$id = get_the_id();
+							$buscats = get_the_terms( $id, 'business_category');
+							foreach($buscats as $buscat) {
+								$buscatid = $buscat->term_id;
+								$iconid = get_tax_meta($buscatid,'category_map_icon');
+								if($iconid !== '') {
+									$icon = $iconid['src'];
+								}
+							}
+							if(!isset($icon)) {
+								$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
+							}
+							// Create the pop-up info window
+							$htmladdress = htmlentities($location['address'], ENT_QUOTES);
+							$popaddress = htmlentities($htmladdress, ENT_QUOTES); // why do I have to do this twice?  I have no idea, but it works... :P
+							$htmlcity = htmlentities($location['city'], ENT_QUOTES);
+							$popcity = htmlentities($htmlcity, ENT_QUOTES);
+							$htmlstate = htmlentities($location['state'], ENT_QUOTES);
+							$popstate = htmlentities($htmlstate, ENT_QUOTES);
+							$htmltitle = htmlentities(get_the_title(), ENT_QUOTES);
+							$poptitle = htmlentities($htmltitle, ENT_QUOTES);
+							if($single_link == "yes") {
+								$thismapmarker = "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5><a href=\x22" . get_the_permalink() . "\x22>" . $poptitle . "</a></h5> " . $popaddress . "<br />" . $popcity . ", " . $popstate . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
+								$business_map .= str_replace(array("\r", "\n"), '', $thismapmarker);
+							} else {
+								$thismapmarker .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5>" . $poptitle . "</h5> " . $popaddress . "<br />" . $popcity . ", " . $popstate . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
+								$business_map .= str_replace(array("\r", "\n"), '', $thismapmarker);
+							}
 						}
-					}
-					if(!isset($icon)) {
-						$icon = plugins_url() . '/chamber-dashboard-business-directory/images/map_marker.png'; 
-					}
-					// Create the pop-up info window
-					if($single_link == "yes") {
-						$business_map .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5><a href=\x22" . get_the_permalink() . "\x22>" . get_the_title() . "</a></h5> " . $location['address'] . "<br />" . $location['city'] . ", " . $location['state'] . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
-					} else {
-						$business_map .= "['<div class=\x22business\x22 style=\x22width: 150px; height: 150px;\x22><h5>" . get_the_title() . "</h5> " . $location['address'] . "<br />" . $location['city'] . ", " . $location['state'] . "&nbsp;" . $location['zip'] . "</div>', " . $lat . ", " . $long . ", '" . $icon . "'],";
+
 					}
 				}
 			}

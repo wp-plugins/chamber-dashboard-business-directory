@@ -69,6 +69,9 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.7.3 =
+* fixed map issues
+
 = 1.7.2 =
 * lots of bug fixes
 
