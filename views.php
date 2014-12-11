@@ -576,7 +576,7 @@ function cdash_business_directory_shortcode( $atts ) {
 									}
 								$business_list .= "</p>";
 						  	} 
-						  	if(in_array("email", $displayopts)) {
+						  	if(in_array("email", $displayopts) && isset($location['email'])) {
 								$business_list .= "<p class='email'>";
 									$i = 1;
 									$emails = $location['email'];
