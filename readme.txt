@@ -19,11 +19,17 @@ Chamber Dashboard Business Directory is a part of the Chamber Dashboard collecti
 *   customize what information is displayed about the businesses
 *   export a CSV of the business in your directory
 
+
 You can learn more at [chamberdashboard.com](http://chamberdashboard.com)
 
 For full instructions about how to use the plugin, go to [Chamber Dashboard Documentation](http://chamberdashboard.com/support/documentation)
 
-More features coming soon!  Chamber Dashboard is in the early stages of its development.  By the end of 2014, it will include membership management, event sign-up and management, and much more.
+= Other Chamber Dashboard Plugins =
+* [Chamber Dashboard Events Calendar](https://wordpress.org/plugins/chamber-dashboard-events-calendar/) - Display a calendar of your organization's events
+* [Chamber Dashboard CRM](https://wordpress.org/plugins/chamber-dashboard-crm/) - Keep track of the people associated with your organization and their activities
+* Chamber Dashboard Member Manager - coming soon!  Track membership levels and benefits, collect membership payments online
+
+Many more features coming soon! 
 
 == Installation ==
 = Using The WordPress Dashboard =
@@ -37,15 +43,15 @@ More features coming soon!  Chamber Dashboard is in the early stages of its deve
 
 1. Navigate to the \'Add New\' in the plugins dashboard
 2. Navigate to the \'Upload\' area
-3. Select `cdash-business-directory.zip` from your computer
+3. Select `chamber-dashboard-business-directory.zip` from your computer
 4. Click \'Install Now\'
 5. Activate the plugin in the Plugin dashboard
 
 = Using FTP =
 
-1. Download `cdash-business-directory.zip`
-2. Extract the `cdash-business-directory` directory to your computer
-3. Upload the `cdash-business-directory` directory to the `/wp-content/plugins/` directory
+1. Download `chamber-dashboard-business-directory.zip`
+2. Extract the `chamber-dashboard-business-directory` directory to your computer
+3. Upload the `chamber-dashboard-business-directory` directory to the `/wp-content/plugins/` directory
 4. Activate the plugin in the Plugin dashboard
 
 
@@ -66,6 +72,51 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.8.1 =
+* fixed minor bug when displaying email addresses in business_directory shortcode
+
+= 1.8 =
+* added search_form and search_results shortcodes
+* added search widget
+* minor fixes and code clean-up
+
+= 1.7.3 =
+* fixed map issues
+
+= 1.7.2 =
+* lots of bug fixes
+
+= 1.7.1 =
+* fixed issues with labels echoing in the wrong place
+* fixed typo that broke search form
+
+= 1.7 =
+* fixed typos
+* added category shortcode thanks to Justin Ribeiro https://github.com/justinribeiro/chamber-dashboard-business-directory/tree/add-category-shortcode
+
+= 1.6.11 =
+* made even more strings translatable
+
+= 1.6.10 =
+* made more strings translatable
+
+= 1.6.9 =
+* minor bug fixes
+* added welcome page
+
+= 1.6.8 =
+* minor bug fixes
+
+= 1.6.7 =
+* fixed JavaScript error on grid layout
+
+= 1.6.6 =
+* fixed a few more URL bugs
+* added phone number to business overview page
+
+= 1.6.5 =
+* fixed icon URL
+
 = 1.6.4 =
 * fixed bug with map on single business view
 
