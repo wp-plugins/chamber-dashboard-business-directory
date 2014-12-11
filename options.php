@@ -61,7 +61,7 @@ function cdash_add_options_page() {
 		'manage_options', 
 		'/chamber-dashboard-business-directory/options.php', 
 		'cdash_render_form', 
-		'dashicons-admin-generic', 
+		plugin_dir_url( __FILE__ ) . '/images/cdash-settings.png', 
 		85 
 	);
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
@@ -83,8 +83,7 @@ function cdash_render_form() {
 	<div class="wrap">
 		
 		<!-- Display Plugin Icon, Header, and Description -->
-		<div class="icon32" id="icon-options-general"><br></div>
-		<h2><?php _e('Chamber Dashboard Business Directory Settings', 'cdash'); ?></h2>
+		<h2><img src="<?php echo plugin_dir_url( __FILE__ ) . '/images/cdash-32.png'?>"><?php _e('Chamber Dashboard Business Directory Settings', 'cdash'); ?></h2>
 
 
 		<div id="main" style="width: 70%; min-width: 350px; float: left;">

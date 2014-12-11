@@ -24,9 +24,12 @@ You can learn more at [chamberdashboard.com](http://chamberdashboard.com)
 
 For full instructions about how to use the plugin, go to [Chamber Dashboard Documentation](http://chamberdashboard.com/support/documentation)
 
-If you want to track the people associated with businesses in your organization, check out [the Chamber Dashboard CRM](https://wordpress.org/plugins/chamber-dashboard-crm/) plugin!
+= Other Chamber Dashboard Plugins =
+* [Chamber Dashboard Events Calendar](https://wordpress.org/plugins/chamber-dashboard-events-calendar/) - Display a calendar of your organization's events
+* [Chamber Dashboard CRM](https://wordpress.org/plugins/chamber-dashboard-crm/) - Keep track of the people associated with your organization and their activities
+* Chamber Dashboard Member Manager - coming soon!  Track membership levels and benefits, collect membership payments online
 
-More features coming soon!  Chamber Dashboard is in the early stages of its development.  By the end of 2014, it will include membership management, event sign-up and management, and much more.
+Many more features coming soon! 
 
 == Installation ==
 = Using The WordPress Dashboard =
@@ -69,6 +72,11 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.8 =
+* added search_form and search_results shortcodes
+* added search widget
+* minor fixes and code clean-up
+
 = 1.7.3 =
 * fixed map issues
 
