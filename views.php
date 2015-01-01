@@ -1092,7 +1092,7 @@ function cdash_display_social_media( $postid ) {
 			if( isset( $social_links ) ) {
 				$display .= '<ul class="icons">';
 				foreach( $social_links as $link ) {
-					$display .= '<li><a href="' . $link['socialurl'] . '" target="_blank"><img src="' . home_url() . '/wp-content/plugins/chamber-dashboard-business-directory/images/social-media/' . $link['socialservice'] . '-' . $options['sm_icon_size'] . '.png" alt="' . ucfirst( $link['socialservice'] ) . '"></a></li>';
+					$display .= '<li><a href="' . $link['socialurl'] . '" target="_blank"><img src="' . plugins_url() . '/chamber-dashboard-business-directory/images/social-media/' . $link['socialservice'] . '-' . $options['sm_icon_size'] . '.png" alt="' . ucfirst( $link['socialservice'] ) . '"></a></li>';
 				}
 				$display .= '</ul>';
 			}

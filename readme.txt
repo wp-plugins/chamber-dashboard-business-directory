@@ -72,6 +72,9 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.9.1 =
+* made sure social media icons are included in plugin
+
 = 1.9 =
 * added social media fields
 * fixed bug that prevented custom fields from displaying
