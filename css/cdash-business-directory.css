@@ -35,6 +35,13 @@ max-width: 50%;
  clear: both;
 }
 
+.cdash-social-media .icons li {
+	list-style-type: none;
+	display: inline-block;
+	margin: 0;
+	margin-right: 10px;
+}
+
 #business .location p,
 #businesslist .location p {
  margin: 0; 

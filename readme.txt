@@ -3,7 +3,7 @@ Contributors: gwendydd
 Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 3.7
-Tested up to: 4.1
+Tested up to: 4.0
 Stable tag: trunk
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -72,6 +72,12 @@ Probably!  I am definitely interested in making this as useful as possible for c
 1. Entering business information
 
 == Changelog ==
+= 1.9 =
+* added social media fields
+* fixed bug that prevented custom fields from displaying
+* fixed display errors when business has empty fields
+* made ampersands display correctly on map
+
 = 1.8.1 =
 * fixed minor bug when displaying email addresses in business_directory shortcode
 

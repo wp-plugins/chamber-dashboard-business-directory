@@ -31,6 +31,8 @@ function cdash_add_defaults() {
 						"tax_address"	 => "1",
 						"tax_url" 		 => "1",
 						"tax_logo"		 => "1",
+						"sm_display"	 => "icons",
+						"sm_icon_size"	 => "32px",
 		);
 		update_option('cdash_directory_options', $arr);
 	}
@@ -130,6 +132,7 @@ function cdash_render_form() {
 							<label><input name="cdash_directory_options[sv_thumb]" type="checkbox" value="1" <?php if (isset($options['sv_thumb'])) { checked('1', $options['sv_thumb']); } ?> /><?php _e(' Featured Image <em>Your theme might already display the featured image.  If it does not, you can check this box to display the featured image</em>', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_memberlevel]" type="checkbox" value="1" <?php if (isset($options['sv_memberlevel'])) { checked('1', $options['sv_memberlevel']); } ?> /><?php _e(' Membership Level', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_category]" type="checkbox" value="1" <?php if (isset($options['sv_category'])) { checked('1', $options['sv_category']); } ?> /><?php _e(' Business Categories', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_social]" type="checkbox" value="1" <?php if (isset($options['sv_social'])) { checked('1', $options['sv_social']); } ?> /><?php _e(' Social Media Links', 'cdash'); ?></label><br />
 						</td>
 					</tr>
 
@@ -147,8 +150,25 @@ function cdash_render_form() {
 							<label><input name="cdash_directory_options[tax_thumb]" type="checkbox" value="1" <?php if (isset($options['tax_thumb'])) { checked('1', $options['tax_thumb']); } ?> /><?php _e(' Featured Image <em>Your theme might already display the featured image.  If it does not, you can check this box to display the featured image</em>', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[tax_memberlevel]" type="checkbox" value="1" <?php if (isset($options['tax_memberlevel'])) { checked('1', $options['tax_memberlevel']); } ?> /><?php _e(' Membership Leve', 'cdash'); ?>l</label><br />
 							<label><input name="cdash_directory_options[tax_category]" type="checkbox" value="1" <?php if (isset($options['tax_category'])) { checked('1', $options['tax_category']); } ?> /><?php _e(' Business Categories', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[tax_social]" type="checkbox" value="1" <?php if (isset($options['tax_social'])) { checked('1', $options['tax_social']); } ?> /><?php _e(' Social Media Links', 'cdash'); ?></label><br />
 						</td>
 					</tr>				
+
+					<!-- Social Media Options -->
+					<tr valign="top">
+					<th scope="row">Social Media Display</th>
+					<td>
+						<label><input name="cdash_directory_options[sm_display]" type="radio" value="text" <?php checked('text', $options['sm_display']); ?> /> <?php _e( 'Text links ', 'cdash' ); ?><span style="color:#666666;margin-left:32px;"><?php _e( 'Display social media as text links', 'cdash' ); ?></span></label><br />
+						<label><input name="cdash_directory_options[sm_display]" type="radio" value="icons" <?php checked('icons', $options['sm_display']); ?> /> <?php _e( 'Icons ', 'cdash' ); ?><span style="color:#666666;margin-left:32px;"><?php _e( 'Display social media links as icons', 'cdash' ); ?></span></label><br />
+						<label><?php _e('Icon Size: ', 'cdash'); ?></label>	
+							<select name='cdash_directory_options[sm_icon_size]'>
+							<option value='16px' <?php selected('16px', $options['sm_icon_size']); ?>>16px</option>
+							<option value='32px' <?php selected('32px', $options['sm_icon_size']); ?>>32px</option>
+							<option value='64px' <?php selected('64px', $options['sm_icon_size']); ?>>64px</option>
+							<option value='128px' <?php selected('128px', $options['sm_icon_size']); ?>>128px</option>
+						</select>
+					</td>
+				</tr>
 
 					<!-- Custom Fields -->
 					<tr>
