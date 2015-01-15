@@ -109,36 +109,10 @@ function cdash_single_business($content) {
 						$business_content .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 					}
 					if (isset($options['sv_phone']) && $options['sv_phone'] == "1" && isset($location['phone'])) { 
-						$business_content .= "<p class='phone'>";
-							$i = 1;
-							$phones = $location['phone'];
-							foreach($phones as $phone) {
-								if($i !== 1) {
-									$business_content .= "<br />";
-								}
-								$business_content .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
-								if(isset($phone['phonetype'])) {
-									$business_content .= "&nbsp;(&nbsp;" . $phone['phonetype'] . "&nbsp;)";
-								}
-								$i++;
-							}
-						$business_content .= "</p>";
+						$business_content .= cdash_display_phone_numbers( $location['phone'] );
 					}
 					if (isset($options['sv_email']) && $options['sv_email'] == "1" && isset($location['email'])) { 
-						$business_content .= "<p class='email'>";
-							$i = 1;
-							$emails = $location['email'];
-							foreach($emails as $email) {
-								if($i !== 1) {
-									$business_content .= "<br />";
-								}
-								$business_content .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
-								if(isset($email['emailtype'])) {
-									$business_content .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
-								}
-								$i++;
-							}
-						$business_content .= "</p>";
+						$business_content .= cdash_display_email_addresses( $location['email'] );
 					}
 				$business_content .= "</div>";
 				}
@@ -386,36 +360,10 @@ function cdash_taxonomy_filter($content) {
 					$tax_content .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 				}
 				if (isset($options['tax_phone']) && $options['tax_phone'] == "1" && isset($location['phone'])) { 
-					$tax_content .= "<p class='phone'>";
-						$i = 1;
-						$phones = $location['phone'];
-						foreach($phones as $phone) {
-							if($i !== 1) {
-								$tax_content .= "<br />";
-							}
-							$tax_content .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
-							if(isset($phone['phonetype'])) {
-								$tax_content .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
-							}
-							$i++;
-						}
-					$tax_content .= "</p>";
+					$tax_content .= cdash_display_phone_numbers( $location['phone'] );
 				}
 				if (isset($options['tax_email']) && $options['tax_email'] == "1" && isset($location['email'])) { 
-					$tax_content .= "<p class='email'>";
-						$i = 1;
-						$emails = $location['email'];
-						foreach($emails as $email) {
-							if($i !== 1) {
-								$tax_content .= "<br />";
-							}
-							$tax_content .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
-							if(isset($email['emailtype'])) {
-								$tax_content .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
-							}
-							$i++;
-						}
-					$tax_content .= "</p>";
+					$tax_content .= cdash_display_email_addresses( $location['email'] );
 				}
 			$tax_content .= "</div>";
 			}
@@ -445,7 +393,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			'display' => '', // options: address, url, phone, email, location_name, category, level, social_media_links, social_media_icons
 			'single_link' => 'yes', // options: yes, no
 			'perpage' => '-1', // options: any number
-			'orderby' => 'title', // options: date, modified, menu_order, rand
+			'orderby' => 'title', // options: date, modified, menu_order, rand, priority
 			'order' => 'ASC', //options: asc, desc
 			'image' => 'logo', // options: logo, featured, none
 		), $atts )
@@ -543,36 +491,10 @@ function cdash_business_directory_shortcode( $atts ) {
 									$business_list .= "</p>";
 							  	}
 							  	if(in_array("phone", $displayopts) && isset($location['phone'])) {
-									$business_list .= "<p class='phone'>";
-										$i = 1;
-										$phones = $location['phone'];
-										foreach($phones as $phone) {
-											if($i !== 1) {
-												$business_list .= "<br />";
-											}
-											$business_list .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
-											if(isset($phone['phonetype'])) {
-												$business_list .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
-											}
-											$i++;
-										}
-									$business_list .= "</p>";
+									$business_list .= cdash_display_phone_numbers( $location['phone'] );
 							  	} 
 							  	if(in_array("email", $displayopts) && isset($location['email'])) {
-									$business_list .= "<p class='email'>";
-										$i = 1;
-										$emails = $location['email'];
-										foreach($emails as $email) {
-											if($i !== 1) {
-												$business_list .= "<br />";
-											}
-											$business_list .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
-											if(isset($email['emailtype'])) {
-												$business_list .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
-											}
-											$i++;
-										}
-									$business_list .= "</p>";
+									$business_list .= cdash_display_email_addresses( $location['email'] );
 								}
 						  	} 
 						  	if(in_array("url", $displayopts) && isset($location['url'])) {
@@ -905,36 +827,10 @@ function cdash_business_search_results_shortcode() {
 							$search_results .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
 						}
 						if ( isset( $options['tax_phone'] ) && $options['tax_phone'] == "1" && isset( $location['phone'] ) ) { 
-							$search_results .= "<p class='phone'>";
-								$i = 1;
-								$phones = $location['phone'];
-								foreach( $phones as $phone ) {
-									if( $i !== 1 ) {
-										$search_results .= "<br />";
-									}
-									$search_results .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
-									if( isset( $phone['phonetype'] ) ) {
-										$search_results .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
-									}
-									$i++;
-								}
-							$search_results .= "</p>";
+							$search_results .= cdash_display_phone_numbers( $location['phone'] );
 						}
 						if ( isset( $options['tax_email'] ) && $options['tax_email'] == "1" && isset( $location['email'] ) ) { 
-							$search_results .= "<p class='email'>";
-								$i = 1;
-								$emails = $location['email'];
-								foreach( $emails as $email ) {
-									if( $i !== 1 ) {
-										$search_results .= "<br />";
-									}
-									$search_results .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
-									if( isset($email['emailtype'] ) ) {
-										$search_results .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
-									}
-									$i++;
-								}
-							$search_results .= "</p>";
+							$search_results .= cdash_display_email_addresses( $location['email'] );
 						$search_results .= "</div><!-- .location -->";
 						}
 					$search_results .= "</div><!-- .search-result -->";
@@ -984,7 +880,7 @@ function cdash_business_search_form_shortcode( $atts ) {
 	// Search form
 	$search_form = "<div id='business-search'><h3>" . __('Search', 'cdash') . "</h3>";
 	if( $results_page == 'notset') {
-		$search_form .= "You must enter a results page!";
+		$search_form .= __( 'You must enter a results page!', 'cdash' );
 	} else {
 		$search_form .= "<form method='get' action='" . home_url('/') . $results_page . "'>";
 	}
@@ -1130,5 +1026,58 @@ function cdash_display_custom_fields( $postid ) {
 
 	return $custom_fields;
 }
+
+// ------------------------------------------------------------------------
+// DISPLAY PHONE NUMBERS
+// ------------------------------------------------------------------------
+
+function cdash_display_phone_numbers( $phone_numbers ) {
+	$phones_content = '';
+
+	if( is_array( $phone_numbers ) ) {
+		$phones_content .= "<p class='phone'>";
+			$i = 1;
+			foreach($phone_numbers as $phone) {
+				if($i !== 1) {
+					$phones_content .= "<br />";
+				}
+				$phones_content .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
+				if(isset($phone['phonetype'])) {
+					$phones_content .= "&nbsp;(&nbsp;" . $phone['phonetype'] . "&nbsp;)";
+				}
+				$i++;
+			}
+		$phones_content .= "</p>";
+	}
+
+	return $phones_content;
+}
+
+// ------------------------------------------------------------------------
+// DISPLAY EMAIL ADDRESSES
+// ------------------------------------------------------------------------
+
+function cdash_display_email_addresses( $email_addresses ) {
+	$email_content = '';
+
+	if( is_array( $email_addresses ) ) {
+		$email_content .= "<p class='email'>";
+			$i = 1;
+			foreach($email_addresses as $email) {
+				if($i !== 1) {
+					$email_content .= "<br />";
+				}
+				$email_content .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
+				if(isset($email['emailtype'])) {
+					$email_content .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
+				}
+				$i++;
+			}
+		$email_content .= "</p>";
+	}
+
+	return $email_content;
+}
+
 
 ?>

@@ -65,13 +65,25 @@ There are lots of options for this shortcode.  For a full description, see [Cham
 = Will it work with my theme? =
 Probably!  It is designed to work with any theme that follows basic WordPress coding practices. 
 
+= Can I see other sites that are using Chamber Dashboard? = 
+Yes!  We have a [map of organizations using Chamber Dashboard](https://chamberdashboard.com/chamber-dashboard-user-map/) 
+
 = I want the plugin to do _____.  Can you make it do that? =
 Probably!  I am definitely interested in making this as useful as possible for chambers of commerce, so please let me know what features you need!  You can use the contact form at [chamberdashboard.com/contact](http://chamberdashboard.com/contact)
+
+= Is it translation-ready? =
+Yes, the plugin is ready to be translated!  .po and .mo files are included.  If you translate the plugin, I would love to include your translation with future releases of the plugin.
+
+
 
 == Screenshots ==
 1. Entering business information
 
 == Changelog ==
+= 2.0 = 
+* added billing contact information to work with Member Manager plugin
+* minor bug fixes
+
 = 1.9.1 =
 * made sure social media icons are included in plugin
 

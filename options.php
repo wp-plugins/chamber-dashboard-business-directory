@@ -33,6 +33,9 @@ function cdash_add_defaults() {
 						"tax_logo"		 => "1",
 						"sm_display"	 => "icons",
 						"sm_icon_size"	 => "32px",
+						"currency_position" => "before",
+						"currency_symbol" => "$",
+						"currency" => "USD",
 		);
 		update_option('cdash_directory_options', $arr);
 	}
@@ -157,18 +160,54 @@ function cdash_render_form() {
 					<!-- Social Media Options -->
 					<tr valign="top">
 					<th scope="row">Social Media Display</th>
-					<td>
-						<label><input name="cdash_directory_options[sm_display]" type="radio" value="text" <?php checked('text', $options['sm_display']); ?> /> <?php _e( 'Text links ', 'cdash' ); ?><span style="color:#666666;margin-left:32px;"><?php _e( 'Display social media as text links', 'cdash' ); ?></span></label><br />
-						<label><input name="cdash_directory_options[sm_display]" type="radio" value="icons" <?php checked('icons', $options['sm_display']); ?> /> <?php _e( 'Icons ', 'cdash' ); ?><span style="color:#666666;margin-left:32px;"><?php _e( 'Display social media links as icons', 'cdash' ); ?></span></label><br />
-						<label><?php _e('Icon Size: ', 'cdash'); ?></label>	
-							<select name='cdash_directory_options[sm_icon_size]'>
-							<option value='16px' <?php selected('16px', $options['sm_icon_size']); ?>>16px</option>
-							<option value='32px' <?php selected('32px', $options['sm_icon_size']); ?>>32px</option>
-							<option value='64px' <?php selected('64px', $options['sm_icon_size']); ?>>64px</option>
-							<option value='128px' <?php selected('128px', $options['sm_icon_size']); ?>>128px</option>
-						</select>
-					</td>
-				</tr>
+						<td>
+							<label><input name="cdash_directory_options[sm_display]" type="radio" value="text" <?php checked('text', $options['sm_display']); ?> /> <?php _e( 'Text links ', 'cdash' ); ?><span style="color:#666666;margin-left:32px;"><?php _e( 'Display social media as text links', 'cdash' ); ?></span></label><br />
+							<label><input name="cdash_directory_options[sm_display]" type="radio" value="icons" <?php checked('icons', $options['sm_display']); ?> /> <?php _e( 'Icons ', 'cdash' ); ?><span style="color:#666666;margin-left:32px;"><?php _e( 'Display social media links as icons', 'cdash' ); ?></span></label><br />
+							<label><?php _e('Icon Size: ', 'cdash'); ?></label>	
+								<select name='cdash_directory_options[sm_icon_size]'>
+								<option value='16px' <?php selected('16px', $options['sm_icon_size']); ?>>16px</option>
+								<option value='32px' <?php selected('32px', $options['sm_icon_size']); ?>>32px</option>
+								<option value='64px' <?php selected('64px', $options['sm_icon_size']); ?>>64px</option>
+								<option value='128px' <?php selected('128px', $options['sm_icon_size']); ?>>128px</option>
+							</select>
+						</td>
+					</tr>
+
+					<!-- Currency -->
+					<tr>
+						<th scope="row"><?php _e('Currency', 'cdash'); ?></th>
+						<td>
+							<select name='cdash_directory_options[currency]'>
+								<?php global $currencies;
+								foreach($currencies['codes'] as $code => $currency)
+								{
+									echo '<option value="'.esc_attr($code).'"'.selected($options['currency'], $code, false).'>'.esc_html($currency).'</option>';
+								} ?>
+							</select>
+							<span style="color:#666666;margin-left:2px;"><?php _e('Select the currency that will be used on invoices.', 'cdash'); ?></span>
+						</td>
+					</tr>
+
+					<tr>
+						<th scope="row"><?php _e('Currency Symbol', 'cdash'); ?></th>
+						<td>
+							<input type="text" size="35" name="cdash_directory_options[currency_symbol]" value="<?php if(isset($options['currency_symbol'])) { echo $options['currency_symbol']; } ?>" />
+							<br /><span style="color:#666666;margin-left:2px;"><?php _e('Enter the symbol that should appear next to all currency.', 'cdashmm'); ?></span>
+						</td>
+					</tr>
+
+					<tr valign="top">
+						<th scope="row"><?php _e( 'Currency Position', 'cdash' ); ?></th>
+						<td>
+							<!-- First radio button -->
+							<label><input name="cdash_directory_options[currency_position]" type="radio" value="before" <?php checked('before', $options['currency_position']); ?> /><?php _e( ' Before the price', 'cdash' ); ?>
+							</label><br />
+
+							<!-- Second radio button -->
+							<label><input name="cdash_directory_options[currency_position]" type="radio" value="after" <?php checked('after', $options['currency_position']); ?> /><?php _e( ' After the price', 'cdash' ); ?>
+							</label>
+						</td>
+					</tr>
 
 					<!-- Custom Fields -->
 					<tr>
@@ -259,31 +298,7 @@ function cdash_render_form() {
 
 			</script>
 		</div><!-- #main -->
-		<div id="sidebar" style="width: 28%; float: right; min-width: 150px; background: #fff; border: 1px solid #999; padding: 6px">
-			<h3><?php _e('Documentation', 'cdash'); ?></h3>
-			<p><?php _e('If you\'re looking for more information about how to use this plugin, visit the <a href="http://chamberdashboard.com/support/documentation/" target="_blank">Documentation page at ChamberDashboard.com', 'cdash'); ?></a></p>
-			<h3><?php _e('Contact', 'cdash'); ?></h3>
-			<p><?php _e('Don\'t hesitate to <a href="http://chamberdashboard.com/contact/" target="_blank">contact us</a> to request new features, ask questions, or just say hi.', 'cdash'); ?></p>
-			<h3><?php _e('Other Chamber Dashboard Plugins', 'cdash'); ?></h3>
-			<p><?php _e('This plugin is designed to work with the <a href="https://wordpress.org/plugins/chamber-dashboard-crm/" target="_blank">Chamber Dashboard CRM plugin</a> - keep track of the people associated with your businesses!', 'cdash'); ?></p> 
-			<h3><?php _e('Showcase', 'cdash'); ?></h3>
-			<p><?php _e('We would like to showcase sites that are using Chamber Dashboard on our website! <a href="http://chamberdashboard.com/contact/" target="_blank">Contact us</a> to tell us about your site!', 'cdash'); ?></p>
-			<h3><?php _e('Donate', 'cdash'); ?></h3>
-			<p><?php _e('All donations go to the <a href="http://fremont.com" target="_blank">Fremont Chamber of Commerce</a> to support further development of Chamber Dashboard.', 'cdash'); ?></p>
-			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-			<input type="hidden" name="cmd" value="_donations">
-			<input type="hidden" name="business" value="director@fremont.com">
-			<input type="hidden" name="lc" value="US">
-			<input type="hidden" name="item_name" value="Fremont Chamber of Commerce">
-			<input type="hidden" name="item_number" value="Chamber Dashboard">
-			<input type="hidden" name="no_note" value="0">
-			<input type="hidden" name="currency_code" value="USD">
-			<input type="hidden" name="bn" value="PP-DonationsBF:btn_donate_LG.gif:NonHostedGuest">
-			<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-			<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-			</form>
-
-		</div>
+		<?php include( plugin_dir_path( __FILE__ ) . '/includes/aside.php' ); ?>
 	</div>
 
 	<?php	
@@ -295,6 +310,9 @@ function cdash_render_form() {
 function cdash_validate_options($input) {
 	$input['bus_phone_type'] =  wp_filter_nohtml_kses($input['bus_phone_type']); 
 	$input['bus_email_type'] =  wp_filter_nohtml_kses($input['bus_email_type']);
+	if( isset( $input['currency_symbol'] ) ) {
+		$input['currency_symbol'] =  wp_filter_nohtml_kses($input['currency_symbol']); 
+	}
 	// $input['txt_one'] =  wp_filter_nohtml_kses($input['txt_one']); // Sanitize textbox input (strip html tags, and escape characters)
 	// $input['textarea_one'] =  wp_filter_nohtml_kses($input['textarea_one']); // Sanitize textarea input (strip html tags, and escape characters)
 	return $input;

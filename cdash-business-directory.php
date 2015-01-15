@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 1.9.1
+Version: 2.0
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -64,11 +64,13 @@ function cdash_activation_transient() {
 	set_transient('_cdash_activation_redirect', 1, 3600);
 }
 // Require welcome page
-require_once( plugin_dir_path( __FILE__ ) . 'welcome-page.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/welcome-page.php' );
 // Require views
 require_once( plugin_dir_path( __FILE__ ) . 'views.php' );
 // Require widgets
 require_once( plugin_dir_path( __FILE__ ) . 'widgets.php' );
+// Require currency list
+require_once( plugin_dir_path( __FILE__ ) . 'includes/currency_list.php' );
 
 
 
@@ -242,6 +244,17 @@ $buscontact_metabox = new WPAlchemy_MetaBox(array
     'prefix' => '_cdash_'
 ));
 
+// Create metabox for location/address information
+$billing_metabox = new WPAlchemy_MetaBox(array
+(
+    'id' => 'billing_meta',
+    'title' => 'Billing Information',
+    'types' => array('business'),
+    'template' => CDASH_PATH . '/wpalchemy/busbilling.php',
+    'mode' => WPALCHEMY_MODE_EXTRACT,
+    'prefix' => '_cdash_'
+));
+
 // Create metabox for business logo
 $buslogo_metabox = new WPAlchemy_MetaBox(array
 (
@@ -316,17 +329,19 @@ function cdash_business_overview_columns($column_name, $post_ID) {
 	$contactmeta = $buscontact_metabox->the_meta();
     if ($column_name == 'phone') {
     	$phonenumbers = '';
-    	$locations = $contactmeta['location'];
-		foreach($locations as $location) {
-			if(isset($location['phone'])) {
-				$phones = $location['phone'];
-				if(is_array($phones)) {
-					foreach($phones as $phone) {
-						$phonenumbers .= $phone['phonenumber'];
-						if(isset($phone['phonetype'])) {
-							$phonenumbers .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+    	if( isset( $contactmeta['location'] ) ) {
+	    	$locations = $contactmeta['location'];
+			foreach($locations as $location) {
+				if(isset($location['phone'])) {
+					$phones = $location['phone'];
+					if(is_array($phones)) {
+						foreach($phones as $phone) {
+							$phonenumbers .= $phone['phonenumber'];
+							if(isset($phone['phonetype'])) {
+								$phonenumbers .= "&nbsp;(" . $phone['phonetype'] . "&nbsp;)";
+							}
+							$phonenumbers .= "<br />";
 						}
-						$phonenumbers .= "<br />";
 					}
 				}
 			}
