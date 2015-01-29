@@ -106,7 +106,7 @@ function cdash_single_business($content) {
 						$business_content .= "</p>";
 					}
 					if (isset($options['sv_url']) && $options['sv_url'] == "1" && isset($location['url'])) { 
-						$business_content .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
+						$business_content .= cdash_display_url( $location['url'] );
 					}
 					if (isset($options['sv_phone']) && $options['sv_phone'] == "1" && isset($location['phone'])) { 
 						$business_content .= cdash_display_phone_numbers( $location['phone'] );
@@ -357,7 +357,7 @@ function cdash_taxonomy_filter($content) {
 					$tax_content .= "</p>";
 				}
 				if (isset($options['tax_url']) && $options['tax_url'] == "1" && isset($location['url'])) { 
-					$tax_content .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
+					$tax_content .= cdash_display_url( $location['url'] );
 				}
 				if (isset($options['tax_phone']) && $options['tax_phone'] == "1" && isset($location['phone'])) { 
 					$tax_content .= cdash_display_phone_numbers( $location['phone'] );
@@ -498,7 +498,7 @@ function cdash_business_directory_shortcode( $atts ) {
 								}
 						  	} 
 						  	if(in_array("url", $displayopts) && isset($location['url'])) {
-						  		$business_list .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
+						  		$business_list .= cdash_display_url( $location['url'] );
 						  	} 
 				  		}
 				  	}
@@ -824,7 +824,7 @@ function cdash_business_search_results_shortcode() {
 							$search_results .= "</p>";
 						}
 						if ( isset( $options['tax_url'] ) && $options['tax_url'] == "1" && isset( $location['url'] ) ) { 
-							$search_results .= "<p class='website'><a href='" . $location['url'] . "' target='_blank'>" . $location['url'] . "</a></p>";
+							$search_results .= cdash_display_url( $location['url'] );
 						}
 						if ( isset( $options['tax_phone'] ) && $options['tax_phone'] == "1" && isset( $location['phone'] ) ) { 
 							$search_results .= cdash_display_phone_numbers( $location['phone'] );
@@ -1013,11 +1013,15 @@ function cdash_display_custom_fields( $postid ) {
 	$custom_fields = ''; 
 
 	foreach($customfields as $field) { 
-		if($field['display_dir'] !== "yes") {
+		if( is_singular( 'business' ) || "yes" == $field['display_single'] ) {
+			$fieldname = $field['name'];
+			if(isset($custommeta[$fieldname])) {
+				$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
+			}	
+		} elseif( "yes" !== $field['display_dir'] ) {
 			continue;
 		} else {
 			$fieldname = $field['name'];
-			$fieldname = "_cdash_" . $fieldname;
 			if(isset($custommeta[$fieldname])) {
 				$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
 			}	
@@ -1079,5 +1083,18 @@ function cdash_display_email_addresses( $email_addresses ) {
 	return $email_content;
 }
 
+// ------------------------------------------------------------------------
+// DISPLAY URL
+// ------------------------------------------------------------------------
+
+function cdash_display_url( $url ) {
+	if( null === parse_url( $url, PHP_URL_SCHEME )) {
+		$url = "http://" . $url;
+	}
+
+	$url_content = "<p class='website'><a href='" . $url . "' target='_blank'>" . $url . "</a></p>";
+
+	return $url_content;
+}
 
 ?>

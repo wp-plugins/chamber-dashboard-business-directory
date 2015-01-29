@@ -100,3 +100,22 @@ input#item_membershipamt {
     margin: 5px;
     padding: 5px 5px 5px 9px;
 }
+
+#cdashmm-advert h3 {
+	font-weight: normal;
+	font-size: 1.2em;
+	padding: 0;
+}
+
+#cdashmm-advert a {
+	display: block;
+	background: url('cdashmm.png') left center no-repeat;
+	padding-left: 40px;
+	min-height: 50px;
+	font-size: 1.1em;
+}
+
+#cdashmm-advert li {
+	list-style-type: square;
+	margin-left: 1em;
+}
