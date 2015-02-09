@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 2.1
+Version: 2.2
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 */
@@ -309,6 +309,65 @@ function cdash_promote_member_manager() {
 add_action( 'plugins_loaded', 'cdash_promote_member_manager' );
 
 
+// ------------------------------------------------------------------------
+// SET UP P2P IF OTHER PLUGINS NEED IT
+// ------------------------------------------------------------------------
+
+function cdash_p2p_check() {
+	if( defined('CDCRM_PATH') || defined('CDASHMM_STATUS') ) {
+		if ( !class_exists( 'P2P_Autoload' ) ) {
+			require_once dirname( __FILE__ ) . '/wpp2p/autoload.php';
+		}
+		if( !defined( 'P2P_PLUGIN_VERSION') ) {
+			define( 'P2P_PLUGIN_VERSION', '1.6.3' );
+		}
+		if( !defined( 'P2P_TEXTDOMAIN') ) {
+			define( 'P2P_TEXTDOMAIN', 'cdash' );
+		}
+	}
+}
+
+add_action( 'admin_init', 'cdash_p2p_check' );
+
+function cdash_p2p_load() {
+	if ( !class_exists( 'P2P_Autoload' ) && ( defined('CDCRM_PATH') || defined('CDASHMM_STATUS') ) ) {
+		//load_plugin_textdomain( P2P_TEXTDOMAIN, '', basename( dirname( __FILE__ ) ) . '/languages' );
+		if ( !function_exists( 'p2p_register_connection_type' ) ) {
+			require_once dirname( __FILE__ ) . '/wpp2p/autoload.php';
+		}
+		P2P_Storage::init();
+		P2P_Query_Post::init();
+		P2P_Query_User::init();
+		P2P_URL_Query::init();
+		P2P_Widget::init();
+		P2P_Shortcodes::init();
+		register_uninstall_hook( __FILE__, array( 'P2P_Storage', 'uninstall' ) );
+		if ( is_admin() )
+			cdash_load_admin();
+	}
+}
+
+function cdash_load_admin() {
+	if ( defined('CDCRM_PATH') || defined('CDASHMM_STATUS') ) {
+		P2P_Autoload::register( 'P2P_', dirname( __FILE__ ) . '/wpp2p/admin' );
+		new P2P_Box_Factory;
+		new P2P_Column_Factory;
+		new P2P_Dropdown_Factory;
+		new P2P_Tools_Page;
+	}
+}
+
+function cdash_p2p_init() {
+	if ( defined('CDCRM_PATH') || defined('CDASHMM_STATUS') ) {
+		// Safe hook for calling p2p_register_connection_type()
+		do_action( 'p2p_init' );
+	}
+}
+
+require dirname( __FILE__ ) . '/wpp2p/scb/load.php';
+scb_init( 'cdash_p2p_load' );
+add_action( 'wp_loaded', 'cdash_p2p_init' );
+
 
 // ------------------------------------------------------------------------
 // ADD CUSTOM META DATA TO TAXONOMIES - http://en.bainternet.info/wordpress-taxonomies-extra-fields-the-easy-way/
@@ -347,7 +406,7 @@ function cdash_business_overview_columns($column_name, $post_ID) {
 	$contactmeta = $buscontact_metabox->the_meta();
     if ($column_name == 'phone') {
     	$phonenumbers = '';
-    	if( isset( $contactmeta['location'] ) ) {
+    	if( isset($contactmeta['location']) && is_array( $contactmeta['location'] ) ) {
 	    	$locations = $contactmeta['location'];
 			foreach($locations as $location) {
 				if(isset($location['phone'])) {

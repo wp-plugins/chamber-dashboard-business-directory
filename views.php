@@ -331,41 +331,43 @@ function cdash_taxonomy_filter($content) {
 			}
 		}
 		$locations = $contactmeta['location'];
-		foreach($locations as $location) {
-			if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
-				continue;
-			} else {
-				$tax_content .= "<div class='location'>";
-				if (isset($options['tax_name']) && $options['tax_name'] == "1" && isset($location['altname'])) { 
-					$tax_content .= "<h3>" . $location['altname'] . "</h3>";
+		if( is_array( $locations ) ) {
+			foreach($locations as $location) {
+				if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
+					continue;
+				} else {
+					$tax_content .= "<div class='location'>";
+					if (isset($options['tax_name']) && $options['tax_name'] == "1" && isset($location['altname'])) { 
+						$tax_content .= "<h3>" . $location['altname'] . "</h3>";
+					}
+					if (isset($options['tax_address']) && $options['tax_address'] == "1") { 
+						$tax_content .= "<p class='address'>";
+		 					if(isset($location['address'])) {
+								$address = $location['address'];
+								$tax_content .= str_replace("\n", '<br />', $address);
+							}
+							if(isset($location['city'])) {
+								$tax_content .= "<br />" . $location['city'] . ",&nbsp;";
+							}
+							if(isset($location['state'])) {
+								$tax_content .= $location['state'] . "&nbsp;";
+							}
+							if(isset($location['zip'])) {
+								$tax_content .= $location['zip'];
+							} 
+						$tax_content .= "</p>";
+					}
+					if (isset($options['tax_url']) && $options['tax_url'] == "1" && isset($location['url'])) { 
+						$tax_content .= cdash_display_url( $location['url'] );
+					}
+					if (isset($options['tax_phone']) && $options['tax_phone'] == "1" && isset($location['phone'])) { 
+						$tax_content .= cdash_display_phone_numbers( $location['phone'] );
+					}
+					if (isset($options['tax_email']) && $options['tax_email'] == "1" && isset($location['email'])) { 
+						$tax_content .= cdash_display_email_addresses( $location['email'] );
+					}
+				$tax_content .= "</div>";
 				}
-				if (isset($options['tax_address']) && $options['tax_address'] == "1") { 
-					$tax_content .= "<p class='address'>";
-	 					if(isset($location['address'])) {
-							$address = $location['address'];
-							$tax_content .= str_replace("\n", '<br />', $address);
-						}
-						if(isset($location['city'])) {
-							$tax_content .= "<br />" . $location['city'] . ",&nbsp;";
-						}
-						if(isset($location['state'])) {
-							$tax_content .= $location['state'] . "&nbsp;";
-						}
-						if(isset($location['zip'])) {
-							$tax_content .= $location['zip'];
-						} 
-					$tax_content .= "</p>";
-				}
-				if (isset($options['tax_url']) && $options['tax_url'] == "1" && isset($location['url'])) { 
-					$tax_content .= cdash_display_url( $location['url'] );
-				}
-				if (isset($options['tax_phone']) && $options['tax_phone'] == "1" && isset($location['phone'])) { 
-					$tax_content .= cdash_display_phone_numbers( $location['phone'] );
-				}
-				if (isset($options['tax_email']) && $options['tax_email'] == "1" && isset($location['email'])) { 
-					$tax_content .= cdash_display_email_addresses( $location['email'] );
-				}
-			$tax_content .= "</div>";
 			}
 		}
 		if($options['bus_custom']) {

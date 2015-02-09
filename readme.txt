@@ -80,6 +80,9 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.2 =
+* increased compatibility with other Chamber Dashboard plugins
+
 = 2.1 =
 * check URLs for "http://" to make sure links work
 * updated welcome page
