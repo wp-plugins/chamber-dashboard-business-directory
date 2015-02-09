@@ -390,7 +390,7 @@ function cdash_business_directory_shortcode( $atts ) {
 		array(
 			'format' => 'list',  // options: list, grid2, grid3, grid4
 			'category' => '', // options: slug of any category
-			'level' => '', // options: sluf of any membership level
+			'level' => '', // options: slug of any membership level
 			'text' => 'excerpt', // options: excerpt, description, none
 			'display' => '', // options: address, url, phone, email, location_name, category, level, social_media_links, social_media_icons
 			'single_link' => 'yes', // options: yes, no
@@ -398,6 +398,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			'orderby' => 'title', // options: date, modified, menu_order, rand, priority
 			'order' => 'ASC', //options: asc, desc
 			'image' => 'logo', // options: logo, featured, none
+			'status' => '' // options: slug of any membership status
 		), $atts )
 	);
 
@@ -421,7 +422,8 @@ function cdash_business_directory_shortcode( $atts ) {
 	    'order' => $order,
 	    'orderby' => $orderby, 	
 	    'business_category' => $category,	
-	    'membership_level' => $level,								 
+	    'membership_level' => $level,		
+	    'membership_status' => $status						 
 	);
 
 	$businessquery = new WP_Query( $args );
