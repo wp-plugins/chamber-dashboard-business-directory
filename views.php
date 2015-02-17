@@ -33,99 +33,75 @@ function cdash_single_business($content) {
 		global $post;
 
 		$business_content = "<div id='business'>";
-		if (isset($options['sv_thumb']) && $options['sv_thumb'] == "1") { 
-			$business_content .= get_the_post_thumbnail( $post->ID, 'full');
+		if( isset( $options['sv_thumb'] ) && "!" == $options['sv_thumb'] ) { 
+			$business_content .= get_the_post_thumbnail( $post_id, 'full' );
 		}
-		if (isset($options['sv_logo']) && isset($logometa['buslogo']) && $options['sv_logo'] == "1") { 
+		if( isset( $options['sv_logo'] ) && isset( $logometa['buslogo'] ) && "1" == $options['sv_logo'] ) { 
 			$attr = array(
 				'class'	=> 'alignleft logo',
 			);
 			$business_content .= wp_get_attachment_image($logometa['buslogo'], 'full', 0, $attr );
 		}
-		if (isset($options['sv_description']) && $options['sv_description'] == "1") { 
+		if( isset( $options['sv_description'] ) && "1" == $options['sv_description'] ) { 
 			$business_content .= $content;
 		}
 		if( isset( $options['sv_social'] ) && "1" == $options['sv_social'] ) { 
-			$business_content .= cdash_display_social_media( get_the_id() );
+			$business_content .= cdash_display_social_media( $post_id );
 		}
-		if (isset($options['sv_memberlevel']) && $options['sv_memberlevel'] == "1") { 
-			$id = get_the_id();
-			$levels = get_the_terms( $id, 'membership_level');
-			if($levels) {
-				$business_content .= "<p class='membership'><span>" . __('Membership Level:&nbsp;', 'cdash') . "</span>";
-				$i = 1;
-				foreach($levels as $level) {
-					if($i !== 1) {
-						$business_content .= ",&nbsp;";
-					}
-					$business_content .= $level->name;
-					$i++;
-				}
-			}
+		if( isset( $options['sv_memberlevel'] ) && "!" == $options['sv_memberlevel'] ) { 
+			$business_content .= cdash_display_membership_level( $post_id );
 		}
-		if (isset($options['sv_category']) && $options['sv_category'] == "1") { 
-			$id = get_the_id();
-			$buscats = get_the_terms( $id, 'business_category');
-			if($buscats) {
-				$business_content .= "<p class='categories'><span>" . __('Categories:&nbsp;', 'cdash') . "</span>";
-				$i = 1;
-				foreach($buscats as $buscat) {
-					if($i !== 1) {
-						$business_content .= ",&nbsp;";
-					}
-					$business_content .= $buscat->name;
-					$i++;
-				}
-			}
+		if( isset( $options['sv_category'] ) && "1" == $options['sv_category'] ) { 
+			$business_content .= cdash_display_business_categories( $post_id );
 		}
-		if(isset($contactmeta['location'])) {
+		if( isset( $contactmeta['location'] ) ) {
 			$locations = $contactmeta['location'];
-			foreach($locations as $location) {
+			foreach( $locations as $location ) {
 				if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
 					continue;
 				} else {
 					$business_content .= "<div class='location'>";
-					if (isset($options['sv_name']) && ($options['sv_name']) == "1" && isset($location['altname'])) { 
+					if( isset($options['sv_name'] ) && "1" == ( $options['sv_name'] ) && isset( $location['altname'] ) && '' !== $location['altname'] ) { 
 						$business_content .= "<h3>" . $location['altname'] . "</h3>";
 					}
-					if (isset($options['sv_address']) && $options['sv_address'] == "1") { 
+					if( isset( $options['sv_address'] ) && "1" == $options['sv_address'] ) { 
 						$business_content .= "<p class='address'>";
-		 					if(isset($location['address'])) {
+		 					if( isset( $location['address'] ) && '' !== $location['address'] ) {
 								$address = $location['address'];
 								$business_content .= str_replace("\n", '<br />', $address);
 							}
-							if(isset($location['city'])) {
+							if( isset( $location['city'] ) && '' !== $location['city'] ) {
 								$business_content .= "<br />" . $location['city'] . ",&nbsp;";
 							}
-							if(isset($location['state'])) {
+							if( isset( $location['state'] ) && '' !== $location['state'] ) {
 								$business_content .= $location['state'] . "&nbsp;";
 							}
-							if(isset($location['zip'])) {
+							if( isset( $location['zip'] ) && '' !== $location['zip'] ) {
 								$business_content .= $location['zip'];
 							} 
 						$business_content .= "</p>";
 					}
-					if (isset($options['sv_url']) && $options['sv_url'] == "1" && isset($location['url'])) { 
+					if( isset( $options['sv_url'] ) && "1" == $options['sv_url'] && isset( $location['url'] ) && '' !== $location['url'] ) { 
 						$business_content .= cdash_display_url( $location['url'] );
 					}
-					if (isset($options['sv_phone']) && $options['sv_phone'] == "1" && isset($location['phone'])) { 
+					if( isset( $options['sv_phone'] ) && "1" == $options['sv_phone'] && isset( $location['phone'] ) && '' !== $location['phone'] ) { 
 						$business_content .= cdash_display_phone_numbers( $location['phone'] );
 					}
-					if (isset($options['sv_email']) && $options['sv_email'] == "1" && isset($location['email'])) { 
+					if( isset( $options['sv_email'] ) && "1" == $options['sv_email'] && isset( $location['email'] ) && '' !== $location['email'] ) { 
 						$business_content .= cdash_display_email_addresses( $location['email'] );
 					}
 				$business_content .= "</div>";
 				}
 			}
 		}
-		if($options['bus_custom']) {
+		if( $options['bus_custom'] ) {
 		 	$business_content .= cdash_display_custom_fields( get_the_id() );
 		}
-		if (isset($options['sv_map']) && $options['sv_map'] == "1" ) {
+		if( isset( $options['sv_map']) && "1" == $options['sv_map'] ) {
 			// only show the map if locations have addresses entered
 			$needmap = "false";
-			foreach ($locations as $location) {
-				if(isset($location['address']) && !isset($location['donotdisplay'])) {
+			foreach ( $locations as $location ) {
+				if( isset( $location['address'] ) && !isset( $location['donotdisplay'] ) ) {
 					$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
 					$address = urlencode($rawaddress);
 					$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
@@ -135,7 +111,7 @@ function cdash_single_business($content) {
 					}
 				}
 			} 
-			if($needmap == "true") { 
+			if( $needmap == "true" ) { 
 				$business_content .= "<div id='map-canvas' style='width: 100%; height: 300px; margin: 20px 0;'></div>";
 				add_action('wp_footer', 'cdash_single_business_map');
 			}
@@ -272,9 +248,9 @@ function cdash_info_window() {
 // TAXONOMY VIEW
 // ------------------------------------------------------------------------
 
-function cdash_taxonomy_filter($content) {
-	if( is_tax('business_category') || is_tax('membership_level') ) {
-		$options = get_option('cdash_directory_options');
+function cdash_taxonomy_filter( $content ) {
+	if( is_tax( 'business_category' ) || is_tax( 'membership_level' ) ) {
+		$options = get_option( 'cdash_directory_options' );
 
 		// make location/address metabox data available
 		global $buscontact_metabox;
@@ -287,90 +263,66 @@ function cdash_taxonomy_filter($content) {
 		global $post;
 
 		$tax_content = '';
-		if (isset($options['tax_thumb']) && $options['tax_thumb'] == "1") { 
+		if( isset( $options['tax_thumb'] ) && "1" == $options['tax_thumb'] ) { 
 			$tax_content .= get_the_post_thumbnail( $post->ID, 'full');
 		}
-		if (isset($options['tax_logo']) && $options['tax_logo'] == "1" && isset($logometa['buslogo'])) { 
+		if( isset( $options['tax_logo'] ) && "1" == $options['tax_logo'] && isset( $logometa['buslogo'] ) ) { 
 			$attr = array(
 				'class'	=> 'alignleft logo',
 			);
-			$tax_content .= wp_get_attachment_image($logometa['buslogo'], 'full', false, $attr );
+			$tax_content .= wp_get_attachment_image( $logometa['buslogo'], 'full', false, $attr );
 		}
 		$tax_content .= $content; 
-		if ( isset( $options['tax_social'] ) && "1" == $options['tax_social'] ) {
+		if( isset( $options['tax_social'] ) && "1" == $options['tax_social'] ) {
 			$tax_content .= cdash_display_social_media( get_the_id() );
 		}
-		if (isset($options['tax_memberlevel']) && $options['tax_memberlevel'] == "1") { 
-			$id = get_the_id();
-			$levels = get_the_terms( $id, 'membership_level');
-			if($levels) {
-				$tax_content .= "<p class='membership'><span>" . __('Membership Level:&nbsp;', 'cdash') . "</span>";
-				$i = 1;
-				foreach($levels as $level) {
-					if($i !== 1) {
-						$tax_content .= ",&nbsp;";
-					}
-					$tax_content .= $level->name;
-					$i++;
-				}
-			}
+		if( isset( $options['tax_memberlevel'] ) && "1" == $options['tax_memberlevel'] ) { 
+			$tax_content .= cdash_display_membership_level( get_the_id() );
 		}
 		if (isset($options['tax_category']) && $options['tax_category'] == "1") { 
-			$id = get_the_id();
-			$buscats = get_the_terms( $id, 'business_category');
-			if($buscats) {
-				$tax_content .= "<p class='categories'><span>" . __('Categories:&nbsp;', 'cdash') . "</span>";
-				$i = 1;
-				foreach($buscats as $buscat) {
-					if($i !== 1) {
-						$tax_content .= ",&nbsp;";
-					}
-					$tax_content .= $buscat->name;
-					$i++;
-				}
-			}
+			$tax_content .= cdash_display_business_categories( get_the_id() );
 		}
 		$locations = $contactmeta['location'];
 		if( is_array( $locations ) ) {
-			foreach($locations as $location) {
-				if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
+			foreach( $locations as $location ) {
+				if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
 					continue;
 				} else {
 					$tax_content .= "<div class='location'>";
-					if (isset($options['tax_name']) && $options['tax_name'] == "1" && isset($location['altname'])) { 
+					if( isset( $options['tax_name'] ) && "1" == $options['tax_name'] && isset( $location['altname'] ) && '' !== $location['altname'] ) { 
 						$tax_content .= "<h3>" . $location['altname'] . "</h3>";
 					}
-					if (isset($options['tax_address']) && $options['tax_address'] == "1") { 
+					if( isset( $options['tax_address'] ) && "1" == $options['tax_address'] ) { 
 						$tax_content .= "<p class='address'>";
-		 					if(isset($location['address'])) {
+		 					if( isset( $location['address'] ) && '' !== $location['address'] ) {
 								$address = $location['address'];
 								$tax_content .= str_replace("\n", '<br />', $address);
 							}
-							if(isset($location['city'])) {
+							if( isset( $location['city'] ) && '' !== $location['city'] ) {
 								$tax_content .= "<br />" . $location['city'] . ",&nbsp;";
 							}
-							if(isset($location['state'])) {
+							if( isset( $location['state'] )  && '' !== $location['state'] ) {
 								$tax_content .= $location['state'] . "&nbsp;";
 							}
-							if(isset($location['zip'])) {
+							if( isset( $location['zip'] ) && '' !== $location['zip'] ) {
 								$tax_content .= $location['zip'];
 							} 
 						$tax_content .= "</p>";
 					}
-					if (isset($options['tax_url']) && $options['tax_url'] == "1" && isset($location['url'])) { 
+					if( isset( $options['tax_url'] ) && $options['tax_url'] == "1" && isset( $location['url'] ) && '' !== $location['url'] ) { 
 						$tax_content .= cdash_display_url( $location['url'] );
 					}
-					if (isset($options['tax_phone']) && $options['tax_phone'] == "1" && isset($location['phone'])) { 
+					if( isset( $options['tax_phone'] ) && "1" == $options['tax_phone'] && isset( $location['phone'] ) && '' !== $location['phone'] ) { 
 						$tax_content .= cdash_display_phone_numbers( $location['phone'] );
 					}
-					if (isset($options['tax_email']) && $options['tax_email'] == "1" && isset($location['email'])) { 
+					if( isset( $options['tax_email'] ) && "1" == $options['tax_email'] && isset( $location['email'] ) && '' !== $location['email'] ) { 
 						$tax_content .= cdash_display_email_addresses( $location['email'] );
 					}
 				$tax_content .= "</div>";
 				}
 			}
 		}
-		if($options['bus_custom']) {
+		if( $options['bus_custom'] ) {
 		 	$tax_content .= cdash_display_custom_fields( get_the_id() );
 		}
 	$content = $tax_content;
@@ -440,106 +392,84 @@ function cdash_business_directory_shortcode( $atts ) {
 					$business_list .= "<h3>" . get_the_title() . "</h3>";
 				}
 				$business_list .= "<div class='description'>";
-			  	if($image == "logo") {
+			  	if( "logo" == $image ) {
 			  		global $buslogo_metabox;
 					$logometa = $buslogo_metabox->the_meta();
-					if(isset($logometa['buslogo'])) {
+					if( isset( $logometa['buslogo'] ) ) {
 					  	$logoattr = array(
 							'class'	=> 'alignleft logo',
 						);
-						if($single_link == "yes") {
+						if( $single_link == "yes" ) {
 							$business_list .= "<a href='" . get_the_permalink() . "'>" . wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr ) . "</a>";
 						} else {
 							$business_list .= wp_get_attachment_image($logometa['buslogo'], 'thumb', 0, $logoattr );
 						}
 					}
-			  	} elseif($image == "featured") {
+			  	} elseif( "featured" == $image ) {
 			  		$thumbattr = array(
 						'class'	=> 'alignleft logo',
 					);
 			  		$business_list .= get_the_post_thumbnail( $post->ID, 'thumb', $thumbattr);
 			  	} 
-			  	if($text == "excerpt") {
+			  	if( "excerpt" == $text ) {
 			  		$business_list .= get_the_excerpt();
-			  	} elseif($text == "description") {
+			  	} elseif( "description" == $text ) {
 			  		$business_list .= get_the_content();
 			  	}
 			  	$business_list .= "</div>";
-			  	if($display !== '') {
+			  	if( '' !== $display ) {
 			  		global $buscontact_metabox;
 					$contactmeta = $buscontact_metabox->the_meta();
 				  	if( isset( $contactmeta['location'] ) ) {
 				  		$locations = $contactmeta['location'];
-						foreach($locations as $location) {
-							if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
+						foreach( $locations as $location ) {
+							if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
 								continue;
 							} else {
-							  	if(in_array("location_name", $displayopts)) {
+							  	if( in_array( "location_name", $displayopts ) ) {
 							  		$business_list .= "<p class='location-name'>" . $location['altname'] . "</p>";
 							  	}
-							  	if(in_array("address", $displayopts)) {
+							  	if( in_array( "address", $displayopts ) ) {
 									$business_list .= "<p class='address'>";
-					 					if(isset($location['address'])) {
+					 					if( isset( $location['address'] ) && '' !== $location['address'] ) {
 											$address = $location['address'];
 											$business_list .= str_replace("\n", '<br />', $address);
 										}
-										if(isset($location['city'])) {
+										if( isset( $location['city'] ) && '' !== $location['city'] ) {
 											$business_list .= "<br />" . $location['city'] . ",&nbsp;";
 										}
-										if(isset($location['state'])) {
+										if( isset( $location['state'] ) && '' != $location['state'] ) {
 											$business_list .= $location['state'] . "&nbsp";
 										}
-										if(isset($location['zip'])) {
+										if( isset( $location['zip'] ) && '' !== $location['zip'] ) {
 											$business_list .= $location['zip'];
 										} 
 									$business_list .= "</p>";
 							  	}
-							  	if(in_array("phone", $displayopts) && isset($location['phone'])) {
+							  	if( in_array( "phone", $displayopts ) && isset( $location['phone'] ) && '' !== $location['phone'] ) {
 									$business_list .= cdash_display_phone_numbers( $location['phone'] );
 							  	} 
-							  	if(in_array("email", $displayopts) && isset($location['email'])) {
+							  	if( in_array( "email", $displayopts ) && isset( $location['email'] ) && '' !== $location['email'] ) {
 									$business_list .= cdash_display_email_addresses( $location['email'] );
 								}
 						  	} 
-						  	if(in_array("url", $displayopts) && isset($location['url'])) {
+						  	if( in_array( "url", $displayopts ) && isset( $location['url'] ) && '' !== $location['url'] ) {
 						  		$business_list .= cdash_display_url( $location['url'] );
 						  	} 
 				  		}
 				  	}
-			  		if(in_array("social_media", $displayopts)) {
+			  		if( in_array( "social_media", $displayopts ) ) {
 			  			$business_list .= cdash_display_social_media( get_the_id() );
 			  		}
-			  		if(in_array("category", $displayopts)) {
-						$id = get_the_id();
-						$buscats = get_the_terms( $id, 'business_category');
-							if( $buscats ) {
-							$business_list .= "<p class='categories'><span>" . __('Categories:&nbsp;', 'cdash') . "</span>";
-							$i = 1;
-							foreach( $buscats as $buscat ) {
-								if($i !== 1) {
-									$business_list .= ",&nbsp;";
-								}
-								$business_list .= $buscat->name;
-								$i++;
-							}
-						}
+			  		if(in_array("level", $displayopts)) {
+						$business_list .= cdash_display_membership_level( get_the_id() );
 				  	}
-				  	if(in_array("level", $displayopts)) {
-						$id = get_the_id();
-						$levels = get_the_terms( $id, 'membership_level');
-						$business_list .= "<p class='membership'><span>" . __('Membership Level:&nbsp;', 'cdash') . "</span>";
-						$i = 1;
-						foreach($levels as $level) {
-							if($i !== 1) {
-								$business_list .= ",&nbsp;";
-							}
-							$business_list .= $level->name;
-							$i++;
-						}
+			  		if( in_array( "category", $displayopts ) ) {
+						$business_list .= cdash_display_business_categories( get_the_id() );
 				  	}
 			  	}
-			  	$options = get_option('cdash_directory_options');
-			  	if($options['bus_custom']) {
+			  	$options = get_option( 'cdash_directory_options' );
+			  	if( $options['bus_custom'] ) {
 					$business_list .= cdash_display_custom_fields( get_the_id() );
 				}
 
@@ -758,89 +688,64 @@ function cdash_business_search_results_shortcode() {
 
 				global $post;
 
-				if ( isset( $options['tax_thumb'] ) && $options['tax_thumb'] == "1") { 
+				if ( isset( $options['tax_thumb'] ) && "1" == $options['tax_thumb'] ) { 
 					$search_results .= get_the_post_thumbnail( $post->ID, 'full');
 				}
-				if (($options['tax_logo']) == "1") { 
+				if ( isset( $options['tax_logo'] ) && "1" == $options['tax_logo'] ) { 
 					$attr = array(
 						'class'	=> 'alignleft logo',
 					);
-					$search_results .= wp_get_attachment_image($logometa['buslogo'], 'full', 0, $attr );
+					$search_results .= wp_get_attachment_image( $logometa['buslogo'], 'full', 0, $attr );
 				}
 				$search_results .= get_the_excerpt(); 
-				if ( isset( $options['tax_memberlevel'] ) && $options['tax_memberlevel'] == "1") { 
-					$id = get_the_id();
-					$levels = get_the_terms( $id, 'membership_level');
-					if($levels) {
-						$search_results .= "<p class='membership'><span>" . __('Membership Level:', 'cdash') . "</span>&nbsp;";
-						$i = 1;
-						foreach($levels as $level) {
-							if($i !== 1) {
-								$search_results .= ",&nbsp;";
-							}
-							$search_results .= $level->name;
-							$i++;
-						}
-					}
+				if ( isset( $options['tax_memberlevel'] ) && "1" == $options['tax_memberlevel'] ) { 
+					$search_results .= cdash_display_membership_level( $post->ID );
 				}
-				if ( isset( $options['tax_category'] ) && $options['tax_category'] == "1") { 
-					$id = get_the_id();
-					$buscats = get_the_terms( $id, 'business_category');
-					if($buscats) {
-						$search_results .= "<p class='categories'><span>" . __('Categories:&nbsp;', 'cdash') . "</span>";
-						$i = 1;
-						foreach($buscats as $buscat) {
-							if($i !== 1) {
-								$search_results .= ",&nbsp;";
-							}
-							$search_results .= $buscat->name;
-							$i++;
-						}
-					}
+				if ( isset( $options['tax_category'] ) && "1" == $options['tax_category'] ) { 
+					$search_results .= cdash_display_business_categories( $post->ID );
 				}
 				if ( isset( $options['tax_social'] ) && "1" == $options['tax_social'] ) {
 					$search_results .= cdash_display_social_media( get_the_id() );
 				}
 				$locations = $contactmeta['location'];
 				foreach($locations as $location) {
-					if( isset( $location['donotdisplay'] ) && $location['donotdisplay'] == "1") {
+					if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
 						continue;
 					} else {
 						$search_results .= "<div class='location'>";
-						if ( isset( $options['tax_name'] ) && $options['tax_name'] == "1" && isset( $location['altname'] ) ) { 
+						if ( isset( $options['tax_name'] ) && "1" == $options['tax_name'] && isset( $location['altname'] ) && '' !== $location['altname'] ) { 
 							$search_results .= "<h3>" . $location['altname'] . "</h3>";
 						}
-						if ( isset( $options['tax_address'] ) && $options['tax_address']== "1") { 
+						if ( isset( $options['tax_address'] ) && "1" == $options['tax_address'] ) { 
 							$search_results .= "<p class='address'>";
-			 					if( isset( $location['address'] ) ) {
+			 					if( isset( $location['address'] ) && '' !== $location['address'] ) {
 									$address = $location['address'];
 									$search_results .= str_replace("\n", '<br />', $address);
 								}
-								if( isset( $location['city'] ) ) {
+								if( isset( $location['city'] ) && '' !== $location['city'] ) {
 									$search_results .= "<br />" . $location['city'] . ",&nbsp;";
 								}
-								if( isset( $location['state'] ) ) {
+								if( isset( $location['state'] ) && '' !== $location['state'] ) {
 									$search_results .= $location['state'] . "&nbsp";
 								}
-								if( isset( $location['zip'] ) ) {
+								if( isset( $location['zip'] ) && '' !== $location['zip'] ) {
 									$search_results .= $location['zip'];
 								} 
 							$search_results .= "</p>";
 						}
-						if ( isset( $options['tax_url'] ) && $options['tax_url'] == "1" && isset( $location['url'] ) ) { 
+						if ( isset( $options['tax_url'] ) && "1" == $options['tax_url'] && isset( $location['url'] ) && '' !== $location['url'] ) { 
 							$search_results .= cdash_display_url( $location['url'] );
 						}
-						if ( isset( $options['tax_phone'] ) && $options['tax_phone'] == "1" && isset( $location['phone'] ) ) { 
+						if ( isset( $options['tax_phone'] ) && "1" == $options['tax_phone'] && isset( $location['phone'] ) && '' !== $location['phone'] ) { 
 							$search_results .= cdash_display_phone_numbers( $location['phone'] );
 						}
-						if ( isset( $options['tax_email'] ) && $options['tax_email'] == "1" && isset( $location['email'] ) ) { 
+						if ( isset( $options['tax_email'] ) && "1" == $options['tax_email'] && isset( $location['email'] ) && '' !== $location['email'] ) { 
 							$search_results .= cdash_display_email_addresses( $location['email'] );
 						$search_results .= "</div><!-- .location -->";
 						}
-					$search_results .= "</div><!-- .search-result -->";
 					}
 				}
-				if($options['bus_custom']) {
+				if( $options['bus_custom'] ) {
 					$search_results .= cdash_display_custom_fields( get_the_id() );
 				}
 
@@ -1045,12 +950,12 @@ function cdash_display_phone_numbers( $phone_numbers ) {
 	if( is_array( $phone_numbers ) ) {
 		$phones_content .= "<p class='phone'>";
 			$i = 1;
-			foreach($phone_numbers as $phone) {
-				if($i !== 1) {
+			foreach( $phone_numbers as $phone ) {
+				if( $i !== 1 ) {
 					$phones_content .= "<br />";
 				}
 				$phones_content .= "<a href='tel:" . $phone['phonenumber'] . "'>" . $phone['phonenumber'] . "</a>";
-				if(isset($phone['phonetype'])) {
+				if( isset( $phone['phonetype'] ) && '' !== $phone['phonetype'] ) {
 					$phones_content .= "&nbsp;(&nbsp;" . $phone['phonetype'] . "&nbsp;)";
 				}
 				$i++;
@@ -1071,12 +976,12 @@ function cdash_display_email_addresses( $email_addresses ) {
 	if( is_array( $email_addresses ) ) {
 		$email_content .= "<p class='email'>";
 			$i = 1;
-			foreach($email_addresses as $email) {
-				if($i !== 1) {
+			foreach( $email_addresses as $email ) {
+				if( $i !== 1 ) {
 					$email_content .= "<br />";
 				}
 				$email_content .= "<a href='mailto:" . $email['emailaddress'] . "'>" . $email['emailaddress'] . "</a>";
-				if(isset($email['emailtype'])) {
+				if( isset( $email['emailtype'] ) && '' !== $email['emailtype']) {
 					$email_content .= "&nbsp;(&nbsp;" . $email['emailtype'] . "&nbsp;)";
 				}
 				$i++;
@@ -1096,9 +1001,55 @@ function cdash_display_url( $url ) {
 		$url = "http://" . $url;
 	}
 
-	$url_content = "<p class='website'><a href='" . $url . "' target='_blank'>" . $url . "</a></p>";
+	$url_content = "<p class='website'><a href='" . $url . "' target='_blank'>" . __( 'Website', 'cdash' ) . "</a></p>";
 
 	return $url_content;
 }
 
+
+// ------------------------------------------------------------------------
+// DISPLAY MEMBERSHIP LEVEL
+// ------------------------------------------------------------------------
+
+function cdash_display_membership_level( $id ) {
+	$levels_content = '';
+	$levels = get_the_terms( $id, 'membership_level');
+	if($levels) {
+		$levels_content .= "<p class='membership'><span>" . __('Membership Level:&nbsp;', 'cdash') . "</span>";
+		$i = 1;
+		foreach($levels as $level) {
+			if($i !== 1) {
+				$levels_content .= ",&nbsp;";
+			}
+			$levels_content .= $level->name;
+			$i++;
+		}
+	}
+
+	return $levels_content;
+}
+
+
+// ------------------------------------------------------------------------
+// DISPLAY CATEGORIES
+// ------------------------------------------------------------------------
+
+function cdash_display_business_categories( $id ) {
+	$category_content = '';
+	$buscats = get_the_terms( $id, 'business_category');
+	if($buscats) {
+		$category_content .= "<p class='categories'><span>" . __('Categories:&nbsp;', 'cdash') . "</span>";
+		$i = 1;
+		foreach($buscats as $buscat) {
+			$buscat_link = get_term_link( $buscat );
+			if($i !== 1) {
+				$category_content .= ",&nbsp;";
+			}
+			$category_content .= "<a href='" . $buscat_link . "'>" . $buscat->name . "</a>";
+			$i++;
+		}
+	}
+
+	return $category_content;
+}
 ?>

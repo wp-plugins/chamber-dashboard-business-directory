@@ -136,14 +136,15 @@
 			<select name="<?php $mb->the_name(); ?>">
 				<option value=""></option>
 				<?php $mb->the_field('socialservice'); ?>
-				<option value="facebook" <?php if ($mb->get_the_value() == 'facebook') echo $selected; ?>>Facebook</option>
-				<option value="flickr" <?php if ($mb->get_the_value() == 'flickr') echo $selected; ?>>Flickr</option>
-				<option value="google" <?php if ($mb->get_the_value() == 'google') echo $selected; ?>>Google +</option>
-				<option value="linkedin" <?php if ($mb->get_the_value() == 'linkedin') echo $selected; ?>>LinkedIn</option>
-				<option value="pinterest" <?php if ($mb->get_the_value() == 'pinterest') echo $selected; ?>>Pinterest</option>
-				<option value="twitter" <?php if ($mb->get_the_value() == 'twitter') echo $selected; ?>>Twitter</option>
-				<option value="vimeo" <?php if ($mb->get_the_value() == 'vimeo') echo $selected; ?>>Vimeo</option>
-				<option value="youtube" <?php if ($mb->get_the_value() == 'youtube') echo $selected; ?>>YouTube</option>
+				<option value="facebook" <?php if ($mb->get_the_value() == 'facebook') echo $selected; ?>><?php _e( 'Facebook', 'cdash' ); ?></option>
+				<option value="flickr" <?php if ($mb->get_the_value() == 'flickr') echo $selected; ?>><?php _e( 'Flickr', 'cdash' ); ?></option>
+				<option value="google" <?php if ($mb->get_the_value() == 'google') echo $selected; ?>><?php _e( 'Google +', 'cdash' ); ?></option>
+				<option value="linkedin" <?php if ($mb->get_the_value() == 'linkedin') echo $selected; ?>><?php _e( 'LinkedIn', 'cdash' ); ?></option>
+				<option value="pinterest" <?php if ($mb->get_the_value() == 'pinterest') echo $selected; ?>><?php _e( 'Pinterest', 'cdash' ); ?></option>
+				<option value="twitter" <?php if ($mb->get_the_value() == 'twitter') echo $selected; ?>><?php _e( 'Twitter', 'cdash' ); ?></option>
+				<option value="vimeo" <?php if ($mb->get_the_value() == 'vimeo') echo $selected; ?>><?php _e( 'Vimeo', 'cdash' ); ?></option>
+				<option value="youtube" <?php if ($mb->get_the_value() == 'youtube') echo $selected; ?>><?php _e( 'YouTube', 'cdash' ); ?></option>
+				<option value="yelp" <?php if ($mb->get_the_value() == 'yelp') echo $selected; ?>><?php _e( 'Yelp', 'cdash' ); ?></option>
 			</select>
 		</div>
 		<div class="half">

@@ -80,6 +80,12 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.3 =
+* fixed bug on search results shortcode
+* added Yelp to social media options
+* prevented empty fields from displaying
+* minor visual improvements
+
 = 2.2.1 = 
 * added "membership status" parameter to business directory shortcode
 

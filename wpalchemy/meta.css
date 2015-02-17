@@ -119,3 +119,21 @@ input#item_membershipamt {
 	list-style-type: square;
 	margin-left: 1em;
 }
+
+.my_meta_control .item label {
+	font-size: .9em;
+}
+
+.my_meta_control .item.name {
+	width: 85%;
+	float: left;
+}
+
+.my_meta_control .item.description {
+	width: 12%;
+	float: right;
+}
+
+.my_meta_control input#amount {
+	width: 8em;
+}
