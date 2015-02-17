@@ -5,3 +5,5 @@ WP Alchemy MetaBoxes: https://github.com/farinspace/wpalchemy
 Plugin Options Starter Kit: http://wordpress.org/plugins/plugin-options-starter-kit/
 
 Taxonomy Meta Class: https://github.com/bainternet/Tax-Meta-Class
+
+Social Icons: http://rohitink.com/sociocons/
