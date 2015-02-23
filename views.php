@@ -264,7 +264,7 @@ function cdash_taxonomy_filter( $content ) {
 
 		$tax_content = '';
 		if( isset( $options['tax_thumb'] ) && "1" == $options['tax_thumb'] ) { 
-			$tax_content .= get_the_post_thumbnail( $post->ID, 'full');
+			$tax_content .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, 'full') . '</a>';
 		}
 		if( isset( $options['tax_logo'] ) && "1" == $options['tax_logo'] && isset( $logometa['buslogo'] ) ) { 
 			$attr = array(
@@ -282,43 +282,45 @@ function cdash_taxonomy_filter( $content ) {
 		if (isset($options['tax_category']) && $options['tax_category'] == "1") { 
 			$tax_content .= cdash_display_business_categories( get_the_id() );
 		}
-		$locations = $contactmeta['location'];
-		if( is_array( $locations ) ) {
-			foreach( $locations as $location ) {
-				if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
-					continue;
-				} else {
-					$tax_content .= "<div class='location'>";
-					if( isset( $options['tax_name'] ) && "1" == $options['tax_name'] && isset( $location['altname'] ) && '' !== $location['altname'] ) { 
-						$tax_content .= "<h3>" . $location['altname'] . "</h3>";
+		if( isset( $contactmeta['location'] ) ) {
+			$locations = $contactmeta['location'];
+			if( is_array( $locations ) ) {
+				foreach( $locations as $location ) {
+					if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
+						continue;
+					} else {
+						$tax_content .= "<div class='location'>";
+						if( isset( $options['tax_name'] ) && "1" == $options['tax_name'] && isset( $location['altname'] ) && '' !== $location['altname'] ) { 
+							$tax_content .= "<h3>" . $location['altname'] . "</h3>";
+						}
+						if( isset( $options['tax_address'] ) && "1" == $options['tax_address'] ) { 
+							$tax_content .= "<p class='address'>";
+			 					if( isset( $location['address'] ) && '' !== $location['address'] ) {
+									$address = $location['address'];
+									$tax_content .= str_replace("\n", '<br />', $address);
+								}
+								if( isset( $location['city'] ) && '' !== $location['city'] ) {
+									$tax_content .= "<br />" . $location['city'] . ",&nbsp;";
+								}
+								if( isset( $location['state'] )  && '' !== $location['state'] ) {
+									$tax_content .= $location['state'] . "&nbsp;";
+								}
+								if( isset( $location['zip'] ) && '' !== $location['zip'] ) {
+									$tax_content .= $location['zip'];
+								} 
+							$tax_content .= "</p>";
+						}
+						if( isset( $options['tax_url'] ) && $options['tax_url'] == "1" && isset( $location['url'] ) && '' !== $location['url'] ) { 
+							$tax_content .= cdash_display_url( $location['url'] );
+						}
+						if( isset( $options['tax_phone'] ) && "1" == $options['tax_phone'] && isset( $location['phone'] ) && '' !== $location['phone'] ) { 
+							$tax_content .= cdash_display_phone_numbers( $location['phone'] );
+						}
+						if( isset( $options['tax_email'] ) && "1" == $options['tax_email'] && isset( $location['email'] ) && '' !== $location['email'] ) { 
+							$tax_content .= cdash_display_email_addresses( $location['email'] );
+						}
+					$tax_content .= "</div>";
 					}
-					if( isset( $options['tax_address'] ) && "1" == $options['tax_address'] ) { 
-						$tax_content .= "<p class='address'>";
-		 					if( isset( $location['address'] ) && '' !== $location['address'] ) {
-								$address = $location['address'];
-								$tax_content .= str_replace("\n", '<br />', $address);
-							}
-							if( isset( $location['city'] ) && '' !== $location['city'] ) {
-								$tax_content .= "<br />" . $location['city'] . ",&nbsp;";
-							}
-							if( isset( $location['state'] )  && '' !== $location['state'] ) {
-								$tax_content .= $location['state'] . "&nbsp;";
-							}
-							if( isset( $location['zip'] ) && '' !== $location['zip'] ) {
-								$tax_content .= $location['zip'];
-							} 
-						$tax_content .= "</p>";
-					}
-					if( isset( $options['tax_url'] ) && $options['tax_url'] == "1" && isset( $location['url'] ) && '' !== $location['url'] ) { 
-						$tax_content .= cdash_display_url( $location['url'] );
-					}
-					if( isset( $options['tax_phone'] ) && "1" == $options['tax_phone'] && isset( $location['phone'] ) && '' !== $location['phone'] ) { 
-						$tax_content .= cdash_display_phone_numbers( $location['phone'] );
-					}
-					if( isset( $options['tax_email'] ) && "1" == $options['tax_email'] && isset( $location['email'] ) && '' !== $location['email'] ) { 
-						$tax_content .= cdash_display_email_addresses( $location['email'] );
-					}
-				$tax_content .= "</div>";
 				}
 			}
 		}
@@ -422,41 +424,43 @@ function cdash_business_directory_shortcode( $atts ) {
 					$contactmeta = $buscontact_metabox->the_meta();
 				  	if( isset( $contactmeta['location'] ) ) {
 				  		$locations = $contactmeta['location'];
-						foreach( $locations as $location ) {
-							if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
-								continue;
-							} else {
-							  	if( in_array( "location_name", $displayopts ) ) {
-							  		$business_list .= "<p class='location-name'>" . $location['altname'] . "</p>";
-							  	}
-							  	if( in_array( "address", $displayopts ) ) {
-									$business_list .= "<p class='address'>";
-					 					if( isset( $location['address'] ) && '' !== $location['address'] ) {
-											$address = $location['address'];
-											$business_list .= str_replace("\n", '<br />', $address);
-										}
-										if( isset( $location['city'] ) && '' !== $location['city'] ) {
-											$business_list .= "<br />" . $location['city'] . ",&nbsp;";
-										}
-										if( isset( $location['state'] ) && '' != $location['state'] ) {
-											$business_list .= $location['state'] . "&nbsp";
-										}
-										if( isset( $location['zip'] ) && '' !== $location['zip'] ) {
-											$business_list .= $location['zip'];
-										} 
-									$business_list .= "</p>";
-							  	}
-							  	if( in_array( "phone", $displayopts ) && isset( $location['phone'] ) && '' !== $location['phone'] ) {
-									$business_list .= cdash_display_phone_numbers( $location['phone'] );
+				  		if( is_array( $locations ) ) {
+							foreach( $locations as $location ) {
+								if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
+									continue;
+								} else {
+								  	if( in_array( "location_name", $displayopts ) && isset( $location['altname'] ) && '' !== $location['altname'] ) {
+								  		$business_list .= "<p class='location-name'>" . $location['altname'] . "</p>";
+								  	}
+								  	if( in_array( "address", $displayopts ) ) {
+										$business_list .= "<p class='address'>";
+						 					if( isset( $location['address'] ) && '' !== $location['address'] ) {
+												$address = $location['address'];
+												$business_list .= str_replace("\n", '<br />', $address);
+											}
+											if( isset( $location['city'] ) && '' !== $location['city'] ) {
+												$business_list .= "<br />" . $location['city'] . ",&nbsp;";
+											}
+											if( isset( $location['state'] ) && '' != $location['state'] ) {
+												$business_list .= $location['state'] . "&nbsp";
+											}
+											if( isset( $location['zip'] ) && '' !== $location['zip'] ) {
+												$business_list .= $location['zip'];
+											} 
+										$business_list .= "</p>";
+								  	}
+								  	if( in_array( "phone", $displayopts ) && isset( $location['phone'] ) && '' !== $location['phone'] ) {
+										$business_list .= cdash_display_phone_numbers( $location['phone'] );
+								  	} 
+								  	if( in_array( "email", $displayopts ) && isset( $location['email'] ) && '' !== $location['email'] ) {
+										$business_list .= cdash_display_email_addresses( $location['email'] );
+									}
 							  	} 
-							  	if( in_array( "email", $displayopts ) && isset( $location['email'] ) && '' !== $location['email'] ) {
-									$business_list .= cdash_display_email_addresses( $location['email'] );
-								}
-						  	} 
-						  	if( in_array( "url", $displayopts ) && isset( $location['url'] ) && '' !== $location['url'] ) {
-						  		$business_list .= cdash_display_url( $location['url'] );
-						  	} 
-				  		}
+							  	if( in_array( "url", $displayopts ) && isset( $location['url'] ) && '' !== $location['url'] ) {
+							  		$business_list .= cdash_display_url( $location['url'] );
+							  	} 
+					  		}
+					  	}
 				  	}
 			  		if( in_array( "social_media", $displayopts ) ) {
 			  			$business_list .= cdash_display_social_media( get_the_id() );
@@ -884,7 +888,11 @@ function cdash_display_social_media( $postid ) {
 			if( isset( $social_links ) ) {
 				$display .= '<ul class="text-links">';
 				foreach( $social_links as $link ) {
-					$display .= '<li><a href="' . $link['socialurl'] . '" target="_blank">' . ucfirst( $link['socialservice'] ) . '</a></li>';
+					$url = $link['socialurl'];
+					if( null === parse_url( $url, PHP_URL_SCHEME )) {
+						$url = "http://" . $url;
+					}
+					$display .= '<li><a href="' . $url . '" target="_blank">' . ucfirst( $link['socialservice'] ) . '</a></li>';
 				}
 				$display .= '</ul>';
 			}
@@ -897,7 +905,11 @@ function cdash_display_social_media( $postid ) {
 			if( isset( $social_links ) ) {
 				$display .= '<ul class="icons">';
 				foreach( $social_links as $link ) {
-					$display .= '<li><a href="' . $link['socialurl'] . '" target="_blank"><img src="' . plugins_url() . '/chamber-dashboard-business-directory/images/social-media/' . $link['socialservice'] . '-' . $options['sm_icon_size'] . '.png" alt="' . ucfirst( $link['socialservice'] ) . '"></a></li>';
+					$url = $link['socialurl'];
+					if( null === parse_url( $url, PHP_URL_SCHEME )) {
+						$url = "http://" . $url;
+					}
+					$display .= '<li><a href="' . $url . '" target="_blank"><img src="' . plugins_url() . '/chamber-dashboard-business-directory/images/social-media/' . $link['socialservice'] . '-' . $options['sm_icon_size'] . '.png" alt="' . ucfirst( $link['socialservice'] ) . '"></a></li>';
 				}
 				$display .= '</ul>';
 			}
