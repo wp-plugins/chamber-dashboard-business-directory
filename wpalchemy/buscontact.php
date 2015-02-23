@@ -122,4 +122,45 @@
  	<p class="explain"><?php _e('If this business has multiple locations, but you want them all to appear in one business listing, add the other locations here.  If you want the other locations to have their own individual listing on the site, create a new business with this business as the parent.', 'cdash'); ?></p>
 	<p><a href="#" class="docopy-location button"><?php _e('Add Another Location', 'cdash'); ?></a></p>
 
+	<fieldset>
+		<legend><?php _e('Social Media Links', 'cdash'); ?></legend>
+
+		<a href="#" class="dodelete-social button"><?php _e('Remove All Social Media Links', 'cdash'); ?></a>
+ 
+		<?php while($mb->have_fields_and_multi('social')): ?>
+		<?php $mb->the_group_open(); ?>
+		<div class="half">
+			<?php $mb->the_field('socialservice'); ?>
+			<label><?php _e('Social Media Service', 'cdash'); ?></label>
+			<?php $selected = ' selected="selected"'; ?>
+			<select name="<?php $mb->the_name(); ?>">
+				<option value=""></option>
+				<?php $mb->the_field('socialservice'); ?>
+				<option value="facebook" <?php if ($mb->get_the_value() == 'facebook') echo $selected; ?>><?php _e( 'Facebook', 'cdash' ); ?></option>
+				<option value="flickr" <?php if ($mb->get_the_value() == 'flickr') echo $selected; ?>><?php _e( 'Flickr', 'cdash' ); ?></option>
+				<option value="google" <?php if ($mb->get_the_value() == 'google') echo $selected; ?>><?php _e( 'Google +', 'cdash' ); ?></option>
+				<option value="linkedin" <?php if ($mb->get_the_value() == 'linkedin') echo $selected; ?>><?php _e( 'LinkedIn', 'cdash' ); ?></option>
+				<option value="pinterest" <?php if ($mb->get_the_value() == 'pinterest') echo $selected; ?>><?php _e( 'Pinterest', 'cdash' ); ?></option>
+				<option value="tripadvisor" <?php if ($mb->get_the_value() == 'tripadvisor') echo $selected; ?>><?php _e( 'Trip Advisor', 'cdash' ); ?></option>
+				<option value="twitter" <?php if ($mb->get_the_value() == 'twitter') echo $selected; ?>><?php _e( 'Twitter', 'cdash' ); ?></option>
+				<option value="urbanspoon" <?php if ($mb->get_the_value() == 'urbanspoon') echo $selected; ?>><?php _e( 'Urbanspoon', 'cdash' ); ?></option>
+				<option value="vimeo" <?php if ($mb->get_the_value() == 'vimeo') echo $selected; ?>><?php _e( 'Vimeo', 'cdash' ); ?></option>
+				<option value="youtube" <?php if ($mb->get_the_value() == 'youtube') echo $selected; ?>><?php _e( 'YouTube', 'cdash' ); ?></option>
+				<option value="yelp" <?php if ($mb->get_the_value() == 'yelp') echo $selected; ?>><?php _e( 'Yelp', 'cdash' ); ?></option>
+			</select>
+		</div>
+		<div class="half">
+			<?php $mb->the_field('socialurl'); ?>
+			<label><?php _e('Social Media URL', 'cdash'); ?></label>
+			<p><input placeholder="http://" type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+		</div>
+
+		<a href="#" class="dodelete button"><?php _e('Remove This Social Media Link', 'cdash'); ?></a>
+		<hr />
+
+		<?php $mb->the_group_close(); ?>
+		<?php endwhile; ?>
+		<p><a href="#" class="docopy-social button"><?php _e('Add Another Social Media Link', 'cdash'); ?></a></p>
+	</fieldset>
+
 </div>

@@ -1,5 +1,5 @@
 <?php
-/* Options Page */
+/* Options Page for Chamber Dashboard Business Directory */
 
 // --------------------------------------------------------------------------------------
 // CALLBACK FUNCTION FOR: register_uninstall_hook(__FILE__, 'cdash_delete_plugin_options')
@@ -17,7 +17,7 @@ function cdash_delete_plugin_options() {
 // Define default option settings
 function cdash_add_defaults() {
 	$tmp = get_option('cdash_directory_options');
-    if(($tmp['chk_default_options_db']=='1')||(!is_array($tmp))) {
+    if(!is_array($tmp)) {
 		delete_option('cdash_directory_options'); // so we don't have to reset all the 'off' checkboxes too! (don't think this is needed but leave for now)
 		$arr = array(	"bus_phone_type" => "Main, Office, Cell",
 						"bus_email_type" => "Main, Sales, Accounting, HR",
@@ -27,7 +27,15 @@ function cdash_add_defaults() {
 						"sv_url"		 => "1",
 						"sv_logo"		 => "1",
 						"sv_category"	 => "1",
-						"tax_logo"		 => "1"
+						"tax_name"		 => "1",
+						"tax_address"	 => "1",
+						"tax_url" 		 => "1",
+						"tax_logo"		 => "1",
+						"sm_display"	 => "icons",
+						"sm_icon_size"	 => "32px",
+						"currency_position" => "before",
+						"currency_symbol" => "$",
+						"currency" => "USD",
 		);
 		update_option('cdash_directory_options', $arr);
 	}
@@ -56,13 +64,13 @@ function cdash_add_options_page() {
 		'Chamber Dashboard', 
 		'Chamber Dashboard', 
 		'manage_options', 
-		'/cdash-business-directory/options.php', 
+		'/chamber-dashboard-business-directory/options.php', 
 		'cdash_render_form', 
-		'dashicons-admin-generic', 
+		plugin_dir_url( __FILE__ ) . '/images/cdash-settings.png', 
 		85 
 	);
-	add_submenu_page( '/cdash-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
-	add_submenu_page( '/cdash-business-directory/options.php', 'Import', 'Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
+	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
+	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Import', 'Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
 }
 
 
@@ -80,8 +88,7 @@ function cdash_render_form() {
 	<div class="wrap">
 		
 		<!-- Display Plugin Icon, Header, and Description -->
-		<div class="icon32" id="icon-options-general"><br></div>
-		<h2><?php _e('Chamber Dashboard Settings', 'cdash'); ?></h2>
+		<h2><img src="<?php echo plugin_dir_url( __FILE__ ) . '/images/cdash-32.png'?>"><?php _e('Chamber Dashboard Business Directory Settings', 'cdash'); ?></h2>
 
 
 		<div id="main" style="width: 70%; min-width: 350px; float: left;">
@@ -128,6 +135,7 @@ function cdash_render_form() {
 							<label><input name="cdash_directory_options[sv_thumb]" type="checkbox" value="1" <?php if (isset($options['sv_thumb'])) { checked('1', $options['sv_thumb']); } ?> /><?php _e(' Featured Image <em>Your theme might already display the featured image.  If it does not, you can check this box to display the featured image</em>', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_memberlevel]" type="checkbox" value="1" <?php if (isset($options['sv_memberlevel'])) { checked('1', $options['sv_memberlevel']); } ?> /><?php _e(' Membership Level', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_category]" type="checkbox" value="1" <?php if (isset($options['sv_category'])) { checked('1', $options['sv_category']); } ?> /><?php _e(' Business Categories', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_social]" type="checkbox" value="1" <?php if (isset($options['sv_social'])) { checked('1', $options['sv_social']); } ?> /><?php _e(' Social Media Links', 'cdash'); ?></label><br />
 						</td>
 					</tr>
 
@@ -145,20 +153,74 @@ function cdash_render_form() {
 							<label><input name="cdash_directory_options[tax_thumb]" type="checkbox" value="1" <?php if (isset($options['tax_thumb'])) { checked('1', $options['tax_thumb']); } ?> /><?php _e(' Featured Image <em>Your theme might already display the featured image.  If it does not, you can check this box to display the featured image</em>', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[tax_memberlevel]" type="checkbox" value="1" <?php if (isset($options['tax_memberlevel'])) { checked('1', $options['tax_memberlevel']); } ?> /><?php _e(' Membership Leve', 'cdash'); ?>l</label><br />
 							<label><input name="cdash_directory_options[tax_category]" type="checkbox" value="1" <?php if (isset($options['tax_category'])) { checked('1', $options['tax_category']); } ?> /><?php _e(' Business Categories', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[tax_social]" type="checkbox" value="1" <?php if (isset($options['tax_social'])) { checked('1', $options['tax_social']); } ?> /><?php _e(' Social Media Links', 'cdash'); ?></label><br />
 						</td>
 					</tr>				
+
+					<!-- Social Media Options -->
+					<tr valign="top">
+					<th scope="row">Social Media Display</th>
+						<td>
+							<label><input name="cdash_directory_options[sm_display]" type="radio" value="text" <?php checked('text', $options['sm_display']); ?> /> <?php _e( 'Text links ', 'cdash' ); ?><span style="color:#666666;margin-left:32px;"><?php _e( 'Display social media as text links', 'cdash' ); ?></span></label><br />
+							<label><input name="cdash_directory_options[sm_display]" type="radio" value="icons" <?php checked('icons', $options['sm_display']); ?> /> <?php _e( 'Icons ', 'cdash' ); ?><span style="color:#666666;margin-left:32px;"><?php _e( 'Display social media links as icons', 'cdash' ); ?></span></label><br />
+							<label><?php _e('Icon Size: ', 'cdash'); ?></label>	
+								<select name='cdash_directory_options[sm_icon_size]'>
+								<option value='16px' <?php selected('16px', $options['sm_icon_size']); ?>>16px</option>
+								<option value='32px' <?php selected('32px', $options['sm_icon_size']); ?>>32px</option>
+								<option value='64px' <?php selected('64px', $options['sm_icon_size']); ?>>64px</option>
+								<option value='128px' <?php selected('128px', $options['sm_icon_size']); ?>>128px</option>
+							</select>
+						</td>
+					</tr>
+
+					<!-- Currency -->
+					<tr>
+						<th scope="row"><?php _e('Currency', 'cdash'); ?></th>
+						<td>
+							<select name='cdash_directory_options[currency]'>
+								<?php global $currencies;
+								foreach($currencies['codes'] as $code => $currency)
+								{
+									echo '<option value="'.esc_attr($code).'"'.selected($options['currency'], $code, false).'>'.esc_html($currency).'</option>';
+								} ?>
+							</select>
+							<span style="color:#666666;margin-left:2px;"><?php _e('Select the currency that will be used on invoices.', 'cdash'); ?></span>
+						</td>
+					</tr>
+
+					<tr>
+						<th scope="row"><?php _e('Currency Symbol', 'cdash'); ?></th>
+						<td>
+							<input type="text" size="35" name="cdash_directory_options[currency_symbol]" value="<?php if(isset($options['currency_symbol'])) { echo $options['currency_symbol']; } ?>" />
+							<br /><span style="color:#666666;margin-left:2px;"><?php _e('Enter the symbol that should appear next to all currency.', 'cdashmm'); ?></span>
+						</td>
+					</tr>
+
+					<tr valign="top">
+						<th scope="row"><?php _e( 'Currency Position', 'cdash' ); ?></th>
+						<td>
+							<!-- First radio button -->
+							<label><input name="cdash_directory_options[currency_position]" type="radio" value="before" <?php checked('before', $options['currency_position']); ?> /><?php _e( ' Before the price', 'cdash' ); ?>
+							</label><br />
+
+							<!-- Second radio button -->
+							<label><input name="cdash_directory_options[currency_position]" type="radio" value="after" <?php checked('after', $options['currency_position']); ?> /><?php _e( ' After the price', 'cdash' ); ?>
+							</label>
+						</td>
+					</tr>
 
 					<!-- Custom Fields -->
 					<tr>
 						<th scope="row"><?php _e('Custom Fields', 'cdash'); ?></th>
 						<td>
-							<span style="color:#666666;margin-left:2px;"><?php _e('If you need to store additional information about businesses, you can create custom fields here.', 'cdash'); ?></span><br />
+							<p><span style="color:#666666;margin-left:2px;"><?php _e('If you need to store additional information about businesses, you can create custom fields here.', 'cdash'); ?></span></p><br />
 							<?php if(!empty($options['bus_custom'])) {
 								$customfields = $options['bus_custom'];
 								$i = 1;
 								foreach($customfields as $field) { ?>
 									<div class="repeating" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
 										<p><strong><?php _e('Custom Field Name', 'cdash'); ?></strong></p>
+										<p><span style="color:#666666;margin-left:2px;"><?php _e('<strong>Note:</strong> If you change the name of an existing custom field, you will lose all data stored in that field!', 'cdash'); ?></span></p>
 											<input type="text" size="30" name="cdash_directory_options[bus_custom][<?php echo $i; ?>][name]" value="<?php echo $field['name']; ?>" />
 										<p><strong><?php _e('Custom Field Type', 'cdash'); ?></strong></p>	
 											<select name='cdash_directory_options[bus_custom][<?php echo $i; ?>][type]'>
@@ -236,27 +298,7 @@ function cdash_render_form() {
 
 			</script>
 		</div><!-- #main -->
-		<div id="sidebar" style="width: 28%; float: right; min-width: 150px;">
-			<h3>Documentation</h3>
-			<p>If you're looking for more information about how to use this plugin, visit the <a href="http://chamberdashboard.com/support/documentation/" target="_blank">Documentation page at ChamberDashboard.com</a></p>
-			<h3>Contact</h3>
-			<p>Don't hesitate to <a href="http://chamberdashboard.com/contact/" target="_blank">contact us</a> to request new features, ask questions, or just say hi.</p>
-			<h3>Donate</h3>
-			<p>All donations are tax-deductible and go to the <a href="http://fremont.com" target="_blank">Fremont Chamber of Commerce</a> to support further development of Chamber Dashboard.</p>
-			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-			<input type="hidden" name="cmd" value="_donations">
-			<input type="hidden" name="business" value="director@fremont.com">
-			<input type="hidden" name="lc" value="US">
-			<input type="hidden" name="item_name" value="Fremont Chamber of Commerce">
-			<input type="hidden" name="item_number" value="Chamber Dashboard">
-			<input type="hidden" name="no_note" value="0">
-			<input type="hidden" name="currency_code" value="USD">
-			<input type="hidden" name="bn" value="PP-DonationsBF:btn_donate_LG.gif:NonHostedGuest">
-			<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-			<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-			</form>
-
-		</div>
+		<?php include( plugin_dir_path( __FILE__ ) . '/includes/aside.php' ); ?>
 	</div>
 
 	<?php	
@@ -268,6 +310,9 @@ function cdash_render_form() {
 function cdash_validate_options($input) {
 	$input['bus_phone_type'] =  wp_filter_nohtml_kses($input['bus_phone_type']); 
 	$input['bus_email_type'] =  wp_filter_nohtml_kses($input['bus_email_type']);
+	if( isset( $input['currency_symbol'] ) ) {
+		$input['currency_symbol'] =  wp_filter_nohtml_kses($input['currency_symbol']); 
+	}
 	// $input['txt_one'] =  wp_filter_nohtml_kses($input['txt_one']); // Sanitize textbox input (strip html tags, and escape characters)
 	// $input['textarea_one'] =  wp_filter_nohtml_kses($input['textarea_one']); // Sanitize textarea input (strip html tags, and escape characters)
 	return $input;
@@ -277,7 +322,7 @@ function cdash_validate_options($input) {
 function cdash_plugin_action_links( $links, $file ) {
 
 	if ( $file == plugin_basename( __FILE__ ) ) {
-		$cdash_links = '<a href="'.get_admin_url().'options-general.php?page=cdash-business-directory/options.php">'.__('Settings').'</a>';
+		$cdash_links = '<a href="'.get_admin_url().'options-general.php?page=chamber-dashboard-business-directory/options.php">'.__('Settings').'</a>';
 		// make the 'Settings' link appear first
 		array_unshift( $links, $cdash_links );
 	}
@@ -392,5 +437,4 @@ function cdash_import_form() { ?>
 	
 }
 
-
- ?>
+?>
