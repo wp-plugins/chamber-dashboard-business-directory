@@ -80,6 +80,11 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+
+= 2.3.2 =
+* made featured image link to single business page in shortcode and search results
+* fixed bug in [business_search] shortcode
+
 = 2.3.1 =
 * added Trip Advisor and Urban Spoon to social media options
 * on taxonomy view, featured image links to single business page

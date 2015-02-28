@@ -411,7 +411,7 @@ function cdash_business_directory_shortcode( $atts ) {
 			  		$thumbattr = array(
 						'class'	=> 'alignleft logo',
 					);
-			  		$business_list .= get_the_post_thumbnail( $post->ID, 'thumb', $thumbattr);
+			  		$business_list .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, 'thumb', $thumbattr) . '</a>';
 			  	} 
 			  	if( "excerpt" == $text ) {
 			  		$business_list .= get_the_excerpt();
@@ -641,6 +641,8 @@ add_shortcode( 'business_map', 'cdash_business_map_shortcode' );
 
 function cdash_business_search_results_shortcode() {
 
+	wp_enqueue_style( 'cdash-business-directory', plugin_dir_url(__FILE__) . 'css/cdash-business-directory.css' );
+
 	$search_results = "";
 	// Search results 
 	if($_GET) {
@@ -693,7 +695,7 @@ function cdash_business_search_results_shortcode() {
 				global $post;
 
 				if ( isset( $options['tax_thumb'] ) && "1" == $options['tax_thumb'] ) { 
-					$search_results .= get_the_post_thumbnail( $post->ID, 'full');
+					$search_results .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, 'full') . '</a>';
 				}
 				if ( isset( $options['tax_logo'] ) && "1" == $options['tax_logo'] ) { 
 					$attr = array(
@@ -825,7 +827,7 @@ add_shortcode( 'business_search_form', 'cdash_business_search_form_shortcode' );
 function cdash_business_search_shortcode( $atts ) {
 
 	$business_search = do_shortcode('[business_search_results]');
-	$business_search .= do_shortcode('[business_search_form results_page='.the_permalink().']');
+	$business_search .= do_shortcode('[business_search_form results_page='.get_the_permalink().']');
 
 	return $business_search;
 }
