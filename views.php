@@ -144,24 +144,26 @@ function cdash_single_business_map() {
 			var locations = [
 				<?php 
 				foreach($locations as $location) {
-					if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
+					if( isset( $location['donotdisplay'] ) && $location['donotdisplay'] == "1") {
 						continue;
 					} else {
 				    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
-						$address = urlencode($rawaddress);
-						$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
-						$json = json_decode($json, true);
-						if(is_array($json) && $json['status'] == 'OK') {
+						$address = urlencode( $rawaddress );
+						$json = wp_remote_get( "http://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&sensor=true" );
+						$json = json_decode($json['body'], true);
+						if( is_array( $json ) && $json['status'] == 'OK') {
 							$lat = $json['results'][0]['geometry']['location']['lat'];
 							$long = $json['results'][0]['geometry']['location']['lng']; 
 							// get the map icon
 							$id = get_the_id();
 							$buscats = get_the_terms( $id, 'business_category');
-							foreach($buscats as $buscat) {
-								$buscatid = $buscat->term_id;
-								$iconid = get_tax_meta($buscatid,'category_map_icon');
-								if($iconid !== '') {
-									$icon = $iconid['src'];
+							if( isset( $buscats ) && is_array( $buscats ) ) {
+								foreach($buscats as $buscat) {
+									$buscatid = $buscat->term_id;
+									$iconid = get_tax_meta($buscatid,'category_map_icon');
+									if($iconid !== '') {
+										$icon = $iconid['src'];
+									}
 								}
 							}
 							if(!isset($icon)) {
@@ -547,19 +549,21 @@ function cdash_business_map_shortcode( $atts ) {
 							// Get the latitude and longitude from the address
 					    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
 							$address = urlencode($rawaddress);
-							$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
-							$json = json_decode($json, true);
+							$json = wp_remote_get( "http://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&sensor=true" );
+							$json = json_decode($json['body'], true);
 							if(is_array($json) && $json['status'] == 'OK') {
 								$lat = $json['results'][0]['geometry']['location']['lat'];
 								$long = $json['results'][0]['geometry']['location']['lng']; 
 								// Get the map icon
 								$id = get_the_id();
 								$buscats = get_the_terms( $id, 'business_category');
-								foreach($buscats as $buscat) {
-									$buscatid = $buscat->term_id;
-									$iconid = get_tax_meta($buscatid,'category_map_icon');
-									if($iconid !== '') {
-										$icon = $iconid['src'];
+								if( isset( $buscats ) && is_array( $buscats ) ) {
+									foreach($buscats as $buscat) {
+										$buscatid = $buscat->term_id;
+										$iconid = get_tax_meta($buscatid,'category_map_icon');
+										if($iconid !== '') {
+											$icon = $iconid['src'];
+										}
 									}
 								}
 								if(!isset($icon)) {
@@ -825,9 +829,10 @@ add_shortcode( 'business_search_form', 'cdash_business_search_form_shortcode' );
 // ------------------------------------------------------------------------
 
 function cdash_business_search_shortcode( $atts ) {
+	$resultspage = str_replace( home_url('/'), "", get_the_permalink() );
 
 	$business_search = do_shortcode('[business_search_results]');
-	$business_search .= do_shortcode('[business_search_form results_page='.get_the_permalink().']');
+	$business_search .= do_shortcode('[business_search_form results_page='.$resultspage.']');
 
 	return $business_search;
 }
