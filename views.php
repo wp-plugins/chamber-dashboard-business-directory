@@ -48,7 +48,7 @@ function cdash_single_business($content) {
 		if( isset( $options['sv_social'] ) && "1" == $options['sv_social'] ) { 
 			$business_content .= cdash_display_social_media( $post_id );
 		}
-		if( isset( $options['sv_memberlevel'] ) && "!" == $options['sv_memberlevel'] ) { 
+		if( isset( $options['sv_memberlevel'] ) && "1" == $options['sv_memberlevel'] ) { 
 			$business_content .= cdash_display_membership_level( $post_id );
 		}
 		if( isset( $options['sv_category'] ) && "1" == $options['sv_category'] ) { 
@@ -942,14 +942,14 @@ function cdash_display_custom_fields( $postid ) {
 
 	foreach($customfields as $field) { 
 		if( is_singular( 'business' ) || "yes" == $field['display_single'] ) {
-			$fieldname = $field['name'];
+			$fieldname = '_cdash_'.$field['name'];
 			if(isset($custommeta[$fieldname])) {
 				$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
 			}	
 		} elseif( "yes" !== $field['display_dir'] ) {
 			continue;
 		} else {
-			$fieldname = $field['name'];
+			$fieldname = '_cdash_'.$field['name'];
 			if(isset($custommeta[$fieldname])) {
 				$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
 			}	

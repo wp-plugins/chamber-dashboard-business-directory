@@ -5,7 +5,7 @@
 <div id="sidebar" style="width: 28%; float: right; min-width: 150px; background: #fff; border: 1px solid #999; padding: 6px">
 	<h3><?php _e('We\'re here to help!', 'cdashmm'); ?></h3>
 	<ul>
-		<li><a href="https://chamberdashboard.com/document/install-and-setup-member-manager/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank"><?php _e('Member Manager Documentation', 'cdashmm'); ?></a></li>
+		<li><a href="https://chamberdashboard.com/document/installing-chamber-dashboard-business-directory/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank"><?php _e('Business Directory Documentation', 'cdashmm'); ?></a></li>
 		<li><a href="https://chamberdashboard.com/professional-services-support/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory#installation" target="_blank"><?php _e('Installation and Configuration:', 'cdashmm'); ?></a> <?php _e(' sit back and let experienced pros configure Chamber Dashboard to do just what you need', 'cdashmm'); ?></li>
 		<li><a href="https://chamberdashboard.com/downloads/priority-support/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory" target="_blank"><?php _e('Priority Support:', 'cdashmm'); ?></a><?php _e(' get access to our expertise', 'cdashmm'); ?></li>
 		<li><a href="https://chamberdashboard.com/professional-services-support/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory#maintenance" target="_blank"><?php _e('Worry-Free Maintenance:', 'cdashmm'); ?></a><?php _e(' let us take care of maintaining your site, so you can focus on what you do best!', 'cdashmm'); ?></li>

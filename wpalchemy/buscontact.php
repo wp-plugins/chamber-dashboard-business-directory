@@ -139,6 +139,7 @@
 				<option value="facebook" <?php if ($mb->get_the_value() == 'facebook') echo $selected; ?>><?php _e( 'Facebook', 'cdash' ); ?></option>
 				<option value="flickr" <?php if ($mb->get_the_value() == 'flickr') echo $selected; ?>><?php _e( 'Flickr', 'cdash' ); ?></option>
 				<option value="google" <?php if ($mb->get_the_value() == 'google') echo $selected; ?>><?php _e( 'Google +', 'cdash' ); ?></option>
+				<option value="instagram" <?php if ($mb->get_the_value() == 'instagram') echo $selected; ?>><?php _e( 'Instagram', 'cdash' ); ?></option>
 				<option value="linkedin" <?php if ($mb->get_the_value() == 'linkedin') echo $selected; ?>><?php _e( 'LinkedIn', 'cdash' ); ?></option>
 				<option value="pinterest" <?php if ($mb->get_the_value() == 'pinterest') echo $selected; ?>><?php _e( 'Pinterest', 'cdash' ); ?></option>
 				<option value="tripadvisor" <?php if ($mb->get_the_value() == 'tripadvisor') echo $selected; ?>><?php _e( 'Trip Advisor', 'cdash' ); ?></option>

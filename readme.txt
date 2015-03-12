@@ -80,6 +80,11 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.3.4 =
+* fixed bug that prevented membership levels from displaying on single business view
+* fixed bug that prevented some custom fields from displaying
+* added Instagram to social media options
+
 = 2.3.3 =
 * more thoroughly fixed bug in [business_search] shortcode
 * made maps work on hosts that don't support fopen
