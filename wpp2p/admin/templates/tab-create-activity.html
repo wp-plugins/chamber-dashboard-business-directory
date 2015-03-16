@@ -1,0 +1,19 @@
+<div id="create-activity">
+<label>Title</label>
+<input type="text" name="p2p_new_title" class="post-title-input" autocomplete="off" placeholder="Activity Title"/>
+<label>Date</label>
+<span>Be sure to use the format yyyy-mm-dd.  Example: 2014-09-29</span>
+<input type="text" name="p2p_new_date" class="post-date-input" autocomplete="off" placeholder="yyyy-mm-dd"/>
+<label>Description</label>
+<textarea name="p2p_new_content" class="post-content-input" placeholder="Activity Description"></textarea>
+
+<label>Category</label>
+<select name="p2p_new_categories" class="post-category-input">
+  <option value="">Choose a Category</option>
+  {{# categories }}
+  <option value="{{ term_id }}">{{ name }}</option>
+  {{/ categories }}
+</select>
+
+<button class="button">{{{title}}}</button>
+</div>
