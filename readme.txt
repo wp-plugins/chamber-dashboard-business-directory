@@ -80,6 +80,10 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.3.5 =
+* fixed ampersands in map info windows
+* made maps on single business view work on hosts that don't support fopen
+
 = 2.3.4 =
 * fixed bug that prevented membership levels from displaying on single business view
 * fixed bug that prevented some custom fields from displaying

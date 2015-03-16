@@ -104,8 +104,8 @@ function cdash_single_business($content) {
 				if( isset( $location['address'] ) && !isset( $location['donotdisplay'] ) ) {
 					$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
 					$address = urlencode($rawaddress);
-					$json = file_get_contents("http://maps.google.com/maps/api/geocode/json?address=$address");
-					$json = json_decode($json, true);
+					$json = wp_remote_get( "http://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&sensor=true" );
+					$json = json_decode($json['body'], true);
 					if(is_array($json) && $json['status'] == 'OK') {
 						$needmap = "true";
 					}
@@ -174,7 +174,7 @@ function cdash_single_business_map() {
 								$poptitle = htmlentities($htmlname, ENT_QUOTES);
 							} else {
 								$htmltitle = htmlentities(get_the_title(), ENT_QUOTES);
-								$poptitle = htmlentities($htmltitle, ENT_QUOTES);
+								$poptitle = esc_html($htmltitle, ENT_QUOTES);
 							}
 							// get other information for the pop-up window
 							$popaddress = esc_html( $location['address'] );
