@@ -100,17 +100,20 @@ function cdash_single_business($content) {
 		if( isset( $options['sv_map']) && "1" == $options['sv_map'] ) {
 			// only show the map if locations have addresses entered
 			$needmap = "false";
-			foreach ( $locations as $location ) {
-				if( isset( $location['address'] ) && !isset( $location['donotdisplay'] ) ) {
-					$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
-					$address = urlencode($rawaddress);
-					$json = wp_remote_get( "http://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&sensor=true" );
-					$json = json_decode($json['body'], true);
-					if(is_array($json) && $json['status'] == 'OK') {
-						$needmap = "true";
+			if( isset( $contactmeta['location'] ) ) {
+				$locations = $contactmeta['location'];
+				foreach ( $locations as $location ) {
+					if( isset( $location['address'] ) && !isset( $location['donotdisplay'] ) ) {
+						$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
+						$address = urlencode($rawaddress);
+						$json = wp_remote_get( "http://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&sensor=true" );
+						$json = json_decode($json['body'], true);
+						if(is_array($json) && $json['status'] == 'OK') {
+							$needmap = "true";
+						}
 					}
-				}
-			} 
+				} 
+			}
 			if( $needmap == "true" ) { 
 				$business_content .= "<div id='map-canvas' style='width: 100%; height: 300px; margin: 20px 0;'></div>";
 				add_action('wp_footer', 'cdash_single_business_map');
@@ -751,15 +754,15 @@ function cdash_business_search_results_shortcode() {
 						}
 						if ( isset( $options['tax_email'] ) && "1" == $options['tax_email'] && isset( $location['email'] ) && '' !== $location['email'] ) { 
 							$search_results .= cdash_display_email_addresses( $location['email'] );
-						$search_results .= "</div><!-- .location -->";
 						}
+						$search_results .= "</div><!-- .location -->";
 					}
 				}
 				if( $options['bus_custom'] ) {
 					$search_results .= cdash_display_custom_fields( get_the_id() );
 				}
 
-				$search_results .= "</div><!-- #search-results --><div style='clear:both'></div>";
+				$search_results .= "</div><!-- .search-result --><div style='clear:both'></div>";
 			endwhile;
 			$total_pages = $search_query->max_num_pages;
 			if ($total_pages > 1){
@@ -773,7 +776,7 @@ function cdash_business_search_results_shortcode() {
 			    ));
 			    $search_results .= "</div>";
 			}
-			$search_results .= "</div>";
+			$search_results .= "</div><!-- #search-results -->";
 		endif;
 
 		// Reset Post Data
