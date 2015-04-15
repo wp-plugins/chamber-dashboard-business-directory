@@ -24,6 +24,10 @@
 	margin-bottom: 10px;
 }
 
+.my_meta_control fieldset legend {
+	font-size: 1.3em;
+}
+
 .my_meta_control .button {
 	margin-bottom: 10px;
 }
@@ -70,4 +74,74 @@
 	display: table;
 content: '';
 clear: both;
+}
+
+input#item_membershipamt {
+	width: 5em;
+}
+
+.my_meta_control .alert {
+    border-left: 4px solid #ffba00;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    margin: 5px;
+    padding: 5px 5px 5px 9px;
+}
+
+.my_meta_control .error {
+    border-left: 4px solid #dd3d36;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    margin: 5px;
+    padding: 5px 5px 5px 9px;
+}
+
+.my_meta_control .success {
+    border-left: 4px solid #7ad03a;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    margin: 5px;
+    padding: 5px 5px 5px 9px;
+}
+
+#cdashmm-advert h3 {
+	font-weight: normal;
+	font-size: 1.2em;
+	padding: 0;
+}
+
+#cdashmm-advert a {
+	display: block;
+	background: url('cdashmm.png') left center no-repeat;
+	padding-left: 40px;
+	min-height: 50px;
+	font-size: 1.1em;
+}
+
+#cdashmm-advert li {
+	list-style-type: square;
+	margin-left: 1em;
+}
+
+.my_meta_control .item label {
+	font-size: .9em;
+}
+
+.my_meta_control .item.name {
+	width: 85%;
+	float: left;
+}
+
+.my_meta_control .item.description {
+	width: 12%;
+	float: right;
+}
+
+.my_meta_control input#amount {
+	width: 8em;
+}
+
+th.interval {
+	color: #0074A2;
+	font-size: 1.2em;
+	text-align: center;
+	background: #d6d6d6;
+	font-weight: 700;
 }
