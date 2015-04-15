@@ -137,3 +137,11 @@ input#item_membershipamt {
 .my_meta_control input#amount {
 	width: 8em;
 }
+
+th.interval {
+	color: #0074A2;
+	font-size: 1.2em;
+	text-align: center;
+	background: #d6d6d6;
+	font-weight: 700;
+}

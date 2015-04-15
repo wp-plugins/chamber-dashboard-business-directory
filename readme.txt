@@ -80,6 +80,10 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.3.7 =
+* fixed custom field error message
+* potential fix for Google maps grey box problem
+
 = 2.3.6 =
 * fixed bug in business search results shortcode
 * fixed PHP error on single business view

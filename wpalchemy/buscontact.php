@@ -12,9 +12,9 @@
 		<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
 
 		<?php $mb->the_field('donotdisplay'); ?>
-		<label>Do Not Display</label>
+		<label><?php _e('Do Not Display', 'cdash'); ?></label>
 		<p class="explain"><?php _e('Check this if you do not want this location to display to the public on the website'); ?></p>
-		<p><input type="checkbox" name="<?php $mb->the_name(); ?>" value="1"<?php if ($mb->get_the_value()) echo ' checked="checked"'; ?>/> Do Not Display</p>
+		<p><input type="checkbox" name="<?php $mb->the_name(); ?>" value="1"<?php if ($mb->get_the_value()) echo ' checked="checked"'; ?>/> <?php _e('Do Not Display', 'cdash'); ?></p>
 
 
 		<label><?php _e('Address', 'cdash'); ?></label>

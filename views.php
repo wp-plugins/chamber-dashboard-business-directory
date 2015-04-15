@@ -597,7 +597,7 @@ function cdash_business_map_shortcode( $atts ) {
 
 					var bounds = new google.maps.LatLngBounds();
 					var mapOptions = {
-					    // zoom: 13,
+					    zoom: 13,
 					}
 					var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 					var infowindow = new google.maps.InfoWindow();
@@ -943,19 +943,21 @@ function cdash_display_custom_fields( $postid ) {
 
 	$custom_fields = ''; 
 
-	foreach($customfields as $field) { 
-		if( is_singular( 'business' ) || "yes" == $field['display_single'] ) {
-			$fieldname = '_cdash_'.$field['name'];
-			if(isset($custommeta[$fieldname])) {
-				$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
-			}	
-		} elseif( "yes" !== $field['display_dir'] ) {
-			continue;
-		} else {
-			$fieldname = '_cdash_'.$field['name'];
-			if(isset($custommeta[$fieldname])) {
-				$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
-			}	
+	if( is_array( $customfields ) ) {
+		foreach($customfields as $field) { 
+			if( is_singular( 'business' ) || "yes" == $field['display_single'] ) {
+				$fieldname = '_cdash_'.$field['name'];
+				if(isset($custommeta[$fieldname])) {
+					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
+				}	
+			} elseif( "yes" !== $field['display_dir'] ) {
+				continue;
+			} else {
+				$fieldname = '_cdash_'.$field['name'];
+				if(isset($custommeta[$fieldname])) {
+					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
+				}	
+			}
 		}
 	}
 
