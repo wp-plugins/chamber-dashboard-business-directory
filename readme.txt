@@ -3,7 +3,7 @@ Contributors: gwendydd
 Tags: Chamber of Commerce, business directory, businesses
 Donate link: http://chamberdashboard.com/donate
 Requires at least: 3.7
-Tested up to: 4.1
+Tested up to: 4.2
 Stable tag: trunk
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -80,6 +80,11 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.3.8 =
+* fixed bug that caused some custom fields to not display
+* changes to language files to facilitate translations
+* fixed Google maps grey box problem
+
 = 2.3.7 =
 * fixed custom field error message
 * potential fix for Google maps grey box problem

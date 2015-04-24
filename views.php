@@ -106,7 +106,7 @@ function cdash_single_business($content) {
 					if( isset( $location['address'] ) && !isset( $location['donotdisplay'] ) ) {
 						$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
 						$address = urlencode($rawaddress);
-						$json = wp_remote_get( "http://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&sensor=true" );
+						$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&address=" . $address . "&sensor=true" );
 						$json = json_decode($json['body'], true);
 						if(is_array($json) && $json['status'] == 'OK') {
 							$needmap = "true";
@@ -152,7 +152,7 @@ function cdash_single_business_map() {
 					} else {
 				    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
 						$address = urlencode( $rawaddress );
-						$json = wp_remote_get( "http://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&sensor=true" );
+						$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&address=" . $address . "&sensor=true" );
 						$json = json_decode($json['body'], true);
 						if( is_array( $json ) && $json['status'] == 'OK') {
 							$lat = $json['results'][0]['geometry']['location']['lat'];
@@ -552,8 +552,9 @@ function cdash_business_map_shortcode( $atts ) {
 							// Get the latitude and longitude from the address
 					    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
 							$address = urlencode($rawaddress);
-							$json = wp_remote_get( "http://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&sensor=true" );
+							$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&address=" . $address . "&sensor=true" );
 							$json = json_decode($json['body'], true);
+
 							if(is_array($json) && $json['status'] == 'OK') {
 								$lat = $json['results'][0]['geometry']['location']['lat'];
 								$long = $json['results'][0]['geometry']['location']['lng']; 
@@ -704,7 +705,7 @@ function cdash_business_search_results_shortcode() {
 				if ( isset( $options['tax_thumb'] ) && "1" == $options['tax_thumb'] ) { 
 					$search_results .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, 'full') . '</a>';
 				}
-				if ( isset( $options['tax_logo'] ) && "1" == $options['tax_logo'] ) { 
+				if ( isset( $options['tax_logo'] ) && "1" == $options['tax_logo'] && isset( $logometa['buslogo'] ) ) { 
 					$attr = array(
 						'class'	=> 'alignleft logo',
 					);
@@ -943,14 +944,16 @@ function cdash_display_custom_fields( $postid ) {
 
 	$custom_fields = ''; 
 
-	if( is_array( $customfields ) ) {
+	if( isset( $customfields ) && is_array( $customfields ) ) {
 		foreach($customfields as $field) { 
-			if( is_singular( 'business' ) || "yes" == $field['display_single'] ) {
-				$fieldname = '_cdash_'.$field['name'];
-				if(isset($custommeta[$fieldname])) {
+			if( is_singular( 'business' ) && "yes" == $field['display_single'] ) {
+				$fieldname = $field['name'];
+				if( isset( $custommeta[$fieldname] ) ) {
 					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
-				}	
-			} elseif( "yes" !== $field['display_dir'] ) {
+				} elseif ( isset( $custommeta['_cdash_'.$fieldname] ) ) {
+					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta['_cdash_'.$fieldname] . "</p>";
+				}
+			} elseif( isset( $field['display_dir'] ) && "yes" !== $field['display_dir'] ) {
 				continue;
 			} else {
 				$fieldname = '_cdash_'.$field['name'];
