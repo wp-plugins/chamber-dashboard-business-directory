@@ -3,9 +3,10 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 2.3.7
+Version: 2.3.8
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
+Text Domain: cdash
 */
 
 /*  Copyright 2014 Morgan Kay and the Fremont Chamber of Commerce (email : info@chamberdashboard.com)
