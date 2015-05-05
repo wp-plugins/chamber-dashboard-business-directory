@@ -29,6 +29,12 @@ For full instructions about how to use the plugin, go to [Chamber Dashboard Docu
 * [Chamber Dashboard CRM](https://wordpress.org/plugins/chamber-dashboard-crm/) - Keep track of the people associated with your organization and their activities
 * [Chamber Dashboard Member Manager](https://wordpress.org/plugins/chamber-dashboard-member-manager/) - Track membership levels and benefits, collect membership payments online
 
+= Contributors = 
+Several people have contributed to the development of Chamber Dashboard:
+* Jonathan Kay, jpkay
+* Mike Davis, jmdxsvhs15 - map clustering
+* Justin Ribeiro - business categories shortcode
+
 
 
 == Installation ==
@@ -82,7 +88,7 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 == Changelog ==
 = 2.4 =
 * rewrote maps to make them reliable
-* add clustering option to map shortcode
+* add clustering option to map shortcode, thanks to Mike Davis, jmdxsvhs15
 * add option to change ordering of taxonomy archives
 * add option to allow comments on single business view
 * add parameters to business categories shortcode
