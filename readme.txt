@@ -11,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Create a directory of businesses.  Specifically designed for chambers of commerce to store information about businesses and display them on a website.
 
 == Description ==
-Chamber Dashboard Business Directory is a part of the Chamber Dashboard collection of plugins and themes designed to meet the needs of chambers of commerce.
+Chamber Dashboard Business Directory is a part of the Chamber Dashboard collection of plugins designed to meet the needs of chambers of commerce.
 
 = With Chamber Dashboard Business Directory, you can: =
 *   create a database of the businesses in your organization
@@ -27,9 +27,9 @@ For full instructions about how to use the plugin, go to [Chamber Dashboard Docu
 = Other Chamber Dashboard Plugins =
 * [Chamber Dashboard Events Calendar](https://wordpress.org/plugins/chamber-dashboard-events-calendar/) - Display a calendar of your organization's events
 * [Chamber Dashboard CRM](https://wordpress.org/plugins/chamber-dashboard-crm/) - Keep track of the people associated with your organization and their activities
-* Chamber Dashboard Member Manager - coming soon!  Track membership levels and benefits, collect membership payments online
+* [Chamber Dashboard Member Manager](https://wordpress.org/plugins/chamber-dashboard-member-manager/) - Track membership levels and benefits, collect membership payments online
 
-Many more features coming soon! 
+
 
 == Installation ==
 = Using The WordPress Dashboard =
@@ -80,6 +80,15 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.4 =
+* rewrote maps to make them reliable
+* add clustering option to map shortcode
+* add option to change ordering of taxonomy archives
+* add option to allow comments on single business view
+* add parameters to business categories shortcode
+* add button to let users copy a location's information to the business contact 
+* fixed bug that caused some custom fields to not display
+
 = 2.3.8 =
 * fixed bug that caused some custom fields to not display
 * changes to language files to facilitate translations

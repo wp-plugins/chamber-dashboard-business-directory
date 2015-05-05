@@ -16,31 +16,42 @@
 		<p class="explain"><?php _e('Check this if you do not want this location to display to the public on the website'); ?></p>
 		<p><input type="checkbox" name="<?php $mb->the_name(); ?>" value="1"<?php if ($mb->get_the_value()) echo ' checked="checked"'; ?>/> <?php _e('Do Not Display', 'cdash'); ?></p>
 
+		<div class="address-data">
+			<label><?php _e('Address', 'cdash'); ?></label>
+			<p class="address-wrapper">
+				<?php $metabox->the_field('address'); ?>
+				<textarea name="<?php $metabox->the_name(); ?>" rows="3"><?php $metabox->the_value(); ?></textarea>
+			</p>
 
-		<label><?php _e('Address', 'cdash'); ?></label>
-		<p>
-			<?php $metabox->the_field('address'); ?>
-			<textarea name="<?php $metabox->the_name(); ?>" rows="3"><?php $metabox->the_value(); ?></textarea>
-		</p>
+			<?php $options = get_option('cdash_directory_options'); ?>
+	 
+			<div class="third city-wrapper">
+				<?php $mb->the_field('city'); ?>
+				<label><?php _e('City', 'cdash'); ?></label>
+				<p><input type="text" class="city" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p> 
+			</div>
 
-		<?php $options = get_option('cdash_directory_options'); ?>
- 
-		<div class="third">
-			<?php $mb->the_field('city'); ?>
-			<label><?php _e('City', 'cdash'); ?></label>
-			<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p> 
+			<div class="third state-wrapper">
+				<?php $mb->the_field('state'); ?>
+				<label><?php _e('State', 'cdash'); ?></label>
+				<p><input type="text" class="state" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+			</div>
+
+			<div class="third zip-wrapper">
+				<?php $mb->the_field('zip'); ?>
+				<label><?php _e('Zip', 'cdash'); ?></label>
+				<p><input type="text" class="zip" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+			</div>
 		</div>
 
-		<div class="third">
-			<?php $mb->the_field('state'); ?>
-			<label><?php _e('State', 'cdash'); ?></label>
-			<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
-		</div>
+		<div class="hidden">
+			<?php $mb->the_field('latitude'); ?>
+			<label><?php _e('Latitude', 'cdash'); ?></label>
+			<p><input type="text" name="<?php $mb->the_name(); ?>" id="latitude" value="<?php $mb->the_value(); ?>"/></p>
 
-		<div class="third">
-			<?php $mb->the_field('zip'); ?>
-			<label><?php _e('Zip', 'cdash'); ?></label>
-			<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+			<?php $mb->the_field('longitude'); ?>
+			<label><?php _e('Longitude', 'cdash'); ?></label>
+			<p><input type="text" name="<?php $mb->the_name(); ?>" id="longitude" value="<?php $mb->the_value(); ?>"/></p>
 		</div>
 
 		<div class="clearfix">
@@ -49,7 +60,7 @@
 			<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>" placeholder="http://"/></p>
 		</div>
 
-		<fieldset class="half left">
+		<fieldset class="half left phone-fieldset">
 			<legend><?php _e('Phone Number(s)', 'cdash'); ?></legend>
 
 			<a href="#" class="dodelete-phone button"><?php _e('Remove All Phone Numbers', 'cdash'); ?></a>
@@ -58,7 +69,7 @@
 			<?php $mb->the_group_open(); ?>
 				<?php $mb->the_field('phonenumber'); ?>
 				<label><?php _e('Phone Number', 'cdash'); ?></label>
-				<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+				<p><input type="text" class="phone" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
 
 				<?php $mb->the_field('phonetype'); ?>
 				<label><?php _e('Phone Number Type', 'cdash'); ?></label>
@@ -82,7 +93,7 @@
 			<p><a href="#" class="docopy-phone button"><?php _e('Add Another Phone Number', 'cdash'); ?></a></p>
 		</fieldset>
 
-		<fieldset class="half">
+		<fieldset class="half email-fieldset">
 			<legend><?php _e('Email Address(es)', 'cdash'); ?></legend>
 			<a href="#" class="dodelete-email button"><?php _e('Remove All Email Addresses', 'cdash'); ?></a>
 	 
@@ -90,7 +101,7 @@
 			<?php $mb->the_group_open(); ?>
 				<?php $mb->the_field('emailaddress'); ?>
 				<label><?php _e('Email Address', 'cdash'); ?></label>
-				<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+				<p><input type="text" class="email" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
 				
 				<?php $mb->the_field('emailtype'); ?>
 				<label><?php _e('Email Address Type', 'cdash'); ?></label>
@@ -114,6 +125,8 @@
 			<p><a href="#" class="docopy-email button"><?php _e('Add Another Email Address', 'cdash'); ?></a></p>
 		</fieldset>
 
+		<a href="#" class="button billing-copy"><?php _e('Use This Location for Billing', 'cdash'); ?></a>
+		<span class="copy-confirm" style="display: none;"><?php _e( 'Done!  Make sure you save your changes!', 'cdash' ); ?></span>
 		<p class="clearfix"><a href="#" class="dodelete button"><?php _e('Remove This Location', 'cdash'); ?></a></p>
  
 		</div>

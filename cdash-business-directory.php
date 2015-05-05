@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Create a database of the businesses in your chamber of commerce
-Version: 2.3.8
+Version: 2.4
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 Text Domain: cdash
@@ -165,6 +165,12 @@ add_action( 'init', 'cdash_register_taxonomy_membership_level', 0 );
 // Register Custom Post Type - Businesses
 function cdash_register_cpt_business() {
 
+	$options = get_option( 'cdash_directory_options' );
+	$supports = array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', );
+	if( isset( $options['sv_comments'] ) && "1" == $options['sv_comments'] ) {
+		$supports[] = 'comments';
+	}
+
 	$labels = array(
 		'name'                => _x( 'Businesses', 'Post Type General Name', 'cdash' ),
 		'singular_name'       => _x( 'Business', 'Post Type Singular Name', 'cdash' ),
@@ -184,7 +190,7 @@ function cdash_register_cpt_business() {
 		'label'               => __( 'business', 'cdash' ),
 		'description'         => __( 'Businesses and Organizations', 'cdash' ),
 		'labels'              => $labels,
-		'supports'            => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', ),
+		'supports'            => $supports,
 		'taxonomies'          => array( 'business_category', ' membership_level' ),
 		'hierarchical'        => true,
 		'public'              => true,
@@ -223,15 +229,25 @@ if(!class_exists('WPAlchemy_MetaBox')) { //only include metabox files if another
 
 define( 'CDASH_PATH', plugin_dir_path(__FILE__) );
 
-// Add a stylesheet to the admin area to make meta boxes look nice
-function cdash_metabox_stylesheet()
+// Enqueue styles and scripts
+function cdash_admin_scripts_and_styles($hook)
 {
-    if ( is_admin() )
-    {
+    if ( is_admin() ) {
         wp_enqueue_style( 'wpalchemy-metabox', plugins_url() . '/chamber-dashboard-business-directory/wpalchemy/meta.css' );
     }
+
+    global $post;
+
+    // business AJAX
+    if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
+	    if ( isset( $post ) && 'business' === $post->post_type ) {       
+		    wp_enqueue_script( 'business-meta', plugin_dir_url(__FILE__) . 'js/cdash-business-meta.js', array( 'jquery' ) );
+		    // don't actually need ajax yet
+		    // wp_localize_script( 'business-meta', 'businessajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); 
+		}
+	}
 }
-add_action( 'init', 'cdash_metabox_stylesheet' );
+add_action( 'admin_enqueue_scripts', 'cdash_admin_scripts_and_styles' );
 
 // Create metabox for location/address information
 $buscontact_metabox = new WPAlchemy_MetaBox(array
@@ -457,5 +473,180 @@ function cdash_add_taxonomy_classes($classes) {
 }
 add_filter('post_class', 'cdash_add_taxonomy_classes');
 add_filter('body_class', 'cdash_add_taxonomy_classes');
+
+
+// ------------------------------------------------------------------------
+// SAVE GEOLOCATION DATA, with extra noodles to make sure this runs very last when business is saved
+// ------------------------------------------------------------------------
+
+function cdash_get_latest_priority( $filter ) // figure out what priority the geolocation function needs, thanks to http://wordpress.stackexchange.com/questions/116221/how-to-force-function-to-run-as-the-last-one-when-saving-the-post
+{
+    if ( empty ( $GLOBALS['wp_filter'][ $filter ] ) )
+        return PHP_INT_MAX;
+
+    $priorities = array_keys( $GLOBALS['wp_filter'][ $filter ] );
+    $last       = end( $priorities );
+
+    if ( is_numeric( $last ) )
+        return PHP_INT_MAX;
+
+    return "$last-z";
+}
+add_action( 'save_post', 'cdash_run_that_action_last', 0 ); 
+
+function cdash_run_that_action_last() {  // add the action now, with lowest priority so it runs after meta data has been saved
+    add_action( 
+        'save_post', 
+        'cdash_store_geolocation_data',
+        cdash_get_latest_priority( current_filter() ),
+        2 
+    ); 
+
+}
+
+function cdash_store_geolocation_data( $post_id ) {
+
+	// get the addresses
+	$locations = get_post_meta( $post_id, '_cdash_location', true );
+	
+	if( !empty( $locations ) ) {
+		foreach( $locations as $key => $location ) {
+			if( isset( $location['address'] ) ) {
+				// ask Google for the latitude and longitude
+				$rawaddress = $location['address'];
+				if( isset( $location['city'] ) ) {
+					$rawaddress .= ' ' . $location['city'];
+				}
+				if( isset( $location['state'] ) ) {
+					$rawaddress .= ' ' . $location['state'];
+				}
+				if( isset( $location['zip'] ) ) {
+					$rawaddress .= ' ' . $location['zip'];
+				}
+				$address = urlencode( $rawaddress );
+				$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBq9JVPgmORIVfuzmgpzrzRTVyttSNyJ3A&address=" . $address . "&sensor=true" );
+				$json = json_decode($json['body'], true);
+				if( is_array( $json ) && $json['status'] == 'OK') {
+					$locations[$key]['latitude'] = $json['results'][0]['geometry']['location']['lat'];
+					$locations[$key]['longitude'] = $json['results'][0]['geometry']['location']['lng']; 
+				}
+			}
+		}
+		// save the latitude and longitude
+		update_post_meta( $post_id, '_cdash_location', $locations );
+	}
+}
+
+// ------------------------------------------------------------------------
+// ADD GEOLOCATION DATA TO BUSINESSES CREATED BEFORE VERSION 3
+// ------------------------------------------------------------------------
+
+// make activation hook that checks for existence of businesses, updates geolocation data, and saves geolocation_updated option
+register_activation_hook(__FILE__, 'cdash_activation_geolocation_check');
+
+function cdash_activation_geolocation_check() {
+	// if we have stored the geolocation option, we don't need to do this
+	$options = get_option('cdash_directory_version');
+	if( "yes" == $options['geolocation_updated'] ) {
+		// do nothing
+	} else { 
+		// check if there are businesses
+		$args = array( 'post_type' => 'business' );
+		$businesses = get_posts( $args );
+		if( is_array( $businesses ) ) {
+			// there are businesses, so we need to update them
+			cdash_find_and_update_all_business_geolocation( 'no-return' );
+		} else {
+			// there are no businesses, so we can save the geolocation option and move on
+			$options['geolocation_updated'] = "yes";
+    		update_option( 'cdash_directory_version', $options );
+		}
+	}
+}
+
+// add admin_init that checks for geolocation_updated option and displays "need update" message
+add_action( 'admin_init', 'cdash_check_geolocation' );
+
+function cdash_check_geolocation() {
+	// if we have stored the geolocation option, we don't need to do this
+	$options = get_option('cdash_directory_version');
+	if( "yes" == $options['geolocation_updated'] ) {
+		// do nothing
+	} else { 
+		// check if there are businesses
+		$args = array( 'post_type' => 'business' );
+		$businesses = get_posts( $args );
+		if( is_array( $businesses ) ) {
+			// add admin notice 
+			add_action( 'admin_notices', 'cdash_ask_to_update_geolocation' );
+		} 
+	}
+
+}
+
+function cdash_ask_to_update_geolocation() {
+	?>
+    <div class="update-nag">
+        <p><?php _e( 'Chamber Dashboard needs to update your database to ensure that your maps display correctly.', 'cdash' ); ?></p>
+        <p><a class="button submit-button" href="<?php echo admin_url( 'admin.php?page=chamber-dashboard-update-geolocation' ); ?>"><?php _e( 'Update Now', 'cdash' ); ?></a></p>
+    </div>
+    <?php
+}
+
+
+function cdash_update_geolocation_data_page() {
+	// TODO - add a nonce ?>
+
+	<div class="wrap">
+
+		<h2><img src="<?php echo plugin_dir_url( __FILE__ ) . '/images/cdash-32.png'?>"><?php _e('Chamber Dashboard Business Directory', 'cdash'); ?></h2>
+
+		<?php 
+		// make sure we haven't done this before
+		$options = get_option('cdash_directory_options');
+		if( "yes" == $options['geolocation_updated'] ) { ?>
+			<p><?php _e( 'Your businesses are already up to date!', 'cdash' ); ?></p>
+		<?php } else {
+				$number = cdash_find_and_update_all_business_geolocation( 'return' );
+			 ?>
+
+		    <p><?php echo $number . __( ' businesses were updated.  Thank you!', 'cdash' ); ?></p>
+		 <?php } ?>
+
+	</div>
+    
+<?php }
+
+function cdash_find_and_update_all_business_geolocation( $return ) {
+
+	$args = array( 
+        'post_type' => 'business',
+        'posts_per_page' => -1,
+        'post_status' => 'any',
+    );
+    
+    $businesses = new WP_Query( $args );
+    $i = 0;
+    
+    if ( $businesses->have_posts() ) :
+	    while ( $businesses->have_posts() ) : $businesses->the_post();
+	    	$id = get_the_id();
+	    	cdash_store_geolocation_data( $id );
+	    	$i++;
+	    endwhile;
+    endif;
+    
+    wp_reset_postdata(); 
+    
+    $options = get_option('cdash_directory_version');
+    $options['geolocation_updated'] = "yes";
+    update_option( 'cdash_directory_version', $options );
+
+    if( "return" == $return ) {
+	    return $i;
+	}
+
+}
+
 
 ?>
