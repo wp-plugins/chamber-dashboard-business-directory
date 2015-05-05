@@ -104,13 +104,7 @@ function cdash_single_business($content) {
 				$locations = $contactmeta['location'];
 				foreach ( $locations as $location ) {
 					if( isset( $location['address'] ) && !isset( $location['donotdisplay'] ) ) {
-						$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
-						$address = urlencode($rawaddress);
-						$json = wp_remote_get( "http://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&sensor=true" );
-						$json = json_decode($json['body'], true);
-						if(is_array($json) && $json['status'] == 'OK') {
-							$needmap = "true";
-						}
+						$needmap = "true";	
 					}
 				} 
 			}
@@ -150,13 +144,9 @@ function cdash_single_business_map() {
 					if( isset( $location['donotdisplay'] ) && $location['donotdisplay'] == "1") {
 						continue;
 					} else {
-				    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
-						$address = urlencode( $rawaddress );
-						$json = wp_remote_get( "http://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&sensor=true" );
-						$json = json_decode($json['body'], true);
-						if( is_array( $json ) && $json['status'] == 'OK') {
-							$lat = $json['results'][0]['geometry']['location']['lat'];
-							$long = $json['results'][0]['geometry']['location']['lng']; 
+						if( isset( $location['latitude'] ) && isset( $location['longitude'] ) ) {
+							$lat = $location['latitude'];
+							$long = $location['longitude']; 
 							// get the map icon
 							$id = get_the_id();
 							$buscats = get_the_terms( $id, 'business_category');
@@ -187,8 +177,6 @@ function cdash_single_business_map() {
 							['<div class="business" style="width: 150px; height: 150px;"><h5><?php echo $poptitle; ?></h5><?php echo $popaddress; ?><br /><?php echo $popcity; ?>, <?php echo $location["state"]; ?> <?php echo $location["zip"]; ?></div>', <?php echo $lat; ?>, <?php echo $long; ?>, '<?php echo $icon; ?>'],
 							<?php
 						}
-		
-
 					}
 				} ?>
 
@@ -252,6 +240,19 @@ function cdash_info_window() {
 // ------------------------------------------------------------------------
 // TAXONOMY VIEW
 // ------------------------------------------------------------------------
+
+// modify query to order by business name
+function cdash_reorder_taxonomies( $query ) {
+	$options = get_option( 'cdash_directory_options' );
+	if( isset( $options['tax_orderby_name'] ) && "1" == $options['tax_orderby_name'] ) {
+		if( !( is_admin() || is_search() ) && ( is_tax( 'business_category' ) || is_tax( 'membership_level' ) ) ) {
+			$query->set( 'orderby', 'title' );
+			$query->set( 'order', 'ASC' );
+		}
+	}
+}
+
+add_action( 'pre_get_posts', 'cdash_reorder_taxonomies' );
 
 function cdash_taxonomy_filter( $content ) {
 	if( is_tax( 'business_category' ) || is_tax( 'membership_level' ) ) {
@@ -518,6 +519,7 @@ function cdash_business_map_shortcode( $atts ) {
 			'level' => '', // options: slug of any membership level
 			'single_link' => 'yes', // options: yes, no
 			'perpage' => '-1', // options: any number
+			'cluster' => 'no' // options: yes or no
 		), $atts )
 	);
 
@@ -533,6 +535,13 @@ function cdash_business_map_shortcode( $atts ) {
 	$mapquery = new WP_Query( $args );
 	$business_map = "<div id='map-canvas' style='width: 100%; height: 500px;'></div>";
 	$business_map .= "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&sensor=false'></script>";
+		
+	if( "yes" == $cluster ) {
+		$business_map .= "<script src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js'></script>";
+	    // $business_map .= "<script src='http://maps.google.com/maps/api/js?sensor=false'></script>";
+	    $business_map .= "<script src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/data.json'></script>";
+	}
+
 	$business_map .= "<script type='text/javascript'>";
 	$business_map .= "function initialize() {
 				var locations = [";
@@ -544,19 +553,15 @@ function cdash_business_map_shortcode( $atts ) {
 			$contactmeta = $buscontact_metabox->the_meta();
 			if( isset( $contactmeta['location'] ) ) {
 				$locations = $contactmeta['location'];
-				if(!empty($locations)) {
-					foreach($locations as $location) {
-						if(isset($location['donotdisplay']) && $location['donotdisplay'] == "1") {
+				if( !empty( $locations ) ) {
+					foreach( $locations as $location ) {
+						if( isset( $location['donotdisplay'] ) && $location['donotdisplay'] == "1") {
 							continue;
-						} elseif(isset($location['address'])) {
+						} elseif( isset( $location['address'] ) ) {
 							// Get the latitude and longitude from the address
-					    	$rawaddress = $location['address'] . ' ' . $location['city'] . ' ' . $location['state'] . ' ' . $location['zip'];
-							$address = urlencode($rawaddress);
-							$json = wp_remote_get( "http://maps.googleapis.com/maps/api/geocode/json?address=" . $address . "&sensor=true" );
-							$json = json_decode($json['body'], true);
-							if(is_array($json) && $json['status'] == 'OK') {
-								$lat = $json['results'][0]['geometry']['location']['lat'];
-								$long = $json['results'][0]['geometry']['location']['lng']; 
+							if( isset( $location['latitude'] ) && isset( $location['longitude'] ) ) {
+								$lat = $location['latitude'];
+								$long = $location['longitude']; 
 								// Get the map icon
 								$id = get_the_id();
 								$buscats = get_the_terms( $id, 'business_category');
@@ -598,8 +603,16 @@ function cdash_business_map_shortcode( $atts ) {
 					var bounds = new google.maps.LatLngBounds();
 					var mapOptions = {
 					    zoom: 13,
+					    scrollwheel: false
 					}
-					var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+					var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);";
+
+					if( "yes" == $cluster ) {
+						$business_map .=
+						"var markerCluster = new MarkerClusterer(map, marker);";
+					}
+
+					$business_map .= "
 					var infowindow = new google.maps.InfoWindow();
 					var marker, i;
 
@@ -608,8 +621,13 @@ function cdash_business_map_shortcode( $atts ) {
 				        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
 				        map: map,
 				        icon: locations[i][3]
-				    	});
+				    	});";
 
+						if( "yes" == $cluster ) {
+							$business_map .= "markerCluster.addMarker(marker);";
+						}
+
+						$business_map .= "
 						bounds.extend(marker.position);
 
 						google.maps.event.addListener(marker, 'click', (function(marker, i) {
@@ -704,7 +722,7 @@ function cdash_business_search_results_shortcode() {
 				if ( isset( $options['tax_thumb'] ) && "1" == $options['tax_thumb'] ) { 
 					$search_results .= '<a href="' . get_the_permalink() . '">' . get_the_post_thumbnail( $post->ID, 'full') . '</a>';
 				}
-				if ( isset( $options['tax_logo'] ) && "1" == $options['tax_logo'] ) { 
+				if ( isset( $options['tax_logo'] ) && "1" == $options['tax_logo'] && isset( $logometa['buslogo'] ) ) { 
 					$attr = array(
 						'class'	=> 'alignleft logo',
 					);
@@ -856,9 +874,10 @@ function cdash_business_categories_shortcode( $atts ) {
 		array(
 		'orderby' => 'name', // options: date, modified, menu_order, rand
 		'showcount' => 0,
-		'padcounts' => 0,
 		'hierarchical' => 1,
-		'title' => ''
+		'hide_empty' => 1,
+		'child_of' => 0,
+		'exclude' => '',
 		), $atts )
 	);
 	$taxonomy = 'business_category';
@@ -866,9 +885,10 @@ function cdash_business_categories_shortcode( $atts ) {
 		'taxonomy' => $taxonomy,
 		'orderby' => $orderby,
 		'show_count' => $showcount,
-		'pad_counts' => $padcounts,
 		'hierarchical' => $hierarchical,
-		'title_li' => $title
+		'hide_empty' => $hide_empty,
+		'child_of' => $child_of,
+		'exclude' => $exclude,
 	);
 	echo '<ul class="business-categories">';
 	wp_list_categories($args);
@@ -943,20 +963,24 @@ function cdash_display_custom_fields( $postid ) {
 
 	$custom_fields = ''; 
 
-	if( is_array( $customfields ) ) {
+	if( isset( $customfields ) && is_array( $customfields ) ) {
 		foreach($customfields as $field) { 
-			if( is_singular( 'business' ) || "yes" == $field['display_single'] ) {
-				$fieldname = '_cdash_'.$field['name'];
-				if(isset($custommeta[$fieldname])) {
+			if( is_singular( 'business' ) && "yes" == $field['display_single'] ) {
+				$fieldname = $field['name'];
+				if( isset( $custommeta[$fieldname] ) ) {
 					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
-				}	
-			} elseif( "yes" !== $field['display_dir'] ) {
+				} elseif ( isset( $custommeta['_cdash_'.$fieldname] ) ) {
+					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta['_cdash_'.$fieldname] . "</p>";
+				}
+			} elseif( isset( $field['display_dir'] ) && "yes" !== $field['display_dir'] ) {
 				continue;
 			} else {
-				$fieldname = '_cdash_'.$field['name'];
-				if(isset($custommeta[$fieldname])) {
+				$fieldname = $field['name'];
+				if( isset( $custommeta[$fieldname] ) ) {
 					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
-				}	
+				} elseif( isset( $custommeta['_cdash_'.$fieldname] ) ) {
+					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta['_cdash_'.$fieldname] . "</p>";
+				}
 			}
 		}
 	}

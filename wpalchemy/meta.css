@@ -37,6 +37,10 @@
 	float: left;
 }
 
+.my_meta_control .hidden {
+	display: none;
+}
+
 @media screen and (max-width: 1120px) {
 	.my_meta_control .half {
 		width: 40%;

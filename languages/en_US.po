@@ -1,0 +1,1099 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: cdash 1.6.9\n"
+"POT-Creation-Date: 2015-01-28 16:10-0800\n"
+"PO-Revision-Date: 2015-04-23 14:58-0800\n"
+"Last-Translator: Morgan <morgan@wpalchemists.com>\n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.6\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ..\n"
+
+#: ../Tax-meta-class/Tax-meta-class.php:250
+msgid "Delete this image"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:250
+#: ../Tax-meta-class/Tax-meta-class.php:882
+msgid "Delete"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:357
+msgid "Cannot delete file. Something's wrong."
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:582
+#: ../Tax-meta-class/Tax-meta-class.php:629
+msgid "Remove"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:595
+msgid "Add"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:878
+msgid "Uploaded files"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:889
+msgid "Upload new files"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:895
+msgid "Add more files"
+msgstr ""
+
+#: ../Tax-meta-class/Tax-meta-class.php:947
+msgid "Select a color"
+msgstr ""
+
+#: ../cdash-business-directory.php:93
+msgid "Business Categories"
+msgstr ""
+
+#: ../cdash-business-directory.php:94
+msgid "All Business Categories"
+msgstr ""
+
+#: ../cdash-business-directory.php:95
+msgid "Parent Business Category"
+msgstr ""
+
+#: ../cdash-business-directory.php:96
+msgid "Parent Business Category:"
+msgstr ""
+
+#: ../cdash-business-directory.php:97
+msgid "New Business Category Name"
+msgstr ""
+
+#: ../cdash-business-directory.php:98
+msgid "Add New Business Category"
+msgstr ""
+
+#: ../cdash-business-directory.php:99
+msgid "Edit Business Category"
+msgstr ""
+
+#: ../cdash-business-directory.php:100
+msgid "Update Business Category"
+msgstr ""
+
+#: ../cdash-business-directory.php:101
+msgid "Separate Business Categories with commas"
+msgstr ""
+
+#: ../cdash-business-directory.php:102
+msgid "Search Business Categories"
+msgstr ""
+
+#: ../cdash-business-directory.php:103
+msgid "Add or remove Business Category"
+msgstr ""
+
+#: ../cdash-business-directory.php:104
+msgid "Choose from the most used Business Categories"
+msgstr ""
+
+#: ../cdash-business-directory.php:105 ../cdash-business-directory.php:143
+msgid "Not Found"
+msgstr ""
+
+#: ../cdash-business-directory.php:131
+msgid "Membership Levels"
+msgstr ""
+
+#: ../cdash-business-directory.php:132
+msgid "All Membership Levels"
+msgstr ""
+
+#: ../cdash-business-directory.php:133
+msgid "Parent Membership Level"
+msgstr ""
+
+#: ../cdash-business-directory.php:134
+msgid "Parent Membership Level:"
+msgstr ""
+
+#: ../cdash-business-directory.php:135
+msgid "New Membership Level Name"
+msgstr ""
+
+#: ../cdash-business-directory.php:136
+msgid "Add New Membership Level"
+msgstr ""
+
+#: ../cdash-business-directory.php:137
+msgid "Edit Membership Level"
+msgstr ""
+
+#: ../cdash-business-directory.php:138
+msgid "Update Membership Level"
+msgstr ""
+
+#: ../cdash-business-directory.php:139
+msgid "Separate Membership Levels with commas"
+msgstr ""
+
+#: ../cdash-business-directory.php:140
+msgid "Search Membership Levels"
+msgstr ""
+
+#: ../cdash-business-directory.php:141
+msgid "Add or remove Membership Level"
+msgstr ""
+
+#: ../cdash-business-directory.php:142
+msgid "Choose from the most used Membership Levels"
+msgstr ""
+
+#: ../cdash-business-directory.php:170
+msgid "Businesses"
+msgstr ""
+
+#: ../cdash-business-directory.php:171
+msgid "Parent Business:"
+msgstr ""
+
+#: ../cdash-business-directory.php:172
+msgid "All Businesses"
+msgstr ""
+
+#: ../cdash-business-directory.php:173
+msgid "View Business"
+msgstr ""
+
+#: ../cdash-business-directory.php:174
+msgid "Add New Business"
+msgstr ""
+
+#: ../cdash-business-directory.php:175
+msgid "Add New"
+msgstr ""
+
+#: ../cdash-business-directory.php:176
+msgid "Edit Business"
+msgstr ""
+
+#: ../cdash-business-directory.php:177
+msgid "Update Business"
+msgstr ""
+
+#: ../cdash-business-directory.php:178
+msgid "Search Businesses"
+msgstr ""
+
+#: ../cdash-business-directory.php:179
+msgid "Not found"
+msgstr ""
+
+#: ../cdash-business-directory.php:180
+msgid "Not found in Trash"
+msgstr ""
+
+#: ../cdash-business-directory.php:183
+msgid "business"
+msgstr ""
+
+#: ../cdash-business-directory.php:184
+msgid "Businesses and Organizations"
+msgstr ""
+
+#: ../includes/aside.php:6
+msgid "We're here to help!"
+msgstr ""
+
+#: ../includes/aside.php:8
+msgid "Member Manager Documentation"
+msgstr ""
+
+#: ../includes/aside.php:9
+msgid "Installation and Configuration:"
+msgstr ""
+
+#: ../includes/aside.php:9
+msgid ""
+" sit back and let experienced pros configure Chamber Dashboard to do just "
+"what you need"
+msgstr ""
+
+#: ../includes/aside.php:10
+msgid "Priority Support:"
+msgstr ""
+
+#: ../includes/aside.php:10
+msgid " get access to our expertise"
+msgstr ""
+
+#: ../includes/aside.php:11
+msgid "Worry-Free Maintenance:"
+msgstr ""
+
+#: ../includes/aside.php:11
+msgid ""
+" let us take care of maintaining your site, so you can focus on what you do "
+"best!"
+msgstr ""
+
+#: ../includes/aside.php:13
+msgid "More Amazing Plugins"
+msgstr ""
+
+#: ../includes/aside.php:14
+msgid ""
+"Engage your community in local events, with our <a href=\"https://"
+"chamberdashboard.com/features/chamber-dashboard-events-calendar/?"
+"utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory\" "
+"target=\"_blank\">event calendar</a> plugin."
+msgstr ""
+
+#: ../includes/aside.php:15
+msgid ""
+"Accept <a href=\"https://chamberdashboard.com/features/chamber-dashboard-"
+"member-manager/?utm_source=plugin&utm_medium=sidebar&utm_campaign=business-"
+"directory\" target=\"_blank\">Member Payments</a> and invoice your members, "
+"straight from your site.  Save staff time with auto-invoicing."
+msgstr ""
+
+#: ../includes/aside.php:16
+msgid ""
+"<a href=\"https://chamberdashboard.com/features/crm/?"
+"utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory\" "
+"target=\"_blank\">Track and Catalog your Contacts</a> – Trade your "
+"collection of Excel spreadsheets for a CRM that lets you track calls and "
+"meeting attendance, categorize your contacts, gives your staff shared access "
+"to the same data and more."
+msgstr ""
+
+#: ../includes/aside.php:18
+msgid "Connect"
+msgstr ""
+
+#: ../includes/aside.php:19
+msgid ""
+"<a href=\"https://chamberdashboard.com/chamber-dashboard-user-map/?"
+"utm_source=plugin&utm_medium=sidebar&utm_campaign=business-directory\" "
+"target=\"_blank\">Get On the Map</a> – We have users around the world!  We'd "
+"love to link to your site too."
+msgstr ""
+
+#: ../includes/aside.php:20
+msgid ""
+"<a href=\"https://www.linkedin.com/groups?"
+"gid=6931264&mostPopular=&trk=tyah&trkInfo=tarId%3A1420845022267%2Ctas"
+"%3Achamber%20dashboard%2Cidx%3A2-1-2\" target=\"_blank\">Join the User "
+"Group</a> – Gain perspective, share best practices, and find solutions to "
+"problems with experienced Chamber leaders."
+msgstr ""
+
+#: ../includes/currency_list.php:4
+msgid "Australian Dollar"
+msgstr ""
+
+#: ../includes/currency_list.php:5
+msgid "Bangladeshi Taka"
+msgstr ""
+
+#: ../includes/currency_list.php:6
+msgid "Brazilian Real"
+msgstr ""
+
+#: ../includes/currency_list.php:7
+msgid "Bulgarian Lev"
+msgstr ""
+
+#: ../includes/currency_list.php:8
+msgid "Canadian Dollar"
+msgstr ""
+
+#: ../includes/currency_list.php:9
+msgid "Chilean Peso"
+msgstr ""
+
+#: ../includes/currency_list.php:10
+msgid "Chinese Yuan"
+msgstr ""
+
+#: ../includes/currency_list.php:11
+msgid "Colombian Peso"
+msgstr ""
+
+#: ../includes/currency_list.php:12
+msgid "Croatian kuna"
+msgstr ""
+
+#: ../includes/currency_list.php:13
+msgid "Czech Koruna"
+msgstr ""
+
+#: ../includes/currency_list.php:14
+msgid "Danish Krone"
+msgstr ""
+
+#: ../includes/currency_list.php:15
+msgid "Euro"
+msgstr ""
+
+#: ../includes/currency_list.php:16
+msgid "Hong Kong Dollar"
+msgstr ""
+
+#: ../includes/currency_list.php:17
+msgid "Hungarian Forint"
+msgstr ""
+
+#: ../includes/currency_list.php:18
+msgid "Icelandic krona"
+msgstr ""
+
+#: ../includes/currency_list.php:19
+msgid "Indian Rupee"
+msgstr ""
+
+#: ../includes/currency_list.php:20
+msgid "Indonesian Rupiah"
+msgstr ""
+
+#: ../includes/currency_list.php:21
+msgid "Israeli Shekel"
+msgstr ""
+
+#: ../includes/currency_list.php:22
+msgid "Iranian Rial"
+msgstr ""
+
+#: ../includes/currency_list.php:23
+msgid "Japanese Yen"
+msgstr ""
+
+#: ../includes/currency_list.php:24
+msgid "Malaysian Ringgit"
+msgstr ""
+
+#: ../includes/currency_list.php:25
+msgid "Mexican Peso"
+msgstr ""
+
+#: ../includes/currency_list.php:26
+msgid "New Zealand Dollar"
+msgstr ""
+
+#: ../includes/currency_list.php:27
+msgid "Nigerian Naira"
+msgstr ""
+
+#: ../includes/currency_list.php:28
+msgid "Norwegian Krone"
+msgstr ""
+
+#: ../includes/currency_list.php:29
+msgid "Philippine Peso"
+msgstr ""
+
+#: ../includes/currency_list.php:30
+msgid "Polish Zloty"
+msgstr ""
+
+#: ../includes/currency_list.php:31
+msgid "Pound Sterling"
+msgstr ""
+
+#: ../includes/currency_list.php:32
+msgid "Romanian Leu"
+msgstr ""
+
+#: ../includes/currency_list.php:33
+msgid "Russian Ruble"
+msgstr ""
+
+#: ../includes/currency_list.php:34
+msgid "Singapore Dollar"
+msgstr ""
+
+#: ../includes/currency_list.php:35
+msgid "South African Rand"
+msgstr ""
+
+#: ../includes/currency_list.php:36
+msgid "South Korean Won"
+msgstr ""
+
+#: ../includes/currency_list.php:37
+msgid "Swedish Krona"
+msgstr ""
+
+#: ../includes/currency_list.php:38
+msgid "Swiss Franc"
+msgstr ""
+
+#: ../includes/currency_list.php:39
+msgid "Taiwan New Dollar"
+msgstr ""
+
+#: ../includes/currency_list.php:40
+msgid "Thai Baht"
+msgstr ""
+
+#: ../includes/currency_list.php:41
+msgid "Turkish Lira"
+msgstr ""
+
+#: ../includes/currency_list.php:42
+msgid "Ukrainian Hryvnia"
+msgstr ""
+
+#: ../includes/currency_list.php:43
+msgid "United Arab Emirates Dirham"
+msgstr ""
+
+#: ../includes/currency_list.php:44
+msgid "United States Dollar"
+msgstr ""
+
+#: ../includes/currency_list.php:45
+msgid "Vietnamese Dong"
+msgstr ""
+
+#: ../includes/welcome-page.php:3 ../includes/welcome-page.php:22
+#: ../welcome-page.php:3 ../welcome-page.php:22
+msgid "Welcome to Chamber Dashboard Business Directory"
+msgstr ""
+
+#: ../includes/welcome-page.php:26 ../welcome-page.php:26
+msgid "Power your Chamber of Commerce with Chamber Dashboard"
+msgstr ""
+
+#: ../includes/welcome-page.php:30 ../options.php:325 ../welcome-page.php:30
+msgid "Settings"
+msgstr ""
+
+#: ../includes/welcome-page.php:31 ../welcome-page.php:31
+msgid "Documentation"
+msgstr ""
+
+#: ../includes/welcome-page.php:32 ../welcome-page.php:32
+msgid "Support"
+msgstr ""
+
+#: ../includes/welcome-page.php:37 ../welcome-page.php:37
+msgid "About Chamber Dashboard"
+msgstr ""
+
+#: ../includes/welcome-page.php:43 ../welcome-page.php:43
+msgid "Main Features"
+msgstr ""
+
+#: ../includes/welcome-page.php:48 ../welcome-page.php:48
+msgid "Create Your Directory"
+msgstr ""
+
+#: ../includes/welcome-page.php:49 ../welcome-page.php:49
+msgid ""
+"Build a website to showcase your members' businesses more effectively.  "
+"Customize your listings to meet member needs."
+msgstr ""
+
+#: ../includes/welcome-page.php:53 ../welcome-page.php:53
+msgid "Import Existing Member Listings"
+msgstr ""
+
+#: ../includes/welcome-page.php:54 ../welcome-page.php:54
+msgid ""
+"Easily import listings from or export listings to a CSV file.  Customize "
+"your listings to meet member needs."
+msgstr ""
+
+#: ../includes/welcome-page.php:58 ../welcome-page.php:58
+msgid "Display Directory on your Website"
+msgstr ""
+
+#: ../includes/welcome-page.php:59 ../welcome-page.php:59
+msgid ""
+"Display member businesses as a complete, searchable directory or single "
+"listing. Turn your site into a community resource of local business "
+"connections."
+msgstr ""
+
+#: ../includes/welcome-page.php:68
+msgid "Professional Services"
+msgstr ""
+
+#: ../includes/welcome-page.php:73
+msgid "Chamber Dashboard Installation"
+msgstr ""
+
+#: ../includes/welcome-page.php:74
+msgid ""
+"Let us build your site for you!  We will install all of the Chamber "
+"Dashboard plugins and configure your site to your liking."
+msgstr ""
+
+#: ../includes/welcome-page.php:78
+msgid "Priority Support"
+msgstr ""
+
+#: ../includes/welcome-page.php:79
+msgid ""
+"Prefer to do it yourself, but want some help along the way?  With our "
+"Priority Support, our experts are ready to help you!"
+msgstr ""
+
+#: ../includes/welcome-page.php:83
+msgid "Worry-Free Maintenance"
+msgstr ""
+
+#: ../includes/welcome-page.php:84
+msgid ""
+"Let us take care of updating your site, adding content, and troubleshooting "
+"problems, so that you can focus your time on what you do best."
+msgstr ""
+
+#: ../includes/welcome-page.php:93 ../welcome-page.php:68
+msgid "Other Chamber Dashboard Plugins"
+msgstr ""
+
+#: ../includes/welcome-page.php:94 ../welcome-page.php:69
+msgid ""
+"The Business Directory is just one in a suite of plugins designed to make "
+"your Chamber or organization an easy to manage, central source of "
+"information regarding local businesses, event management and professional "
+"communication."
+msgstr ""
+
+#: ../includes/welcome-page.php:98 ../welcome-page.php:73
+msgid "Chamber Dashboard CRM"
+msgstr ""
+
+#: ../includes/welcome-page.php:99 ../welcome-page.php:74
+msgid ""
+"Customer Relationship Management has evolved. Organizations today need tools "
+"that enhance customer interaction from marketing to sales to follow up "
+"services. This plugin creates a directory of the people associated with your "
+"organization and allows you to track the progression of your relationship "
+"with them."
+msgstr ""
+
+#: ../includes/welcome-page.php:102
+msgid "Chamber Dashboard Events Calendar"
+msgstr ""
+
+#: ../includes/welcome-page.php:103 ../welcome-page.php:78
+msgid ""
+"Create an events calendar on your site. Track event registrations and "
+"attendees, connect and encourage members to grow their professional "
+"networks. "
+msgstr ""
+
+#: ../includes/welcome-page.php:107
+msgid "Chamber Dashboard Member Manager"
+msgstr ""
+
+#: ../includes/welcome-page.php:108 ../welcome-page.php:83
+msgid ""
+"Streamline management of your organization. The Member Management plugin "
+"allows you to track membership levels, accept online member payments, and "
+"more, freeing you up to work with your members on your core mission."
+msgstr ""
+
+#: ../includes/welcome-page.php:116 ../welcome-page.php:91
+msgid "Go to Chamber Dashboard Settings"
+msgstr ""
+
+#: ../options.php:91
+msgid "Chamber Dashboard Business Directory Settings"
+msgstr ""
+
+#: ../options.php:106
+msgid "Phone Number Types"
+msgstr ""
+
+#: ../options.php:109
+msgid ""
+"When you enter a phone number for a business, you can choose what type of "
+"phone number it is.  The default options are \"Main, Office, Cell\".  To "
+"change these options, enter a comma-separated list here.  (Note: your entry "
+"will over-ride the default, so if you still want main and/or office and/or "
+"cell, you will need to enter them.)"
+msgstr ""
+
+#: ../options.php:115
+msgid "Email Types"
+msgstr ""
+
+#: ../options.php:118
+msgid ""
+"When you enter an email address for a business, you can choose what type of "
+"email address it is.  The default options are \"Main, Sales, Accounting, HR"
+"\".  To change these options, enter a comma-separated list here.  (Note: "
+"your entry will over-ride the default, so if you still want main and/or "
+"sales and/or accounting and/or HR, you will need to enter them.)"
+msgstr ""
+
+#: ../options.php:124
+msgid "Single Business View Options"
+msgstr ""
+
+#: ../options.php:126
+msgid "What information would you like to display on the single business view?"
+msgstr ""
+
+#: ../options.php:127
+msgid " Description"
+msgstr ""
+
+#: ../options.php:128 ../options.php:147
+msgid ""
+" Location Name <em>Note: you can hide individual locations in the \"edit "
+"business\" view</em>"
+msgstr ""
+
+#: ../options.php:129 ../options.php:148
+msgid " Location Address"
+msgstr ""
+
+#: ../options.php:130
+msgid " Map"
+msgstr ""
+
+#: ../options.php:131 ../options.php:149
+msgid " Location Web Address"
+msgstr ""
+
+#: ../options.php:132 ../options.php:150
+msgid " Phone Number(s)"
+msgstr ""
+
+#: ../options.php:133 ../options.php:151
+msgid " Email Address(es)"
+msgstr ""
+
+#: ../options.php:134 ../options.php:152
+msgid " Logo"
+msgstr ""
+
+#: ../options.php:135 ../options.php:153
+msgid ""
+" Featured Image <em>Your theme might already display the featured image.  If "
+"it does not, you can check this box to display the featured image</em>"
+msgstr ""
+
+#: ../options.php:136
+msgid " Membership Level"
+msgstr ""
+
+#: ../options.php:137 ../options.php:155
+msgid " Business Categories"
+msgstr ""
+
+#: ../options.php:138 ../options.php:156
+msgid " Social Media Links"
+msgstr ""
+
+#: ../options.php:144
+msgid "Category/Membership Level View Options"
+msgstr ""
+
+#: ../options.php:146
+msgid ""
+"What information would you like to display on the category/membership level "
+"view?  Note: Chamber Dashboard might not be able to over-ride all of your "
+"theme settings (for instance, your theme might show the featured image on "
+"category pages).  If you don't like how your theme displays category and "
+"membership level pages, you might want to create custom pages using the "
+"[business_directory] shortcode.  This is more labor-intensive, but gives you "
+"more control over appearance."
+msgstr ""
+
+#: ../options.php:154
+msgid " Membership Leve"
+msgstr ""
+
+#: ../options.php:164
+msgid "Text links "
+msgstr ""
+
+#: ../options.php:164
+msgid "Display social media as text links"
+msgstr ""
+
+#: ../options.php:165
+msgid "Icons "
+msgstr ""
+
+#: ../options.php:165
+msgid "Display social media links as icons"
+msgstr ""
+
+#: ../options.php:166
+msgid "Icon Size: "
+msgstr ""
+
+#: ../options.php:178
+msgid "Currency"
+msgstr ""
+
+#: ../options.php:187
+msgid "Select the currency that will be used on invoices."
+msgstr ""
+
+#: ../options.php:192
+msgid "Currency Symbol"
+msgstr ""
+
+#: ../options.php:195
+msgid "Enter the symbol that should appear next to all currency."
+msgstr ""
+
+#: ../options.php:200
+msgid "Currency Position"
+msgstr ""
+
+#: ../options.php:203
+msgid " Before the price"
+msgstr ""
+
+#: ../options.php:207
+msgid " After the price"
+msgstr ""
+
+#: ../options.php:214
+msgid "Custom Fields"
+msgstr ""
+
+#: ../options.php:216
+msgid ""
+"If you need to store additional information about businesses, you can create "
+"custom fields here."
+msgstr ""
+
+#: ../options.php:222 ../options.php:244
+msgid "Custom Field Name"
+msgstr ""
+
+#: ../options.php:223
+msgid ""
+"<strong>Note:</strong> If you change the name of an existing custom field, "
+"you will lose all data stored in that field!"
+msgstr ""
+
+#: ../options.php:225 ../options.php:246
+msgid "Custom Field Type"
+msgstr ""
+
+#: ../options.php:228 ../options.php:249
+msgid "Short Text Field"
+msgstr ""
+
+#: ../options.php:229 ../options.php:250
+msgid "Multi-line Text Area"
+msgstr ""
+
+#: ../options.php:231 ../options.php:252
+msgid "Display in Business Directory?"
+msgstr ""
+
+#: ../options.php:232 ../options.php:236 ../options.php:253
+msgid " Yes"
+msgstr ""
+
+#: ../options.php:233 ../options.php:237 ../options.php:254
+msgid " No"
+msgstr ""
+
+#: ../options.php:235 ../options.php:256
+msgid "Display in Single Business View?"
+msgstr ""
+
+#: ../options.php:238 ../options.php:259
+msgid "Add Another"
+msgstr ""
+
+#: ../options.php:257
+msgid " /> Yes"
+msgstr ""
+
+#: ../options.php:258
+msgid " /> No"
+msgstr ""
+
+#: ../options.php:268
+msgid "Save Changes"
+msgstr ""
+
+#: ../options.php:336
+msgid "Export"
+msgstr ""
+
+#: ../options.php:337
+msgid "Click the button below to download a CSV of all of your businesses."
+msgstr ""
+
+#: ../options.php:348
+msgid "Import"
+msgstr ""
+
+#: ../options.php:349
+msgid ""
+"You can import businesses from a CSV file.  First, you must format the CSV "
+"properly.  Your CSV must have the following columns in the following order, "
+"even if some of the columns are empty: <ul><li>Business Name</"
+"li><li>Description</li><li>Category (separate multiple with semicolons)</"
+"li><li>Membership Level (separate multiple with semicolons)</li><li>Location "
+"Name</li><li>Address</li><li>City</li><li>State</li><li>Zip</li><li>URL</"
+"li><li>Phone (separate multiple with semicolons)</li><li>Email (separate "
+"multiple with semicolons)</li></ul>"
+msgstr ""
+
+#: ../options.php:350
+msgid "Download a sample CSV to see how to format your file."
+msgstr ""
+
+#: ../views.php:55 ../views.php:307 ../views.php:526
+msgid "Membership Level:&nbsp;"
+msgstr ""
+
+#: ../views.php:70 ../views.php:322 ../views.php:512 ../views.php:786
+msgid "Categories:&nbsp;"
+msgstr ""
+
+#: ../views.php:740
+msgid "Search Results"
+msgstr ""
+
+#: ../views.php:771
+msgid "Membership Level:"
+msgstr ""
+
+#: ../views.php:881 ../views.php:899
+msgid "Search"
+msgstr ""
+
+#: ../views.php:883
+msgid "You must enter a results page!"
+msgstr ""
+
+#: ../views.php:887
+msgid "Search Term"
+msgstr ""
+
+#: ../views.php:892
+msgid "Business Category"
+msgstr ""
+
+#: ../welcome-page.php:77
+msgid "Chamber Dashboard Events Calendar - Coming Soon!"
+msgstr ""
+
+#: ../welcome-page.php:82
+msgid "Chamber Dashboard Member Management - Coming Soon!"
+msgstr ""
+
+#: ../widgets.php:22
+msgid "Display a search form for the business directory"
+msgstr ""
+
+#: ../widgets.php:28
+msgid "Business Directory Search"
+msgstr ""
+
+#: ../widgets.php:76
+msgid "Search the Business Directory"
+msgstr ""
+
+#: ../widgets.php:81
+msgid "Title:"
+msgstr ""
+
+#: ../widgets.php:87
+msgid ""
+"<b>Page to display search results:</b><br />(this page must contain the "
+"[business_search_results] shortcode)"
+msgstr ""
+
+#: ../wpalchemy/advert.php:2
+msgid "Want to track this business's membership status?"
+msgstr ""
+
+#: ../wpalchemy/advert.php:4
+msgid "Try the Chamber Dashboard Member Manager!"
+msgstr ""
+
+#: ../wpalchemy/advert.php:6
+msgid "Collect membership payments online"
+msgstr ""
+
+#: ../wpalchemy/advert.php:7
+msgid "Track membership due dates"
+msgstr ""
+
+#: ../wpalchemy/advert.php:8
+msgid "Send invoices to members"
+msgstr ""
+
+#: ../wpalchemy/busbilling.php:3
+msgid "Billing Address"
+msgstr ""
+
+#: ../wpalchemy/busbilling.php:11 ../wpalchemy/buscontact.php:30
+msgid "City"
+msgstr ""
+
+#: ../wpalchemy/busbilling.php:17 ../wpalchemy/buscontact.php:36
+msgid "State"
+msgstr ""
+
+#: ../wpalchemy/busbilling.php:23 ../wpalchemy/buscontact.php:42
+msgid "Zip"
+msgstr ""
+
+#: ../wpalchemy/busbilling.php:29
+msgid "Billing Email"
+msgstr ""
+
+#: ../wpalchemy/busbilling.php:35
+msgid "Billing Phone"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:3
+msgid "Remove All Locations"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:11
+msgid "Location Name"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:16
+msgid ""
+"Check this if you do not want this location to display to the public on the "
+"website"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:20
+msgid "Address"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:48
+msgid "Web Address"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:53
+msgid "Phone Number(s)"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:55
+msgid "Remove All Phone Numbers"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:60
+msgid "Phone Number"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:64
+msgid "Phone Number Type"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:77
+msgid "Remove This Phone Number"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:82
+msgid "Add Another Phone Number"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:86
+msgid "Email Address(es)"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:87
+msgid "Remove All Email Addresses"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:92
+msgid "Email Address"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:96
+msgid "Email Address Type"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:109
+msgid "Remove This Email Address"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:114
+msgid "Add Another Email Address"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:117
+msgid "Remove This Location"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:122
+msgid ""
+"If this business has multiple locations, but you want them all to appear in "
+"one business listing, add the other locations here.  If you want the other "
+"locations to have their own individual listing on the site, create a new "
+"business with this business as the parent."
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:123
+msgid "Add Another Location"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:126
+msgid "Social Media Links"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:128
+msgid "Remove All Social Media Links"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:134
+msgid "Social Media Service"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:151
+msgid "Social Media URL"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:155
+msgid "Remove This Social Media Link"
+msgstr ""
+
+#: ../wpalchemy/buscontact.php:160
+msgid "Add Another Social Media Link"
+msgstr ""
+
+#: ../wpalchemy/buscustom.php:20
+msgid "<p>The field "
+msgstr ""
+
+#: ../wpalchemy/busnotes.php:3
+msgid ""
+"These notes are for your internal use, and will never be displayed on the "
+"website."
+msgstr ""
+
+#: ../wpalchemy/busnotes.php:5
+msgid "Remove All Notes"
+msgstr ""
+
+#: ../wpalchemy/busnotes.php:12
+msgid "Date"
+msgstr ""
+
+#: ../wpalchemy/busnotes.php:15
+msgid "Note"
+msgstr ""
+
+#: ../wpalchemy/busnotes.php:24
+msgid "Add Another Note"
+msgstr ""

@@ -52,6 +52,7 @@ function cdash_add_defaults() {
 // Init plugin options to white list our options
 function cdash_init(){
 	register_setting( 'cdash_plugin_options', 'cdash_directory_options', 'cdash_validate_options' );
+	register_setting( 'cdash_plugin_version', 'cdash_directory_version', 'cdash_validate_options' );
 }
 
 // ------------------------------------------------------------------------------
@@ -71,6 +72,8 @@ function cdash_add_options_page() {
 	);
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Import', 'Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
+	// this is a hidden submenu page for updating geolocation data
+	add_submenu_page( NULL, 'Update Geolocation Data', 'Update Geolocation Data', 'manage_options', 'chamber-dashboard-update-geolocation', 'cdash_update_geolocation_data_page' );
 }
 
 
@@ -136,6 +139,7 @@ function cdash_render_form() {
 							<label><input name="cdash_directory_options[sv_memberlevel]" type="checkbox" value="1" <?php if (isset($options['sv_memberlevel'])) { checked('1', $options['sv_memberlevel']); } ?> /><?php _e(' Membership Level', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_category]" type="checkbox" value="1" <?php if (isset($options['sv_category'])) { checked('1', $options['sv_category']); } ?> /><?php _e(' Business Categories', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[sv_social]" type="checkbox" value="1" <?php if (isset($options['sv_social'])) { checked('1', $options['sv_social']); } ?> /><?php _e(' Social Media Links', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[sv_comments]" type="checkbox" value="1" <?php if (isset($options['sv_comments'])) { checked('1', $options['sv_comments']); } ?> /><?php _e(' Comments', 'cdash'); ?></label><br />
 						</td>
 					</tr>
 
@@ -154,6 +158,7 @@ function cdash_render_form() {
 							<label><input name="cdash_directory_options[tax_memberlevel]" type="checkbox" value="1" <?php if (isset($options['tax_memberlevel'])) { checked('1', $options['tax_memberlevel']); } ?> /><?php _e(' Membership Leve', 'cdash'); ?>l</label><br />
 							<label><input name="cdash_directory_options[tax_category]" type="checkbox" value="1" <?php if (isset($options['tax_category'])) { checked('1', $options['tax_category']); } ?> /><?php _e(' Business Categories', 'cdash'); ?></label><br />
 							<label><input name="cdash_directory_options[tax_social]" type="checkbox" value="1" <?php if (isset($options['tax_social'])) { checked('1', $options['tax_social']); } ?> /><?php _e(' Social Media Links', 'cdash'); ?></label><br />
+							<label><input name="cdash_directory_options[tax_orderby_name]" type="checkbox" value="1"<?php if (isset($options['tax_orderby_name'])) { checked('1', $options['tax_orderby_name']); } ?> /><?php _e(' Order category pages by business name (default order is by publication date)', 'cdash'); ?></label><br />
 						</td>
 					</tr>				
 
@@ -347,6 +352,7 @@ function cdash_import_form() { ?>
 		<div class="icon32" id="icon-options-general"><br></div>
 			<h2><?php _e('Import', 'cdash'); ?></h2>
 			<p><?php _e('You can import businesses from a CSV file.  First, you must format the CSV properly.  Your CSV must have the following columns in the following order, even if some of the columns are empty: <ul><li>Business Name</li><li>Description</li><li>Category (separate multiple with semicolons)</li><li>Membership Level (separate multiple with semicolons)</li><li>Location Name</li><li>Address</li><li>City</li><li>State</li><li>Zip</li><li>URL</li><li>Phone (separate multiple with semicolons)</li><li>Email (separate multiple with semicolons)</li></ul>', 'cdash'); ?></p>
+			<p><?php _e( 'Some programs format CSV files differently.  You might need to use either Google Drive or Open Office to save your CSV file so that it will upload correctly.', 'cdash' ); ?></p>
 			<p><a href="<?php echo plugin_dir_url( __FILE__ ); ?>cdash-import-sample.zip"><?php _e('Download a sample CSV to see how to format your file.', 'cdash'); ?></a></p>
 			<?php wp_import_upload_form('admin.php?page=chamber-dashboard-import'); ?>
 		</div> 
@@ -411,6 +417,28 @@ function cdash_import_form() { ?>
 						$emails = '';
 					}
 
+					// Get the geolocation data
+					if( isset( $data[5] ) ) {
+						// ask Google for the latitude and longitude
+						$rawaddress = $data[5];
+						if( isset( $data[6] ) ) {
+							$rawaddress .= ' ' . $data[6];
+						}
+						if( isset( $data[7] ) ) {
+							$rawaddress .= ' ' . $data[7];
+						}
+						if( isset( $data[8] ) ) {
+							$rawaddress .= ' ' . $data[8];
+						}
+						$address = urlencode( $rawaddress );
+						$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBq9JVPgmORIVfuzmgpzrzRTVyttSNyJ3A&address=" . $address . "&sensor=true" );
+						$json = json_decode($json['body'], true);
+						if( is_array( $json ) && $json['status'] == 'OK') {
+							$latitude = $json['results'][0]['geometry']['location']['lat'];
+							$longitude = $json['results'][0]['geometry']['location']['lng']; 
+						}
+					}
+
 					// Create the array of location information for wpalchemy
 					$locationfields = array(
 							array(
@@ -419,6 +447,8 @@ function cdash_import_form() { ?>
 							'city'		=> $data[6],
 							'state'		=> $data[7],
 							'zip'		=> $data[8],
+							'latitude'	=> $latitude,
+							'longitude'	=> $longitude,
 							'url'		=> $data[9],
 							'phone'		=> $numbers,
 							'email'		=> $emails,
