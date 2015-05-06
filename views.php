@@ -538,7 +538,6 @@ function cdash_business_map_shortcode( $atts ) {
 		
 	if( "yes" == $cluster ) {
 		$business_map .= "<script src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js'></script>";
-	    // $business_map .= "<script src='http://maps.google.com/maps/api/js?sensor=false'></script>";
 	    $business_map .= "<script src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/data.json'></script>";
 	}
 
@@ -889,10 +888,11 @@ function cdash_business_categories_shortcode( $atts ) {
 		'hide_empty' => $hide_empty,
 		'child_of' => $child_of,
 		'exclude' => $exclude,
+		'echo' => 0,
 	);
-	echo '<ul class="business-categories">';
-	wp_list_categories($args);
-	echo '</ul>';
+
+	$categories = '<ul class="business-categories">' . 	wp_list_categories($args) . '</ul>';
+	return $categories;
 }
 add_shortcode( 'business_categories', 'cdash_business_categories_shortcode' );
 
