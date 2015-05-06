@@ -86,6 +86,9 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.4.2 =
+* added business category widget
+
 = 2.4.1 =
 * further updates to maps to avoid Google API quotas
 

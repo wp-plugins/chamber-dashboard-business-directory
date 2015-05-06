@@ -888,10 +888,11 @@ function cdash_business_categories_shortcode( $atts ) {
 		'hide_empty' => $hide_empty,
 		'child_of' => $child_of,
 		'exclude' => $exclude,
+		'echo' => 0,
 	);
-	echo '<ul class="business-categories">';
-	wp_list_categories($args);
-	echo '</ul>';
+
+	$categories = '<ul class="business-categories">' . 	wp_list_categories($args) . '</ul>';
+	return $categories;
 }
 add_shortcode( 'business_categories', 'cdash_business_categories_shortcode' );
 
