@@ -146,7 +146,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 		$child_of = $instance['child_of'];
 		$exclude = $instance['exclude'];
 
-		$args = "orderby='" . $orderby . "' show_count='" . $showcount . "' hierarchical='" . $hierarchical . "' hide_empty='" . $hide_empty . "' child_of='" . $child_of . "' exclude='" . $exclude . "'";;
+		$args = "orderby='" . $orderby . "' showcount='" . $showcount . "' hierarchical='" . $hierarchical . "' hide_empty='" . $hide_empty . "' child_of='" . $child_of . "' exclude='" . $exclude . "'";;
 		/* Before widget (defined by themes). */
 		echo $before_widget;
 

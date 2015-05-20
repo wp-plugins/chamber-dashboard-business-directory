@@ -142,7 +142,7 @@ input#item_membershipamt {
 	width: 8em;
 }
 
-th.interval {
+#overdue-report th.interval {
 	color: #0074A2;
 	font-size: 1.2em;
 	text-align: center;

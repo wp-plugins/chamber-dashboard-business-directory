@@ -1,6 +1,7 @@
 jQuery(document).ready(function ($) {
 // Copy location information to billing metabox 
-	$('.billing-copy').click(function (evt) {  // this is what triggers the function   
+	$(document).on( 'click', '.billing-copy', function (evt) {
+	// $('.billing-copy').click(function (evt) {  // this is what triggers the function   
 		var address = $( evt.target ).closest('.location').children('.address-data').children('.address-wrapper').children('textarea').val();
 		$("#billing-address").val(address);
 		var city = $( evt.target ).closest('.location').children('.address-data').children('.city-wrapper').children('p').children('.city').val();
@@ -19,7 +20,8 @@ jQuery(document).ready(function ($) {
 	});
 
 	// When someone picks a membership level, add the price to the total    
-	$('.trigger-geolocation').change(function (evt) {  // this is what triggers the function        
+	$(document).on( 'change', '.trigger-geolocation', function( evt ) {
+	// $('.trigger-geolocation').change(function (evt) {  // this is what triggers the function        
 		var street = $( evt.target ).closest('.address-data').children('.address-wrapper').children('textarea').val();
 		var city = $( evt.target ).closest('.address-data').children('.city-wrapper').children('p').children('.city').val();
 		var state = $( evt.target ).closest('.address-data').children('.state-wrapper').children('p').children('.state').val();
@@ -30,6 +32,7 @@ jQuery(document).ready(function ($) {
 		  if (status == google.maps.GeocoderStatus.OK) {
 		    var latitude = results[0].geometry.location.A;
 		    var longitude = results[0].geometry.location.F;
+		    console.log(latitude);
 		    $( evt.target ).closest('.address-data').children('.geolocation-data').children('.latitude').val(latitude);
 			$( evt.target ).closest('.address-data').children('.geolocation-data').children('.longitude').val(longitude);   
 		  }
