@@ -2,8 +2,8 @@
 /*
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
-Description: Create a database of the businesses in your chamber of commerce
-Version: 2.4
+Description: Crate a database of the businesses in your chamber of commerce
+Version: 2.4.3
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 Text Domain: cdash
@@ -240,9 +240,9 @@ function cdash_admin_scripts_and_styles($hook)
 
     // business AJAX
     if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
-	    if ( isset( $post ) && 'business' === $post->post_type ) {       
+	    if ( isset( $post ) && 'business' === $post->post_type ) {     
+	    	wp_enqueue_script( 'google-maps' , 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&sensor=false' );  
 		    wp_enqueue_script( 'business-meta', plugin_dir_url(__FILE__) . 'js/cdash-business-meta.js', array( 'jquery' ) );
-		    // don't actually need ajax yet
 		    // wp_localize_script( 'business-meta', 'businessajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); 
 		}
 	}
@@ -477,6 +477,7 @@ add_filter('body_class', 'cdash_add_taxonomy_classes');
 
 // ------------------------------------------------------------------------
 // SAVE GEOLOCATION DATA, with extra noodles to make sure this runs very last when business is saved
+// This is a fallback in case JavaScript didn't save geolocation data
 // ------------------------------------------------------------------------
 
 function cdash_get_latest_priority( $filter ) // figure out what priority the geolocation function needs, thanks to http://wordpress.stackexchange.com/questions/116221/how-to-force-function-to-run-as-the-last-one-when-saving-the-post
@@ -508,27 +509,29 @@ function cdash_store_geolocation_data( $post_id ) {
 
 	// get the addresses
 	$locations = get_post_meta( $post_id, '_cdash_location', true );
-	
-	if( !empty( $locations ) ) {
+
+	if( !empty( $locations ) && is_array( $locations ) ) {
 		foreach( $locations as $key => $location ) {
-			if( isset( $location['address'] ) ) {
-				// ask Google for the latitude and longitude
-				$rawaddress = $location['address'];
+			if( !isset( $location['latitude'] ) && !isset( $location['longitude'] ) ) { // don't do this if we already have lat and long
 				if( isset( $location['city'] ) ) {
-					$rawaddress .= ' ' . $location['city'];
-				}
-				if( isset( $location['state'] ) ) {
-					$rawaddress .= ' ' . $location['state'];
-				}
-				if( isset( $location['zip'] ) ) {
-					$rawaddress .= ' ' . $location['zip'];
-				}
-				$address = urlencode( $rawaddress );
-				$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBq9JVPgmORIVfuzmgpzrzRTVyttSNyJ3A&address=" . $address . "&sensor=true" );
-				$json = json_decode($json['body'], true);
-				if( is_array( $json ) && $json['status'] == 'OK') {
-					$locations[$key]['latitude'] = $json['results'][0]['geometry']['location']['lat'];
-					$locations[$key]['longitude'] = $json['results'][0]['geometry']['location']['lng']; 
+					// ask Google for the latitude and longitude
+					$rawaddress = $location['address'];
+					if( isset( $location['city'] ) ) {
+						$rawaddress .= ' ' . $location['city'];
+					}
+					if( isset( $location['state'] ) ) {
+						$rawaddress .= ' ' . $location['state'];
+					}
+					if( isset( $location['zip'] ) ) {
+						$rawaddress .= ' ' . $location['zip'];
+					}
+					$address = urlencode( $rawaddress );
+					$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBq9JVPgmORIVfuzmgpzrzRTVyttSNyJ3A&address=" . $address . "&sensor=true" );
+					$json = json_decode($json['body'], true);
+					if( is_array( $json ) && $json['status'] == 'OK') {
+						$locations[$key]['latitude'] = $json['results'][0]['geometry']['location']['lat'];
+						$locations[$key]['longitude'] = $json['results'][0]['geometry']['location']['lng']; 
+					}
 				}
 			}
 		}

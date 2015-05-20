@@ -33,7 +33,7 @@ function cdash_single_business($content) {
 		global $post;
 
 		$business_content = "<div id='business'>";
-		if( isset( $options['sv_thumb'] ) && "!" == $options['sv_thumb'] ) { 
+		if( isset( $options['sv_thumb'] ) && "1" == $options['sv_thumb'] ) { 
 			$business_content .= get_the_post_thumbnail( $post_id, 'full' );
 		}
 		if( isset( $options['sv_logo'] ) && isset( $logometa['buslogo'] ) && "1" == $options['sv_logo'] ) { 
@@ -538,7 +538,6 @@ function cdash_business_map_shortcode( $atts ) {
 		
 	if( "yes" == $cluster ) {
 		$business_map .= "<script src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js'></script>";
-	    // $business_map .= "<script src='http://maps.google.com/maps/api/js?sensor=false'></script>";
 	    $business_map .= "<script src='http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/data.json'></script>";
 	}
 
@@ -889,10 +888,12 @@ function cdash_business_categories_shortcode( $atts ) {
 		'hide_empty' => $hide_empty,
 		'child_of' => $child_of,
 		'exclude' => $exclude,
+		'echo' => 0,
+		'title_li' => '',
 	);
-	echo '<ul class="business-categories">';
-	wp_list_categories($args);
-	echo '</ul>';
+
+	$categories = '<ul class="business-categories">' . 	wp_list_categories($args) . '</ul>';
+	return $categories;
 }
 add_shortcode( 'business_categories', 'cdash_business_categories_shortcode' );
 
@@ -964,25 +965,27 @@ function cdash_display_custom_fields( $postid ) {
 	$custom_fields = ''; 
 
 	if( isset( $customfields ) && is_array( $customfields ) ) {
+		$custom_fields .= "<div class='custom-fields'>";
 		foreach($customfields as $field) { 
 			if( is_singular( 'business' ) && "yes" == $field['display_single'] ) {
 				$fieldname = $field['name'];
 				if( isset( $custommeta[$fieldname] ) ) {
-					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
+					$custom_fields .= "<p class='custom " . $field['name'] . "'><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
 				} elseif ( isset( $custommeta['_cdash_'.$fieldname] ) ) {
-					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta['_cdash_'.$fieldname] . "</p>";
+					$custom_fields .= "<p class='custom " . $field['name'] . "'><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta['_cdash_'.$fieldname] . "</p>";
 				}
 			} elseif( isset( $field['display_dir'] ) && "yes" !== $field['display_dir'] ) {
 				continue;
 			} else {
 				$fieldname = $field['name'];
 				if( isset( $custommeta[$fieldname] ) ) {
-					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
+					$custom_fields .= "<p class='custom " . $field['name'] . "'><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
 				} elseif( isset( $custommeta['_cdash_'.$fieldname] ) ) {
-					$custom_fields .= "<p><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta['_cdash_'.$fieldname] . "</p>";
+					$custom_fields .= "<p class='custom " . $field['name'] . "'><strong>" . $field['name'] . ":</strong>&nbsp;" . $custommeta['_cdash_'.$fieldname] . "</p>";
 				}
 			}
 		}
+		$custom_fields .= "</div>";
 	}
 
 	return $custom_fields;
