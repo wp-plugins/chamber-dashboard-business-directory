@@ -86,6 +86,11 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.5 =
+* added CSS classes to custom field labels
+* added private category to business
+* added filters to display CRM contact information
+
 = 2.4.3 =
 * added CSS classes to custom fields
 * fixed bug that prevented featured image from displaying on single business

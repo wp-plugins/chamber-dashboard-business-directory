@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Crate a database of the businesses in your chamber of commerce
-Version: 2.4.3
+Version: 2.5
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 Text Domain: cdash
@@ -161,6 +161,44 @@ function cdash_register_taxonomy_membership_level() {
 
 add_action( 'init', 'cdash_register_taxonomy_membership_level', 0 );
 
+// Register Custom Taxonomy - Private Category
+function cdash_register_taxonomy_private_category() {
+
+	$labels = array(
+		'name'                       => _x( 'Private Categories', 'Taxonomy General Name', 'cdash' ),
+		'singular_name'              => _x( 'Private Category', 'Taxonomy Singular Name', 'cdash' ),
+		'menu_name'                  => __( 'Private Categories', 'cdash' ),
+		'all_items'                  => __( 'All Private Categories', 'cdash' ),
+		'parent_item'                => __( 'Parent Private Category', 'cdash' ),
+		'parent_item_colon'          => __( 'Parent Private Category:', 'cdash' ),
+		'new_item_name'              => __( 'New Private Category Name', 'cdash' ),
+		'add_new_item'               => __( 'Add New Private Category', 'cdash' ),
+		'edit_item'                  => __( 'Edit Private Category', 'cdash' ),
+		'update_item'                => __( 'Update Private Category', 'cdash' ),
+		'separate_items_with_commas' => __( 'Separate Private Categories with commas', 'cdash' ),
+		'search_items'               => __( 'Search Private Categories', 'cdash' ),
+		'add_or_remove_items'        => __( 'Add or remove Private Category', 'cdash' ),
+		'choose_from_most_used'      => __( 'Choose from the most used Private Categories', 'cdash' ),
+		'not_found'                  => __( 'Not Found', 'cdash' ),
+	);
+	$args = array(
+		'labels'                     => $labels,
+		'hierarchical'               => true,
+		'public'                     => false,
+		'show_ui'                    => true,
+		'show_admin_column'          => true,
+		'show_in_nav_menus'          => false,
+		'show_tagcloud'              => false,
+		'rewrite' => array (
+            'slug' => _x( 'private_category', 'private_category', 'cdash' )
+        )
+	);
+	register_taxonomy( 'private_category', array( 'business' ), $args );
+
+}
+
+add_action( 'init', 'cdash_register_taxonomy_private_category', 0 );
+
 
 // Register Custom Post Type - Businesses
 function cdash_register_cpt_business() {
@@ -191,7 +229,7 @@ function cdash_register_cpt_business() {
 		'description'         => __( 'Businesses and Organizations', 'cdash' ),
 		'labels'              => $labels,
 		'supports'            => $supports,
-		'taxonomies'          => array( 'business_category', ' membership_level' ),
+		'taxonomies'          => array( 'business_category', ' membership_level', 'private_category' ),
 		'hierarchical'        => true,
 		'public'              => true,
 		'show_ui'             => true,

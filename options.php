@@ -351,6 +351,7 @@ function cdash_import_form() { ?>
 	<div class="wrap">
 		<div class="icon32" id="icon-options-general"><br></div>
 			<h2><?php _e('Import', 'cdash'); ?></h2>
+			<h3><?php _e( 'Import Businesses', 'cdash' ); ?></h3>
 			<p><?php _e('You can import businesses from a CSV file.  First, you must format the CSV properly.  Your CSV must have the following columns in the following order, even if some of the columns are empty: <ul><li>Business Name</li><li>Description</li><li>Category (separate multiple with semicolons)</li><li>Membership Level (separate multiple with semicolons)</li><li>Location Name</li><li>Address</li><li>City</li><li>State</li><li>Zip</li><li>URL</li><li>Phone (separate multiple with semicolons)</li><li>Email (separate multiple with semicolons)</li></ul>', 'cdash'); ?></p>
 			<p><?php _e( 'Some programs format CSV files differently.  You might need to use either Google Drive or Open Office to save your CSV file so that it will upload correctly.', 'cdash' ); ?></p>
 			<p><a href="<?php echo plugin_dir_url( __FILE__ ); ?>cdash-import-sample.zip"><?php _e('Download a sample CSV to see how to format your file.', 'cdash'); ?></a></p>
@@ -465,6 +466,7 @@ function cdash_import_form() { ?>
 		}
 	}
 	
+	do_action( 'cdash_importer' );
 }
 
 ?>

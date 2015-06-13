@@ -37,6 +37,17 @@
 	float: left;
 }
 
+.my_meta_control .update-all,
+.my_meta_control .delete-all {
+	width: 43%;
+	border: 1px solid #eee;
+	padding: 0 2%;
+}
+
+.my_meta_control .delete-all {
+	float: right;
+}
+
 .my_meta_control .hidden {
 	display: none;
 }
