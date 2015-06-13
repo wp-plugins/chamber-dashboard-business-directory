@@ -86,6 +86,24 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.5 =
+* added CSS classes to custom field labels
+* added private category to business
+* added filters to display CRM contact information
+
+= 2.4.3 =
+* added CSS classes to custom fields
+* fixed bug that prevented featured image from displaying on single business
+* fixed bug that prevented javascript functions from running on new locations
+* remove title li from business categories shortcode and widget
+* fixed showcount in business categories widget
+
+= 2.4.2 =
+* added business category widget
+
+= 2.4.1 =
+* further updates to maps to avoid Google API quotas
+
 = 2.4 =
 * rewrote maps to make them reliable
 * add clustering option to map shortcode, thanks to Mike Davis, jmdxsvhs15
