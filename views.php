@@ -97,7 +97,8 @@ function cdash_single_business($content) {
 		if( $options['bus_custom'] ) {
 		 	$business_content .= cdash_display_custom_fields( get_the_id() );
 		}
-		$business_content .= apply_filters( 'cdash_single_business_before_map', $business_content );
+		$business_contacts = '';
+		$business_content .= apply_filters( 'cdash_single_business_before_map', $business_contacts );
 		if( isset( $options['sv_map']) && "1" == $options['sv_map'] ) {
 			// only show the map if locations have addresses entered
 			$needmap = "false";
@@ -334,7 +335,8 @@ function cdash_taxonomy_filter( $content ) {
 		if( $options['bus_custom'] ) {
 		 	$tax_content .= cdash_display_custom_fields( get_the_id() );
 		}
-		$tax_content .= apply_filters( 'cdash_end_of_taxonomy_view', $tax_content );
+		$tax_contacts = '';
+		$tax_content .= apply_filters( 'cdash_end_of_taxonomy_view', $tax_contacts );
 	$content = $tax_content;
 	}
 	return $content;
@@ -484,7 +486,8 @@ function cdash_business_directory_shortcode( $atts ) {
 			  	if( $options['bus_custom'] ) {
 					$business_list .= cdash_display_custom_fields( get_the_id() );
 				}
-				$business_list .= apply_filters( 'cdash_end_of_shortcode_view', $business_list );
+				$business_contacts = '';
+				$business_list .= apply_filters( 'cdash_end_of_shortcode_view', $business_contacts );
 
 			  	$business_list .= "</div>";
 			endwhile;

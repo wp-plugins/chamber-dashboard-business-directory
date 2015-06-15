@@ -86,6 +86,9 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.5.1 =
+* fixed bug that caused infinite loop on business_directory shortcode if you do not have CRM installed
+
 = 2.5 =
 * added CSS classes to custom field labels
 * added private category to business
