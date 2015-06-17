@@ -976,18 +976,18 @@ function cdash_display_custom_fields( $postid ) {
 			if( is_singular( 'business' ) && "yes" == $field['display_single'] ) {
 				$fieldname = $field['name'];
 				if( isset( $custommeta[$fieldname] ) ) {
-					$custom_fields .= "<p class='custom " . $field['name'] . "'><strong class='custom cdash-label " . $field['name'] . ">" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
+					$custom_fields .= "<p class='custom " . $field['name'] . "'><strong class='custom cdash-label " . $field['name'] . "'>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
 				} elseif ( isset( $custommeta['_cdash_'.$fieldname] ) ) {
-					$custom_fields .= "<p class='custom " . $field['name'] . "'><strong class='custom cdash-label " . $field['name'] . ">" . $field['name'] . ":</strong>&nbsp;" . $custommeta['_cdash_'.$fieldname] . "</p>";
+					$custom_fields .= "<p class='custom " . $field['name'] . "'><strong class='custom cdash-label " . $field['name'] . "'>" . $field['name'] . ":</strong>&nbsp;" . $custommeta['_cdash_'.$fieldname] . "</p>";
 				}
 			} elseif( isset( $field['display_dir'] ) && "yes" !== $field['display_dir'] ) {
 				continue;
 			} else {
 				$fieldname = $field['name'];
 				if( isset( $custommeta[$fieldname] ) ) {
-					$custom_fields .= "<p class='custom " . $field['name'] . "'><strong class='custom cdash-label " . $field['name'] . ">" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
+					$custom_fields .= "<p class='custom " . $field['name'] . "'><strong class='custom cdash-label " . $field['name'] . "'>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
 				} elseif( isset( $custommeta['_cdash_'.$fieldname] ) ) {
-					$custom_fields .= "<p class='custom " . $field['name'] . "'><strong class='custom cdash-label " . $field['name'] . ">" . $field['name'] . ":</strong>&nbsp;" . $custommeta['_cdash_'.$fieldname] . "</p>";
+					$custom_fields .= "<p class='custom " . $field['name'] . "'><strong class='custom cdash-label " . $field['name'] . "'>" . $field['name'] . ":</strong>&nbsp;" . $custommeta['_cdash_'.$fieldname] . "</p>";
 				}
 			}
 		}
