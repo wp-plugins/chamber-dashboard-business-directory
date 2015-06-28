@@ -240,7 +240,7 @@ function cdash_render_form() {
 										<p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
 											<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="yes" <?php checked('yes', $field['display_single']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
 											<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php checked('no', $field['display_single']); ?> /><?php _e(' No', 'cdash'); ?></label><br />	
-										<p><a href="#" class="repeat"><?php _e('Add Another', 'cdash'); ?></a></p>
+										<a href="#" class="delete-this"><?php _e('Delete This Custom Field', 'cdash'); ?></a>
 									</div>
 									<?php $i++;
 								}
@@ -261,9 +261,10 @@ function cdash_render_form() {
 									<p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
 										<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_single']); ?><?php _e(' /> Yes', 'cdash'); ?></label><br />
 										<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_single']); ?><?php _e(' /> No', 'cdash'); ?></label><br />	
-									<p><a href="#" class="repeat"><?php _e('Add Another', 'cdash'); ?></a></p>
+									<a href="#" class="delete-this"><?php _e('Delete This Custom Field', 'cdash'); ?></a>
 								</div>
 							<?php } ?>
+							<p><a href="#" class="repeat"><?php _e('Add Another Custom Field', 'cdash'); ?></a></p>
 						</td>
 					</tr>	
 
@@ -301,6 +302,11 @@ function cdash_render_form() {
 			        resetAttributeNames(cloned)
 			    });
 
+			jQuery('.delete-this').click(function(e){
+				e.preventDefault(); 
+			    jQuery(this).parent('div').remove();
+			});
+
 			</script>
 		</div><!-- #main -->
 		<?php include( plugin_dir_path( __FILE__ ) . '/includes/aside.php' ); ?>
@@ -313,6 +319,8 @@ function cdash_render_form() {
 
 // Sanitize and validate input. Accepts an array, return a sanitized array.
 function cdash_validate_options($input) {
+	// delete the old custom fields
+	delete_option('cdash_directory_options');
 	$input['bus_phone_type'] =  wp_filter_nohtml_kses($input['bus_phone_type']); 
 	$input['bus_email_type'] =  wp_filter_nohtml_kses($input['bus_email_type']);
 	if( isset( $input['currency_symbol'] ) ) {

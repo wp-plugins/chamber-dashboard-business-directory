@@ -86,6 +86,11 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.5.3 =
+* fixed pagination on business search results shortcode
+* added ability to delete custom fields
+* added filter to map so that you can customize map colors
+
 = 2.5.2 =
 * closed quotes on custom field class names
 

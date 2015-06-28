@@ -189,6 +189,9 @@ function cdash_single_business_map() {
 				    // zoom: 13,
 				}
 				var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+				<?php 
+				$map_style = '';
+				echo apply_filters( 'cdash_map_styles', $map_style ); ?>
 				var infowindow = new google.maps.InfoWindow();
 				var marker, i;
 
@@ -616,7 +619,8 @@ function cdash_business_map_shortcode( $atts ) {
 						$business_map .=
 						"var markerCluster = new MarkerClusterer(map, marker);";
 					}
-
+					$map_style = '';
+					$business_map .= apply_filters( 'cdash_map_styles', $map_style );
 					$business_map .= "
 					var infowindow = new google.maps.InfoWindow();
 					var marker, i;
@@ -684,7 +688,8 @@ function cdash_business_search_results_shortcode() {
 		$paged = get_query_var('paged') ? get_query_var('paged') : 1;
 		$args = array( 
                 'post_type' => 'business',
-                'posts_per_page' => 25,      
+                'posts_per_page' => 10,  
+                'paged' => $paged,    
                 );
 
             if ( $buscat ) {
@@ -743,42 +748,44 @@ function cdash_business_search_results_shortcode() {
 				if ( isset( $options['tax_social'] ) && "1" == $options['tax_social'] ) {
 					$search_results .= cdash_display_social_media( get_the_id() );
 				}
-				$locations = $contactmeta['location'];
-				foreach($locations as $location) {
-					if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
-						continue;
-					} else {
-						$search_results .= "<div class='location'>";
-						if ( isset( $options['tax_name'] ) && "1" == $options['tax_name'] && isset( $location['altname'] ) && '' !== $location['altname'] ) { 
-							$search_results .= "<h3>" . $location['altname'] . "</h3>";
+				if( isset( $contactmeta['location'] ) && is_array( $contactmeta['location'] ) ) {
+					$locations = $contactmeta['location'];
+					foreach($locations as $location) {
+						if( isset( $location['donotdisplay'] ) && "1" == $location['donotdisplay'] ) {
+							continue;
+						} else {
+							$search_results .= "<div class='location'>";
+							if ( isset( $options['tax_name'] ) && "1" == $options['tax_name'] && isset( $location['altname'] ) && '' !== $location['altname'] ) { 
+								$search_results .= "<h3>" . $location['altname'] . "</h3>";
+							}
+							if ( isset( $options['tax_address'] ) && "1" == $options['tax_address'] ) { 
+								$search_results .= "<p class='address'>";
+				 					if( isset( $location['address'] ) && '' !== $location['address'] ) {
+										$address = $location['address'];
+										$search_results .= str_replace("\n", '<br />', $address);
+									}
+									if( isset( $location['city'] ) && '' !== $location['city'] ) {
+										$search_results .= "<br />" . $location['city'] . ",&nbsp;";
+									}
+									if( isset( $location['state'] ) && '' !== $location['state'] ) {
+										$search_results .= $location['state'] . "&nbsp";
+									}
+									if( isset( $location['zip'] ) && '' !== $location['zip'] ) {
+										$search_results .= $location['zip'];
+									} 
+								$search_results .= "</p>";
+							}
+							if ( isset( $options['tax_url'] ) && "1" == $options['tax_url'] && isset( $location['url'] ) && '' !== $location['url'] ) { 
+								$search_results .= cdash_display_url( $location['url'] );
+							}
+							if ( isset( $options['tax_phone'] ) && "1" == $options['tax_phone'] && isset( $location['phone'] ) && '' !== $location['phone'] ) { 
+								$search_results .= cdash_display_phone_numbers( $location['phone'] );
+							}
+							if ( isset( $options['tax_email'] ) && "1" == $options['tax_email'] && isset( $location['email'] ) && '' !== $location['email'] ) { 
+								$search_results .= cdash_display_email_addresses( $location['email'] );
+							}
+							$search_results .= "</div><!-- .location -->";
 						}
-						if ( isset( $options['tax_address'] ) && "1" == $options['tax_address'] ) { 
-							$search_results .= "<p class='address'>";
-			 					if( isset( $location['address'] ) && '' !== $location['address'] ) {
-									$address = $location['address'];
-									$search_results .= str_replace("\n", '<br />', $address);
-								}
-								if( isset( $location['city'] ) && '' !== $location['city'] ) {
-									$search_results .= "<br />" . $location['city'] . ",&nbsp;";
-								}
-								if( isset( $location['state'] ) && '' !== $location['state'] ) {
-									$search_results .= $location['state'] . "&nbsp";
-								}
-								if( isset( $location['zip'] ) && '' !== $location['zip'] ) {
-									$search_results .= $location['zip'];
-								} 
-							$search_results .= "</p>";
-						}
-						if ( isset( $options['tax_url'] ) && "1" == $options['tax_url'] && isset( $location['url'] ) && '' !== $location['url'] ) { 
-							$search_results .= cdash_display_url( $location['url'] );
-						}
-						if ( isset( $options['tax_phone'] ) && "1" == $options['tax_phone'] && isset( $location['phone'] ) && '' !== $location['phone'] ) { 
-							$search_results .= cdash_display_phone_numbers( $location['phone'] );
-						}
-						if ( isset( $options['tax_email'] ) && "1" == $options['tax_email'] && isset( $location['email'] ) && '' !== $location['email'] ) { 
-							$search_results .= cdash_display_email_addresses( $location['email'] );
-						}
-						$search_results .= "</div><!-- .location -->";
 					}
 				}
 				if( $options['bus_custom'] ) {
@@ -789,11 +796,12 @@ function cdash_business_search_results_shortcode() {
 			endwhile;
 			$total_pages = $search_query->max_num_pages;
 			if ($total_pages > 1){
-				$current_page = max(1, get_query_var('paged'));
+				$current_page = max( 1, get_query_var( 'paged' ) );
+				$big = 999999999; // need an unlikely integer
    				$search_results .= "<div class='pagination'>";
 			  	$search_results .= paginate_links(array(
-			      'base' => get_pagenum_link(1) . '%_%',
-			      'format' => '/page/%#%',
+			      'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+			      'format' => '?page=%#%',
 			      'current' => $current_page,
 			      'total' => $total_pages,
 			    ));
@@ -973,7 +981,7 @@ function cdash_display_custom_fields( $postid ) {
 	if( isset( $customfields ) && is_array( $customfields ) ) {
 		$custom_fields .= "<div class='custom-fields'>";
 		foreach($customfields as $field) { 
-			if( is_singular( 'business' ) && "yes" == $field['display_single'] ) {
+			if( is_singular( 'business' ) && isset( $field['display_single'] ) && "yes" == $field['display_single'] ) {
 				$fieldname = $field['name'];
 				if( isset( $custommeta[$fieldname] ) ) {
 					$custom_fields .= "<p class='custom " . $field['name'] . "'><strong class='custom cdash-label " . $field['name'] . "'>" . $field['name'] . ":</strong>&nbsp;" . $custommeta[$fieldname] . "</p>";
