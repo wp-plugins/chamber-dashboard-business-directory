@@ -37,6 +37,17 @@
 	float: left;
 }
 
+.my_meta_control .update-all,
+.my_meta_control .delete-all {
+	width: 43%;
+	border: 1px solid #eee;
+	padding: 0 2%;
+}
+
+.my_meta_control .delete-all {
+	float: right;
+}
+
 .my_meta_control .hidden {
 	display: none;
 }
@@ -61,6 +72,24 @@
 .my_meta_control .third {
 	width: 30%;
 	float: left;
+}
+
+.my_meta_control .fourth {
+	width: 22%;
+	float: left;
+}
+
+@media screen and (max-width: 950px) {
+	.my_meta_control .fourth {
+		width: 46%;
+	}
+}
+
+@media screen and (max-width: 700px) {
+	.my_meta_control .fourth {
+		width: 90%;
+		float: none;
+	}
 }
 
 .my_meta_control .location,
@@ -142,7 +171,7 @@ input#item_membershipamt {
 	width: 8em;
 }
 
-th.interval {
+#overdue-report th.interval {
 	color: #0074A2;
 	font-size: 1.2em;
 	text-align: center;
