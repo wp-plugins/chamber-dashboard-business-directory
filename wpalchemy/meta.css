@@ -74,6 +74,24 @@
 	float: left;
 }
 
+.my_meta_control .fourth {
+	width: 22%;
+	float: left;
+}
+
+@media screen and (max-width: 950px) {
+	.my_meta_control .fourth {
+		width: 46%;
+	}
+}
+
+@media screen and (max-width: 700px) {
+	.my_meta_control .fourth {
+		width: 90%;
+		float: none;
+	}
+}
+
 .my_meta_control .location,
 .my_meta_control .note {
 	background: #F1F1F1;

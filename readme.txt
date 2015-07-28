@@ -86,6 +86,11 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.6 =
+* added "website" to list of social media icons
+* added Featured Business widget
+* added country field to address for better geolocation
+
 = 2.5.4 =
 * In export, if you haven't selected a phone type or email type, the parenthesis will not appear
 * moved address display to a separate function

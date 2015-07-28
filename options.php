@@ -343,17 +343,25 @@ function cdash_plugin_action_links( $links, $file ) {
 	return $links;
 }
 
-function cdash_export_form() { ?>
-	<div class="wrap">
-		<div class="icon32" id="icon-options-general"><br></div>
-		<h2><?php _e('Export', 'cdash'); ?></h2>
-		<p><?php _e('Click the button below to download a CSV of all of your businesses.', 'cdash'); ?></p>
-		<form action="<?php echo plugin_dir_url( __FILE__ ); ?>export.php">
+function cdash_export_form() {
 
-		<input type="submit" value="Download CSV">
-		</form>
-	</div>
-<?php }
+	$export_form = 
+		'<p>' . __( 'Click the button below to download a CSV of all of your businesses.', 'cdash' ) . '</p>
+		<form action="' . plugin_dir_url( __FILE__ ) . 'export.php">
+		<input type="submit" value="' . __( 'Download CSV', 'cdash' ) . '">
+		</form>';
+
+	$export_form = apply_filters( 'cdash_export_form', $export_form );
+
+	$export_page = 
+		'<div class="wrap">
+			<div class="icon32" id="icon-options-general"><br></div>
+			<h2>' . __( 'Export', 'cdash' ) . '</h2>' .
+			$export_form . 
+		'</div>';
+
+	echo $export_page;
+}
 
 function cdash_import_form() { ?>
 	<div class="wrap">

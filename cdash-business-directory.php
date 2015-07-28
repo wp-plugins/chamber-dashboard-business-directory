@@ -3,13 +3,13 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Crate a database of the businesses in your chamber of commerce
-Version: 2.5.4
+Version: 2.6
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 Text Domain: cdash
 */
 
-/*  Copyright 2014 Morgan Kay and Chamber Dashboard (email : info@chamberdashboard.com)
+/*  Copyright 2015 Morgan Kay and Chamber Dashboard (email : info@chamberdashboard.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -562,6 +562,9 @@ function cdash_store_geolocation_data( $post_id ) {
 					}
 					if( isset( $location['zip'] ) ) {
 						$rawaddress .= ' ' . $location['zip'];
+					}
+					if( isset( $location['country'] ) ) {
+						$rawaddress .= ' ' . $location['country'];
 					}
 					$address = urlencode( $rawaddress );
 					$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBq9JVPgmORIVfuzmgpzrzRTVyttSNyJ3A&address=" . $address . "&sensor=true" );

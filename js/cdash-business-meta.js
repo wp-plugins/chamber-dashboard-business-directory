@@ -19,20 +19,19 @@ jQuery(document).ready(function ($) {
 		return false;
 	});
 
-	// When someone picks a membership level, add the price to the total    
+	// update geolocation data    
 	$(document).on( 'change', '.trigger-geolocation', function( evt ) {
-	// $('.trigger-geolocation').change(function (evt) {  // this is what triggers the function        
 		var street = $( evt.target ).closest('.address-data').children('.address-wrapper').children('textarea').val();
 		var city = $( evt.target ).closest('.address-data').children('.city-wrapper').children('p').children('.city').val();
 		var state = $( evt.target ).closest('.address-data').children('.state-wrapper').children('p').children('.state').val();
 		var zip = $( evt.target ).closest('.address-data').children('.zip-wrapper').children('p').children('.zip').val(); 
-		var address = street + ' ' + city + ', ' + state + ' ' + zip;
+		var country = $( evt.target ).closest('.address-data').children('.country-wrapper').children('p').children('.country').val(); 
+		var address = street + ' ' + city + ', ' + state + ' ' + zip + country;
 		geocoder = new google.maps.Geocoder();
 		geocoder.geocode({ 'address': address }, function(results, status) {
 		  if (status == google.maps.GeocoderStatus.OK) {
 		    var latitude = results[0].geometry.location.A;
 		    var longitude = results[0].geometry.location.F;
-		    console.log(latitude);
 		    $( evt.target ).closest('.address-data').children('.geolocation-data').children('.latitude').val(latitude);
 			$( evt.target ).closest('.address-data').children('.geolocation-data').children('.longitude').val(longitude);   
 		  }
