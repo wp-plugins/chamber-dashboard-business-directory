@@ -86,6 +86,49 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.6.1 =
+* changed H2s to H1s in admin to conform to new accessibility guidelines
+* added "Add-Ons" page
+
+= 2.6 =
+* added "website" to list of social media icons
+* added Featured Business widget
+* added country field to address for better geolocation
+
+= 2.5.4 =
+* In export, if you haven't selected a phone type or email type, the parenthesis will not appear
+* moved address display to a separate function
+* added filters to all content functions to facilitate customization
+
+= 2.5.3 =
+* fixed pagination on business search results shortcode
+* added ability to delete custom fields
+* added filter to map so that you can customize map colors
+
+= 2.5.2 =
+* closed quotes on custom field class names
+
+= 2.5.1 =
+* fixed bug that caused infinite loop on business_directory shortcode if you do not have CRM installed
+
+= 2.5 =
+* added CSS classes to custom field labels
+* added private category to business
+* added filters to display CRM contact information
+
+= 2.4.3 =
+* added CSS classes to custom fields
+* fixed bug that prevented featured image from displaying on single business
+* fixed bug that prevented javascript functions from running on new locations
+* remove title li from business categories shortcode and widget
+* fixed showcount in business categories widget
+
+= 2.4.2 =
+* added business category widget
+
+= 2.4.1 =
+* further updates to maps to avoid Google API quotas
+
 = 2.4 =
 * rewrote maps to make them reliable
 * add clustering option to map shortcode, thanks to Mike Davis, jmdxsvhs15

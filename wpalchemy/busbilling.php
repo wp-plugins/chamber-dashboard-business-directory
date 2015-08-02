@@ -27,7 +27,8 @@
 	<div class="half">
 		<?php $mb->the_field('billing_email'); ?>
 		<label><?php _e('Billing Email', 'cdash'); ?></label>
-		<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>" id="billing-email" /></p>
+		<p><input type="text" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>" id="billing-email" /><br />
+		<span class="explain"><?php _e( 'Separate multiple email addresses with commas', 'cdash' ); ?></span></p>
 	</div>
 
 	<div class="half">

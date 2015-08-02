@@ -7,3 +7,6 @@ Plugin Options Starter Kit: http://wordpress.org/plugins/plugin-options-starter-
 Taxonomy Meta Class: https://github.com/bainternet/Tax-Meta-Class
 
 Social Icons: http://rohitink.com/sociocons/
+	      http://icons8.com/
+
+JQuery Chosen: https://github.com/harvesthq/chosen
