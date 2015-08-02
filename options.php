@@ -349,8 +349,9 @@ function cdash_export_form() {
 	$export_form = 
 		'<p>' . __( 'Click the button below to download a CSV of all of your businesses.', 'cdash' ) . '</p>
 		<form action="' . plugin_dir_url( __FILE__ ) . 'export.php">
-		<input type="submit" value="' . __( 'Download CSV', 'cdash' ) . '">
-		</form>';
+		<input type="submit" class="button-primary" value="' . __( 'Download CSV', 'cdash' ) . '">
+		</form>
+		<p>' . __( 'This exporter can only export limited information about businesses.  If you want to export more information, or export people or businesses, try the <a href="https://chamberdashboard.com/downloads/chamber-dashboard-exporter/" target="_blank">Chamber Dashboard Exporter</a>.', 'cdash' );
 
 	$export_form = apply_filters( 'cdash_export_form', $export_form );
 
