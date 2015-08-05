@@ -20,39 +20,45 @@
 			<label><?php _e('Address', 'cdash'); ?></label>
 			<p class="address-wrapper">
 				<?php $metabox->the_field('address'); ?>
-				<textarea name="<?php $metabox->the_name(); ?>" rows="3"><?php $metabox->the_value(); ?></textarea>
+				<textarea class="trigger-geolocation" name="<?php $metabox->the_name(); ?>" rows="3"><?php $metabox->the_value(); ?></textarea>
 			</p>
 
 			<?php $options = get_option('cdash_directory_options'); ?>
 	 
-			<div class="third city-wrapper">
+			<div class="fourth city-wrapper">
 				<?php $mb->the_field('city'); ?>
 				<label><?php _e('City', 'cdash'); ?></label>
-				<p><input type="text" class="city" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p> 
+				<p><input type="text" class="city trigger-geolocation" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p> 
 			</div>
 
-			<div class="third state-wrapper">
+			<div class="fourth state-wrapper">
 				<?php $mb->the_field('state'); ?>
 				<label><?php _e('State', 'cdash'); ?></label>
-				<p><input type="text" class="state" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+				<p><input type="text" class="state trigger-geolocation" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
 			</div>
 
-			<div class="third zip-wrapper">
+			<div class="fourth zip-wrapper">
 				<?php $mb->the_field('zip'); ?>
 				<label><?php _e('Zip', 'cdash'); ?></label>
-				<p><input type="text" class="zip" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+				<p><input type="text" class="zip trigger-geolocation" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+			</div>
+
+			<div class="fourth country-wrapper">
+				<?php $mb->the_field('country'); ?>
+				<label><?php _e('Country', 'cdash'); ?></label>
+				<p><input type="text" class="country trigger-geolocation" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+			</div>
+
+			<div class="geolocation-data">
+				<?php $mb->the_field('latitude'); ?>
+				<input type="hidden" name="<?php $mb->the_name(); ?>" class="latitude" value="<?php $mb->the_value(); ?>"/>
+
+				<?php $mb->the_field('longitude'); ?>
+				<input type="hidden" name="<?php $mb->the_name(); ?>" class="longitude" value="<?php $mb->the_value(); ?>"/>
 			</div>
 		</div>
 
-		<div class="hidden">
-			<?php $mb->the_field('latitude'); ?>
-			<label><?php _e('Latitude', 'cdash'); ?></label>
-			<p><input type="text" name="<?php $mb->the_name(); ?>" id="latitude" value="<?php $mb->the_value(); ?>"/></p>
-
-			<?php $mb->the_field('longitude'); ?>
-			<label><?php _e('Longitude', 'cdash'); ?></label>
-			<p><input type="text" name="<?php $mb->the_name(); ?>" id="longitude" value="<?php $mb->the_value(); ?>"/></p>
-		</div>
+		
 
 		<div class="clearfix">
 			<?php $mb->the_field('url'); ?>
@@ -159,6 +165,7 @@
 				<option value="twitter" <?php if ($mb->get_the_value() == 'twitter') echo $selected; ?>><?php _e( 'Twitter', 'cdash' ); ?></option>
 				<option value="urbanspoon" <?php if ($mb->get_the_value() == 'urbanspoon') echo $selected; ?>><?php _e( 'Urbanspoon', 'cdash' ); ?></option>
 				<option value="vimeo" <?php if ($mb->get_the_value() == 'vimeo') echo $selected; ?>><?php _e( 'Vimeo', 'cdash' ); ?></option>
+				<option value="website" <?php if ($mb->get_the_value() == 'website') echo $selected; ?>><?php _e( 'Website', 'cdash' ); ?></option>
 				<option value="youtube" <?php if ($mb->get_the_value() == 'youtube') echo $selected; ?>><?php _e( 'YouTube', 'cdash' ); ?></option>
 				<option value="yelp" <?php if ($mb->get_the_value() == 'yelp') echo $selected; ?>><?php _e( 'Yelp', 'cdash' ); ?></option>
 			</select>
