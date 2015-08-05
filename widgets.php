@@ -329,10 +329,14 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 					); 
 				$businesses = get_posts( $args );
 	            foreach( $businesses as $business ) {
+	            	$selected = '';
+	            	if( is_array( $instance['business'] ) && in_array( $business->ID, $instance['business'] ) ) {
+	            		$selected = 'selected="selected"';
+	            	}
 	                printf(
 	                    '<option value="%s" %s>%s</option>',
 	                    $business->ID,
-	                    in_array( $business->ID, $instance['business']) ? 'selected="selected"' : '',
+	                    $selected,
 	                    $business->post_title
 	                );
 	            }

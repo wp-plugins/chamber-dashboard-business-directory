@@ -86,6 +86,9 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.6.2 =
+* fixed bug in Featured Business widget
+
 = 2.6.1 =
 * changed H2s to H1s in admin to conform to new accessibility guidelines
 * added "Add-Ons" page
