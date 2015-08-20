@@ -86,6 +86,12 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.7 =
+* added the ability to preview business maps and enter custom coordinates
+* removed extraneous slash from business directory pagination
+* added "order" parameter to business_categories shortcode so that you can choose ascending or descending order
+* search results ordered in ascending order
+
 = 2.6.2 =
 * fixed bug in Featured Business widget
 

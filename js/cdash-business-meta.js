@@ -1,3 +1,6 @@
+var map;
+var marker;
+
 jQuery(document).ready(function ($) {
 // Copy location information to billing metabox 
 	$(document).on( 'click', '.billing-copy', function (evt) {
@@ -39,5 +42,61 @@ jQuery(document).ready(function ($) {
 		});
 	});
 
+// Preview Map
+
+
+
+	$(document).on( 'click', '.preview-map', function( evt ) {
+		evt.preventDefault();
+
+		// show the nearest .map-canvas
+		$( evt.target ).closest('.geolocation-data').children('.map-canvas').show();
+		// show the nearest "change coordinates" button
+		$( evt.target ).closest('.geolocation-data').children('.custom-coords').show();
+
+		var latitude = parseFloat($( evt.target ).closest('.geolocation-data').children('.latitude').val());
+		var longitude = parseFloat($( evt.target ).closest('.geolocation-data').children('.longitude').val());
+		var canvas = $( evt.target ).closest('.geolocation-data').children('.map-canvas')
+
+		initialize(latitude, longitude, canvas);
+
+		function initialize(latitude, longitude, canvas) {
+		  var myLatLng = {lat: latitude, lng: longitude};
+
+		  map = new google.maps.Map(canvas[0], {
+		    zoom: 13,
+		    center: myLatLng
+		  });
+
+		  marker = new google.maps.Marker({
+		    position: myLatLng,
+		    map: map,
+		  });
+
+		}
+
+	});
+
+
+
+	// change latitude and longitude
+	$(document).on( 'click', '.custom-coords', function( evt ) {
+		evt.preventDefault();
+
+		// show the nearest .enter-custom-coords
+		$( evt.target ).closest('.geolocation-data').children('.enter-custom-coords').show();
+
+	});
+
+	$(document).on( 'click', '.update-map', function( evt ) {
+		evt.preventDefault();
+		$( evt.target ).closest('.update-preview').children('.update-reminder').show();
+
+	    var newlatitude = parseFloat($( evt.target ).closest('.custom-coords-fields').children('.custom-latitude').val());
+		var newlongitude = parseFloat($( evt.target ).closest('.custom-coords-fields').children('.custom-longitude').val());
+	    var newLatLng = new google.maps.LatLng(newlatitude, newlongitude);
+	    marker.setPosition(newLatLng)
+	    map.panTo( newLatLng );
+	});
 
 });

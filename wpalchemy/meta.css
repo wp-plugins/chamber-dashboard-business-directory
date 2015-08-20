@@ -74,6 +74,11 @@
 	float: left;
 }
 
+.my_meta_control .two-thirds {
+	width: 65%;
+	float: left;
+}
+
 .my_meta_control .fourth {
 	width: 22%;
 	float: left;

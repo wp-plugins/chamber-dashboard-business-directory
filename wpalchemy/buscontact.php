@@ -49,7 +49,27 @@
 				<p><input type="text" class="country trigger-geolocation" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
 			</div>
 
-			<div class="geolocation-data">
+			<div class="geolocation-data clearfix">
+				<p class="clearfix"><a href="#" class="button button-primary preview-map"><?php _e( 'Preview Map', 'cdash' ); ?></a></p>
+				<div class="map-canvas half" style="width:300px; height: 300px; display: none; margin: 0 20px 20px 0;"></div>
+				<a href="#" class="button custom-coords" style="display:none;"><?php _e( 'Change Map Coordinates', 'cdash' ); ?></a>
+				<div class="enter-custom-coords" style="display: none;">
+					<p><?php _e( 'If you want the map marker to appear in a different place, you can enter the latitude and longitude yourself.', 'cdash' ); ?></p>
+					<p><a href="http://www.latlong.net/" target="_blank"><?php _e( 'Find the latitude and longitude', 'cdash' ); ?></a></p>
+					<div class="half custom-coords-fields">
+						<?php $mb->the_field('custom_latitude'); ?>
+						<label><?php _e( 'Latitude', 'cdash' ); ?></label>
+						<input type="text" name="<?php $mb->the_name(); ?>" class="custom-latitude new-coords" value="<?php $mb->the_value(); ?>"/>
+
+						<?php $mb->the_field('custom_longitude'); ?>
+						<label><?php _e( 'Longitude', 'cdash' ); ?></label>
+						<input type="text" name="<?php $mb->the_name(); ?>" class="custom-longitude new-coords" value="<?php $mb->the_value(); ?>"/>
+						<p class="update-preview">
+							<a href="#" class="update-map button"><?php _e( 'Update Map Preview', 'cdash' ); ?></a>
+							<span class="update-reminder" style="display:none;"><?php _e( 'Make sure you save your changes!', 'cdash' ); ?></span>
+						</p>
+					</div>
+				</div>
 				<?php $mb->the_field('latitude'); ?>
 				<input type="hidden" name="<?php $mb->the_name(); ?>" class="latitude" value="<?php $mb->the_value(); ?>"/>
 
@@ -57,8 +77,6 @@
 				<input type="hidden" name="<?php $mb->the_name(); ?>" class="longitude" value="<?php $mb->the_value(); ?>"/>
 			</div>
 		</div>
-
-		
 
 		<div class="clearfix">
 			<?php $mb->the_field('url'); ?>
@@ -183,5 +201,4 @@
 		<?php endwhile; ?>
 		<p><a href="#" class="docopy-social button"><?php _e('Add Another Social Media Link', 'cdash'); ?></a></p>
 	</fieldset>
-
 </div>

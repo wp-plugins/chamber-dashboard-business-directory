@@ -132,9 +132,17 @@ function cdash_single_business_map() {
 					if( isset( $location['donotdisplay'] ) && $location['donotdisplay'] == "1") {
 						continue;
 					} else {
-						if( isset( $location['latitude'] ) && isset( $location['longitude'] ) ) {
-							$lat = $location['latitude'];
-							$long = $location['longitude']; 
+						if( ( isset( $location['latitude'] ) && isset( $location['longitude'] ) ) || isset( $location['custom_latitude'] ) && isset( $location['custom_longitude'] ) ) {
+							if( isset( $location['custom_latitude'] ) ) {
+								$lat = $location['custom_latitude'];
+							} else {
+								$lat = $location['latitude'];
+							}
+							if( isset( $location['custom_longitude'] ) ) {
+								$lat = $location['custom_longitude'];
+							} else {
+								$lat = $location['longitude'];
+							}
 							// get the map icon
 							$id = get_the_id();
 							$buscats = get_the_terms( $id, 'business_category');
@@ -458,12 +466,12 @@ function cdash_business_directory_shortcode( $atts ) {
 			if ($total_pages > 1){
 				$current_page = max(1, get_query_var('paged'));
    				$business_list .= "<div class='pagination'>";
-			  	$business_list .= paginate_links(array(
-			      'base' => get_pagenum_link(1) . '%_%',
+			  	$business_list .= paginate_links( array (
+			      'base' => rtrim( get_pagenum_link(1), "/" ) . '%_%',
 			      'format' => '/page/%#%',
 			      'current' => $current_page,
 			      'total' => $total_pages,
-			    ));
+			    ) );
 			    $business_list .= "</div>";
 			}
 
@@ -525,9 +533,17 @@ function cdash_business_map_shortcode( $atts ) {
 							continue;
 						} elseif( isset( $location['address'] ) ) {
 							// Get the latitude and longitude from the address
-							if( isset( $location['latitude'] ) && isset( $location['longitude'] ) ) {
-								$lat = $location['latitude'];
-								$long = $location['longitude']; 
+							if( ( isset( $location['latitude'] ) && isset( $location['longitude'] ) ) || isset( $location['custom_latitude'] ) && isset( $location['custom_longitude'] ) ) {
+								if( isset( $location['custom_latitude'] ) ) {
+									$lat = $location['custom_latitude'];
+								} else {
+									$lat = $location['latitude'];
+								}
+								if( isset( $location['custom_longitude'] ) ) {
+									$lat = $location['custom_longitude'];
+								} else {
+									$lat = $location['longitude'];
+								}
 								// Get the map icon
 								$id = get_the_id();
 								$buscats = get_the_terms( $id, 'business_category');
@@ -647,7 +663,8 @@ function cdash_business_search_results_shortcode() {
 		$args = array( 
                 'post_type' => 'business',
                 'posts_per_page' => 10,  
-                'paged' => $paged,    
+                'paged' => $paged,
+                'order' => 'ASC',
                 );
 
             if ( $buscat ) {
@@ -743,12 +760,12 @@ function cdash_business_search_results_shortcode() {
 				$current_page = max( 1, get_query_var( 'paged' ) );
 				$big = 999999999; // need an unlikely integer
    				$search_results .= "<div class='pagination'>";
-			  	$search_results .= paginate_links(array(
-			      'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-			      'format' => '?page=%#%',
+			  	$search_results .= paginate_links( array (
+			      'base' => rtrim( get_pagenum_link(1), "/" ) . '%_%',
+			      'format' => '/page/%#%',
 			      'current' => $current_page,
 			      'total' => $total_pages,
-			    ));
+			    ) );
 			    $search_results .= "</div>";
 			}
 			$search_results .= "</div><!-- #search-results -->";
@@ -830,6 +847,7 @@ function cdash_business_categories_shortcode( $atts ) {
 	extract( shortcode_atts(
 		array(
 		'orderby' => 'name', // options: date, modified, menu_order, rand
+		'order' => 'ASC',
 		'showcount' => 0,
 		'hierarchical' => 1,
 		'hide_empty' => 1,
@@ -841,6 +859,7 @@ function cdash_business_categories_shortcode( $atts ) {
 	$args = array(
 		'taxonomy' => $taxonomy,
 		'orderby' => $orderby,
+		'order' => $order,
 		'show_count' => $showcount,
 		'hierarchical' => $hierarchical,
 		'hide_empty' => $hide_empty,
