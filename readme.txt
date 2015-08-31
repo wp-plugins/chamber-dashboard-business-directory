@@ -86,6 +86,9 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.7.1 =
+* fixed compatibility between wpp2p and WP 4.3
+
 = 2.7 =
 * added the ability to preview business maps and enter custom coordinates
 * removed extraneous slash from business directory pagination
