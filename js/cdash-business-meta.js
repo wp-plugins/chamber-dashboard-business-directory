@@ -24,6 +24,7 @@ jQuery(document).ready(function ($) {
 
 	// update geolocation data    
 	$(document).on( 'change', '.trigger-geolocation', function( evt ) {
+		console.log('trigger-geolocation');
 		var street = $( evt.target ).closest('.address-data').children('.address-wrapper').children('textarea').val();
 		var city = $( evt.target ).closest('.address-data').children('.city-wrapper').children('p').children('.city').val();
 		var state = $( evt.target ).closest('.address-data').children('.state-wrapper').children('p').children('.state').val();
@@ -35,6 +36,11 @@ jQuery(document).ready(function ($) {
 		  if (status == google.maps.GeocoderStatus.OK) {
 		    var latitude = results[0].geometry.location.A;
 		    var longitude = results[0].geometry.location.F;
+		    $( evt.target ).closest('.address-data').children('.geolocation-data').children('.latitude').val(latitude);
+			$( evt.target ).closest('.address-data').children('.geolocation-data').children('.longitude').val(longitude);   
+		  } else {
+		    var latitude = 0;
+		    var longitude = 0;
 		    $( evt.target ).closest('.address-data').children('.geolocation-data').children('.latitude').val(latitude);
 			$( evt.target ).closest('.address-data').children('.geolocation-data').children('.longitude').val(longitude);   
 		  }
@@ -53,10 +59,18 @@ jQuery(document).ready(function ($) {
 		$( evt.target ).closest('.geolocation-data').children('.map-canvas').show();
 		// show the nearest "change coordinates" button
 		$( evt.target ).closest('.geolocation-data').children('.custom-coords').show();
+		
+		// make it show custom coords, if they are entered, and if not, then show these coords
+		var latitude = parseFloat($( evt.target ).closest('.geolocation-data').children('.enter-custom-coords').children('.custom-coords-fields').children('.custom-latitude').val());
+		if( latitude !== latitude ) { // http://adripofjavascript.com/blog/drips/the-problem-with-testing-for-nan-in-javascript.html
+			var latitude = parseFloat($( evt.target ).closest('.geolocation-data').children('.latitude').val());
+		}
+		var longitude = parseFloat($( evt.target ).closest('.geolocation-data').children('.enter-custom-coords').children('.custom-coords-fields').children('.custom-longitude').val());
+		if( longitude !== longitude ) { 
+			var longitude = parseFloat($( evt.target ).closest('.geolocation-data').children('.longitude').val());
+		}
+		var canvas = $( evt.target ).closest('.geolocation-data').children('.map-canvas');
 
-		var latitude = parseFloat($( evt.target ).closest('.geolocation-data').children('.latitude').val());
-		var longitude = parseFloat($( evt.target ).closest('.geolocation-data').children('.longitude').val());
-		var canvas = $( evt.target ).closest('.geolocation-data').children('.map-canvas')
 
 		initialize(latitude, longitude, canvas);
 
@@ -94,6 +108,7 @@ jQuery(document).ready(function ($) {
 
 	    var newlatitude = parseFloat($( evt.target ).closest('.custom-coords-fields').children('.custom-latitude').val());
 		var newlongitude = parseFloat($( evt.target ).closest('.custom-coords-fields').children('.custom-longitude').val());
+
 	    var newLatLng = new google.maps.LatLng(newlatitude, newlongitude);
 	    marker.setPosition(newLatLng)
 	    map.panTo( newLatLng );

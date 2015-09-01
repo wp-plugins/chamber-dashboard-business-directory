@@ -86,6 +86,9 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.7.3 =
+* made custom latitude and longitude more robust
+
 = 2.7.2 =
 * fixed bug on map shortcode
 
