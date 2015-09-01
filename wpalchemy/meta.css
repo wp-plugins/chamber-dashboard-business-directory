@@ -37,6 +37,17 @@
 	float: left;
 }
 
+.my_meta_control .update-all,
+.my_meta_control .delete-all {
+	width: 43%;
+	border: 1px solid #eee;
+	padding: 0 2%;
+}
+
+.my_meta_control .delete-all {
+	float: right;
+}
+
 .my_meta_control .hidden {
 	display: none;
 }
@@ -61,6 +72,29 @@
 .my_meta_control .third {
 	width: 30%;
 	float: left;
+}
+
+.my_meta_control .two-thirds {
+	width: 65%;
+	float: left;
+}
+
+.my_meta_control .fourth {
+	width: 22%;
+	float: left;
+}
+
+@media screen and (max-width: 950px) {
+	.my_meta_control .fourth {
+		width: 46%;
+	}
+}
+
+@media screen and (max-width: 700px) {
+	.my_meta_control .fourth {
+		width: 90%;
+		float: none;
+	}
 }
 
 .my_meta_control .location,
@@ -142,10 +176,53 @@ input#item_membershipamt {
 	width: 8em;
 }
 
-th.interval {
+#overdue-report th.interval {
 	color: #0074A2;
 	font-size: 1.2em;
 	text-align: center;
 	background: #d6d6d6;
 	font-weight: 700;
 }
+
+#add-ons-container {
+	display: -webkit-flex; /* Safari */
+	display: flex;
+	-webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+}
+
+#add-ons-container .add-on {
+	 -webkit-flex: 1;
+          flex: 1;
+	border: 1px solid #ddd;
+	margin: 10px;
+	padding: 15px;
+	min-width: 250px;
+	background: #fff;
+}
+
+#add-ons-container .add-on.coming {
+	background: #e5e5e5;
+}
+
+#add-ons-container .add-on h3 {
+	text-align: center;
+}
+
+#add-ons-container .add-on a {
+	display: inline-block;
+	text-align: center;
+}
+
+#add-ons-container .center {
+	text-align: center;
+}
+
+#add-ons-container .form-table th,
+#add-ons-container .form-table td {
+	display: block;
+	width: 100%;
+	padding: 0;
+	max-width: 230px;
+}
+

@@ -1,5 +1,6 @@
 #business img,
-#businesslist img {
+#businesslist img,
+#cdcrm-people img {
 max-width: 100%; 
 height: auto;
 }
@@ -7,12 +8,15 @@ height: auto;
 #business img[class*="align"],
 #business img[class*="wp-image-"],
 #businesslist img[class*="align"],
-#businesslist img[class*="wp-image-"] {
+#businesslist img[class*="wp-image-"],
+#cdcrm-people img[class*="align"],
+#cdcrm-people img[class*="wp-image-"] {
 height: auto; /* Make sure images with WordPress-added height and width attributes are scaled correctly */
 }
 
 #business img.size-full,
-#businesslist img.size-full {
+#businesslist img.size-full,
+#cdcrm img.size-full {
 max-width: 100%;
 width: auto; /* Prevent stretching of full-size images with height and width attributes in IE8 */
 }
@@ -64,19 +68,24 @@ clear: both;
 
 #businesslist.grid2:after,
 #businesslist.grid3:after,
-#businesslist.grid4:after {
+#businesslist.grid4:after,
+#cdcrm-people.grid2:after,
+#cdcrm-people.grid3:after,
+#cdcrm-people.grid4:after {
 	display: table;
 content: '';
 clear: both;
 }
 
-#businesslist.grid2 .business {
+#businesslist.grid2 .business,
+#cdcrm-people.grid2 .cdcrm-person {
 	width: 45%;
 	margin-right: 2%;
 	float: left;
 }
 
-#businesslist.grid3 .business {
+#businesslist.grid3 .business,
+#cdcrm-people.grid3 .cdcrm-person {
 	width: 30%;
 	margin-right: 2%;
 	float: left;
@@ -90,7 +99,8 @@ clear: both;
 	margin-bottom: 1em;
 }
 
-#businesslist.grid4 .business {
+#businesslist.grid4 .business,
+#cdcrm-people.grid4 .cdcrm-person {
 	width: 22.5%;
 	margin-right: 2%;
 	float: left;
@@ -104,10 +114,18 @@ clear: both;
 
 #map-canvas img { max-width: none !important; height: auto; } 
 
+#cdash-contacts p {
+	margin: 0;
+	padding: 0;
+}
+
 @media screen and (max-width: 700px) {
 #businesslist.grid2 .business,
 #businesslist.grid3 .business,
-#businesslist.grid4 .business {
+#businesslist.grid4 .business,
+#cdcrm-people.grid2 .cdcrm-person,
+#cdcrm-people.grid3 .cdcrm-person,
+#cdcrm-people.grid4 .cdcrm-person {
 	width: 100%;
 	float: none;
 	}

@@ -2,14 +2,14 @@
 /*
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
-Description: Create a database of the businesses in your chamber of commerce
-Version: 2.4
+Description: Crate a database of the businesses in your chamber of commerce
+Version: 2.7.2
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 Text Domain: cdash
 */
 
-/*  Copyright 2014 Morgan Kay and the Fremont Chamber of Commerce (email : info@chamberdashboard.com)
+/*  Copyright 2015 Morgan Kay and Chamber Dashboard (email : info@chamberdashboard.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -161,6 +161,44 @@ function cdash_register_taxonomy_membership_level() {
 
 add_action( 'init', 'cdash_register_taxonomy_membership_level', 0 );
 
+// Register Custom Taxonomy - Private Category
+function cdash_register_taxonomy_private_category() {
+
+	$labels = array(
+		'name'                       => _x( 'Private Categories', 'Taxonomy General Name', 'cdash' ),
+		'singular_name'              => _x( 'Private Category', 'Taxonomy Singular Name', 'cdash' ),
+		'menu_name'                  => __( 'Private Categories', 'cdash' ),
+		'all_items'                  => __( 'All Private Categories', 'cdash' ),
+		'parent_item'                => __( 'Parent Private Category', 'cdash' ),
+		'parent_item_colon'          => __( 'Parent Private Category:', 'cdash' ),
+		'new_item_name'              => __( 'New Private Category Name', 'cdash' ),
+		'add_new_item'               => __( 'Add New Private Category', 'cdash' ),
+		'edit_item'                  => __( 'Edit Private Category', 'cdash' ),
+		'update_item'                => __( 'Update Private Category', 'cdash' ),
+		'separate_items_with_commas' => __( 'Separate Private Categories with commas', 'cdash' ),
+		'search_items'               => __( 'Search Private Categories', 'cdash' ),
+		'add_or_remove_items'        => __( 'Add or remove Private Category', 'cdash' ),
+		'choose_from_most_used'      => __( 'Choose from the most used Private Categories', 'cdash' ),
+		'not_found'                  => __( 'Not Found', 'cdash' ),
+	);
+	$args = array(
+		'labels'                     => $labels,
+		'hierarchical'               => true,
+		'public'                     => false,
+		'show_ui'                    => true,
+		'show_admin_column'          => true,
+		'show_in_nav_menus'          => false,
+		'show_tagcloud'              => false,
+		'rewrite' => array (
+            'slug' => _x( 'private_category', 'private_category', 'cdash' )
+        )
+	);
+	register_taxonomy( 'private_category', array( 'business' ), $args );
+
+}
+
+add_action( 'init', 'cdash_register_taxonomy_private_category', 0 );
+
 
 // Register Custom Post Type - Businesses
 function cdash_register_cpt_business() {
@@ -191,7 +229,7 @@ function cdash_register_cpt_business() {
 		'description'         => __( 'Businesses and Organizations', 'cdash' ),
 		'labels'              => $labels,
 		'supports'            => $supports,
-		'taxonomies'          => array( 'business_category', ' membership_level' ),
+		'taxonomies'          => array( 'business_category', ' membership_level', 'private_category' ),
 		'hierarchical'        => true,
 		'public'              => true,
 		'show_ui'             => true,
@@ -240,9 +278,9 @@ function cdash_admin_scripts_and_styles($hook)
 
     // business AJAX
     if ( $hook == 'post-new.php' || $hook == 'post.php' ) {
-	    if ( isset( $post ) && 'business' === $post->post_type ) {       
+	    if ( isset( $post ) && 'business' === $post->post_type ) {     
+	    	wp_enqueue_script( 'google-maps' , 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDF-0o3jloBzdzSx7rMlevwNSOyvq0G35A&sensor=false' );  
 		    wp_enqueue_script( 'business-meta', plugin_dir_url(__FILE__) . 'js/cdash-business-meta.js', array( 'jquery' ) );
-		    // don't actually need ajax yet
 		    // wp_localize_script( 'business-meta', 'businessajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); 
 		}
 	}
@@ -477,6 +515,7 @@ add_filter('body_class', 'cdash_add_taxonomy_classes');
 
 // ------------------------------------------------------------------------
 // SAVE GEOLOCATION DATA, with extra noodles to make sure this runs very last when business is saved
+// This is a fallback in case JavaScript didn't save geolocation data
 // ------------------------------------------------------------------------
 
 function cdash_get_latest_priority( $filter ) // figure out what priority the geolocation function needs, thanks to http://wordpress.stackexchange.com/questions/116221/how-to-force-function-to-run-as-the-last-one-when-saving-the-post
@@ -508,27 +547,32 @@ function cdash_store_geolocation_data( $post_id ) {
 
 	// get the addresses
 	$locations = get_post_meta( $post_id, '_cdash_location', true );
-	
-	if( !empty( $locations ) ) {
+
+	if( !empty( $locations ) && is_array( $locations ) ) {
 		foreach( $locations as $key => $location ) {
-			if( isset( $location['address'] ) ) {
-				// ask Google for the latitude and longitude
-				$rawaddress = $location['address'];
+			if( !isset( $location['latitude'] ) && !isset( $location['longitude'] ) ) { // don't do this if we already have lat and long
 				if( isset( $location['city'] ) ) {
-					$rawaddress .= ' ' . $location['city'];
-				}
-				if( isset( $location['state'] ) ) {
-					$rawaddress .= ' ' . $location['state'];
-				}
-				if( isset( $location['zip'] ) ) {
-					$rawaddress .= ' ' . $location['zip'];
-				}
-				$address = urlencode( $rawaddress );
-				$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBq9JVPgmORIVfuzmgpzrzRTVyttSNyJ3A&address=" . $address . "&sensor=true" );
-				$json = json_decode($json['body'], true);
-				if( is_array( $json ) && $json['status'] == 'OK') {
-					$locations[$key]['latitude'] = $json['results'][0]['geometry']['location']['lat'];
-					$locations[$key]['longitude'] = $json['results'][0]['geometry']['location']['lng']; 
+					// ask Google for the latitude and longitude
+					$rawaddress = $location['address'];
+					if( isset( $location['city'] ) ) {
+						$rawaddress .= ' ' . $location['city'];
+					}
+					if( isset( $location['state'] ) ) {
+						$rawaddress .= ' ' . $location['state'];
+					}
+					if( isset( $location['zip'] ) ) {
+						$rawaddress .= ' ' . $location['zip'];
+					}
+					if( isset( $location['country'] ) ) {
+						$rawaddress .= ' ' . $location['country'];
+					}
+					$address = urlencode( $rawaddress );
+					$json = wp_remote_get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyBq9JVPgmORIVfuzmgpzrzRTVyttSNyJ3A&address=" . $address . "&sensor=true" );
+					$json = json_decode($json['body'], true);
+					if( is_array( $json ) && $json['status'] == 'OK') {
+						$locations[$key]['latitude'] = $json['results'][0]['geometry']['location']['lat'];
+						$locations[$key]['longitude'] = $json['results'][0]['geometry']['location']['lng']; 
+					}
 				}
 			}
 		}
@@ -647,6 +691,5 @@ function cdash_find_and_update_all_business_geolocation( $return ) {
 	}
 
 }
-
 
 ?>
