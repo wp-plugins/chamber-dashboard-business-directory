@@ -139,9 +139,9 @@ function cdash_single_business_map() {
 								$lat = $location['latitude'];
 							}
 							if( isset( $location['custom_longitude'] ) ) {
-								$lat = $location['custom_longitude'];
+								$long = $location['custom_longitude'];
 							} else {
-								$lat = $location['longitude'];
+								$long = $location['longitude'];
 							}
 							// get the map icon
 							$id = get_the_id();
