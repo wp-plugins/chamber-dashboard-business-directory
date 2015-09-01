@@ -72,6 +72,7 @@ function cdash_add_options_page() {
 	);
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Export', 'Export', 'manage_options', 'chamber-dashboard-export', 'cdash_export_form' );
 	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Import', 'Import', 'manage_options', 'chamber-dashboard-import', 'cdash_import_form' );
+	add_submenu_page( '/chamber-dashboard-business-directory/options.php', 'Add-Ons', 'Add-Ons', 'manage_options', 'chamber-dashboard-addons', 'cdash_addons_page' );
 	// this is a hidden submenu page for updating geolocation data
 	add_submenu_page( NULL, 'Update Geolocation Data', 'Update Geolocation Data', 'manage_options', 'chamber-dashboard-update-geolocation', 'cdash_update_geolocation_data_page' );
 }
@@ -91,7 +92,7 @@ function cdash_render_form() {
 	<div class="wrap">
 		
 		<!-- Display Plugin Icon, Header, and Description -->
-		<h2><img src="<?php echo plugin_dir_url( __FILE__ ) . '/images/cdash-32.png'?>"><?php _e('Chamber Dashboard Business Directory Settings', 'cdash'); ?></h2>
+		<h1><img src="<?php echo plugin_dir_url( __FILE__ ) . '/images/cdash-32.png'?>"><?php _e('Chamber Dashboard Business Directory Settings', 'cdash'); ?></h1>
 
 
 		<div id="main" style="width: 70%; min-width: 350px; float: left;">
@@ -240,7 +241,7 @@ function cdash_render_form() {
 										<p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
 											<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="yes" <?php checked('yes', $field['display_single']); ?> /><?php _e(' Yes', 'cdash'); ?></label><br />
 											<label><input name="cdash_directory_options[bus_custom][<?php echo $i; ?>][display_single]" type="radio" value="no" <?php checked('no', $field['display_single']); ?> /><?php _e(' No', 'cdash'); ?></label><br />	
-										<p><a href="#" class="repeat"><?php _e('Add Another', 'cdash'); ?></a></p>
+										<a href="#" class="delete-this"><?php _e('Delete This Custom Field', 'cdash'); ?></a>
 									</div>
 									<?php $i++;
 								}
@@ -261,9 +262,10 @@ function cdash_render_form() {
 									<p><strong><?php _e('Display in Single Business View?', 'cdash'); ?></strong></p>
 										<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="yes" <?php checked('yes', $options['bus_custom'][1]['display_single']); ?><?php _e(' /> Yes', 'cdash'); ?></label><br />
 										<label><input name="cdash_directory_options[bus_custom][1][display_single]" type="radio" value="no" <?php checked('no', $options['bus_custom'][1]['display_single']); ?><?php _e(' /> No', 'cdash'); ?></label><br />	
-									<p><a href="#" class="repeat"><?php _e('Add Another', 'cdash'); ?></a></p>
+									<a href="#" class="delete-this"><?php _e('Delete This Custom Field', 'cdash'); ?></a>
 								</div>
 							<?php } ?>
+							<p><a href="#" class="repeat"><?php _e('Add Another Custom Field', 'cdash'); ?></a></p>
 						</td>
 					</tr>	
 
@@ -301,6 +303,11 @@ function cdash_render_form() {
 			        resetAttributeNames(cloned)
 			    });
 
+			jQuery('.delete-this').click(function(e){
+				e.preventDefault(); 
+			    jQuery(this).parent('div').remove();
+			});
+
 			</script>
 		</div><!-- #main -->
 		<?php include( plugin_dir_path( __FILE__ ) . '/includes/aside.php' ); ?>
@@ -313,6 +320,8 @@ function cdash_render_form() {
 
 // Sanitize and validate input. Accepts an array, return a sanitized array.
 function cdash_validate_options($input) {
+	// delete the old custom fields
+	delete_option('cdash_directory_options');
 	$input['bus_phone_type'] =  wp_filter_nohtml_kses($input['bus_phone_type']); 
 	$input['bus_email_type'] =  wp_filter_nohtml_kses($input['bus_email_type']);
 	if( isset( $input['currency_symbol'] ) ) {
@@ -335,22 +344,32 @@ function cdash_plugin_action_links( $links, $file ) {
 	return $links;
 }
 
-function cdash_export_form() { ?>
-	<div class="wrap">
-		<div class="icon32" id="icon-options-general"><br></div>
-		<h2><?php _e('Export', 'cdash'); ?></h2>
-		<p><?php _e('Click the button below to download a CSV of all of your businesses.', 'cdash'); ?></p>
-		<form action="<?php echo plugin_dir_url( __FILE__ ); ?>export.php">
+function cdash_export_form() {
 
-		<input type="submit" value="Download CSV">
+	$export_form = 
+		'<p>' . __( 'Click the button below to download a CSV of all of your businesses.', 'cdash' ) . '</p>
+		<form action="' . plugin_dir_url( __FILE__ ) . 'export.php">
+		<input type="submit" class="button-primary" value="' . __( 'Download CSV', 'cdash' ) . '">
 		</form>
-	</div>
-<?php }
+		<p>' . __( 'This exporter can only export limited information about businesses.  If you want to export more information, or export people or businesses, try the <a href="https://chamberdashboard.com/downloads/chamber-dashboard-exporter/" target="_blank">Chamber Dashboard Exporter</a>.', 'cdash' );
+
+	$export_form = apply_filters( 'cdash_export_form', $export_form );
+
+	$export_page = 
+		'<div class="wrap">
+			<div class="icon32" id="icon-options-general"><br></div>
+			<h1>' . __( 'Export', 'cdash' ) . '</h1>' .
+			$export_form . 
+		'</div>';
+
+	echo $export_page;
+}
 
 function cdash_import_form() { ?>
 	<div class="wrap">
 		<div class="icon32" id="icon-options-general"><br></div>
-			<h2><?php _e('Import', 'cdash'); ?></h2>
+			<h1><?php _e('Import', 'cdash'); ?></h1>
+			<h3><?php _e( 'Import Businesses', 'cdash' ); ?></h3>
 			<p><?php _e('You can import businesses from a CSV file.  First, you must format the CSV properly.  Your CSV must have the following columns in the following order, even if some of the columns are empty: <ul><li>Business Name</li><li>Description</li><li>Category (separate multiple with semicolons)</li><li>Membership Level (separate multiple with semicolons)</li><li>Location Name</li><li>Address</li><li>City</li><li>State</li><li>Zip</li><li>URL</li><li>Phone (separate multiple with semicolons)</li><li>Email (separate multiple with semicolons)</li></ul>', 'cdash'); ?></p>
 			<p><?php _e( 'Some programs format CSV files differently.  You might need to use either Google Drive or Open Office to save your CSV file so that it will upload correctly.', 'cdash' ); ?></p>
 			<p><a href="<?php echo plugin_dir_url( __FILE__ ); ?>cdash-import-sample.zip"><?php _e('Download a sample CSV to see how to format your file.', 'cdash'); ?></a></p>
@@ -465,6 +484,54 @@ function cdash_import_form() { ?>
 		}
 	}
 	
+	do_action( 'cdash_importer' );
+}
+
+function cdash_addons_page() { ?>
+	<div class="wrap">
+		<h1><?php _e( 'Add-Ons', 'cdash' ); ?></h1>
+		<?php _e( 'You can extend the functionality of Chamber Dashboard even more with these add-ons!', 'cdash' ); ?>
+		<div id="add-ons-container">
+			<div class="add-on recurring">
+				<h3><?php _e( 'Recurring Payments', 'cdash' ); ?></h3>
+				<?php $recurring_payments_content = '
+				<p>' . __( 'Make the membership manager even more powerful by adding automatic recurring payments!', 'cdash' ) . '</p>
+				<p>' . __( 'With the Recurring Payments add-on, you will never have to create membership invoices again - the plugin will create and send annual membership invoices to your customers, and give them the option to sign up for automatic recurring payments through PayPal.', 'cdash' ) . '</p>
+				<p class="center"><a href="https://chamberdashboard.com/downloads/recurring-payments/?utm_source=plugin&utm_medium=addons_page&utm_campaign=business-directory" class="button button-primary">' . __( 'Learn More', 'cdash' ) . '</a></p>';
+				echo apply_filters( 'cdash_addons_recurring', $recurring_payments_content ); ?>
+			</div>
+
+			<div class="add-on export">
+				<h3><?php _e( 'Exporter', 'cdash' ); ?></h3>
+				<?php 
+		    	$exporter_content = '
+				<p>' . __( 'Advanced export functionality makes it easy to export businesses, invoices, or people based on criteria you select.  You can select what information to export.', 'cdash' ) . '</p>
+				<p class="center"><a href="https://chamberdashboard.com/downloads/chamber-dashboard-exporter/?utm_source=plugin&utm_medium=addons_page&utm_campaign=business-directory" class="button button-primary">' . __( 'Learn More', 'cdash' ) . '</a></p>';
+				echo apply_filters( 'cdash_addons_exporter_content', $exporter_content );
+				do_action( 'cdash_addons_exporter' );
+			    ?>
+			</div>
+			
+			<div class="add-on tickets coming">
+				<h3><?php _e( 'Ticket Sales', 'cdash' ); ?></h3>
+				<?php $ticket_content = '
+				<p>' . __( 'Integrate with the Chamber Dashboard Events Calendar to sell tickets to your events, email ticketholders, and track attendance.', 'cdash' ) . '</p>
+				<p>' . __( 'Coming Soon!  Sign up for our newsletter to find out when Ticket Sales is released!', 'cdash' ) . '</p>
+				<iframe width="100%" scrolling="no" frameborder="0" src="https://chamberdashboard.com/?wysija-page=1&controller=subscribers&action=wysija_outter&wysija_form=3&external_site=1&wysijap=subscriptions" class="iframe-wysija" vspace="0" tabindex="0" style="position: static; top: 0pt; margin: 0px; border-style: none; height: 125px; left: 0pt; visibility: visible;" marginwidth="0" marginheight="0" hspace="0" allowtransparency="true" title="Subscription MailPoet"></iframe>';
+				echo apply_filters( 'cdash_addons_ticket', $ticket_content ); ?>
+			</div>
+
+			<div class="add-on import coming">
+				<h3><?php _e( 'Importer', 'cdash' ); ?></h3>
+				<?php $importer_content = '
+				<p>' . __( 'Extend Chamber Dashboard\'s import function to import businesses and people, along with custom fields and other data.', 'cdash' ) . '</p>
+				<p>' . __( 'Coming Soon!  Sign up for our newsletter to find out when the Importer is released!', 'cdash' ) . '</p>
+				<iframe width="100%" scrolling="no" frameborder="0" src="https://chamberdashboard.com/?wysija-page=1&controller=subscribers&action=wysija_outter&wysija_form=3&external_site=1&wysijap=subscriptions" class="iframe-wysija" vspace="0" tabindex="0" style="position: static; top: 0pt; margin: 0px; border-style: none; height: 125px; left: 0pt; visibility: visible;" marginwidth="0" marginheight="0" hspace="0" allowtransparency="true" title="Subscription MailPoet"></iframe>';
+				echo apply_filters( 'cdash_addons_importer', $importer_content ); ?>
+			</div>
+		</div>
+	</div>
+	<?php 
 }
 
 ?>
