@@ -540,9 +540,9 @@ function cdash_business_map_shortcode( $atts ) {
 									$lat = $location['latitude'];
 								}
 								if( isset( $location['custom_longitude'] ) ) {
-									$lat = $location['custom_longitude'];
+									$long = $location['custom_longitude'];
 								} else {
-									$lat = $location['longitude'];
+									$long = $location['longitude'];
 								}
 								// Get the map icon
 								$id = get_the_id();
