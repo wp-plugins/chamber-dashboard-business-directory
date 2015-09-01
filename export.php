@@ -79,52 +79,60 @@ while ( $exportquery->have_posts() ) : $exportquery->the_post();
 		);
 	global $buscontact_metabox;
 	$contactmeta = $buscontact_metabox->the_meta();
-	$locations = $contactmeta['location'];
-	foreach($locations as $location) {
-		$locationinfo = array(
-			'altname' => '',
-			'address' => '',
-			'city' => '',
-			'state' => '',
-			'zip' => '',
-			'url' => '',
-			);
-		foreach ($locationinfo as $key => $value) {
+	if( isset( $contactmeta['location'] ) && is_array( $contactmeta['location'] ) ) {
+		$locations = $contactmeta['location'];
+		foreach($locations as $location) {
+			$locationinfo = array(
+				'altname' => '',
+				'address' => '',
+				'city' => '',
+				'state' => '',
+				'zip' => '',
+				'url' => '',
+				);
+			foreach ($locationinfo as $key => $value) {
 
-			if(isset($location[$key])) {
-				#$locationinfo[$key.$location_number] = $location[$key];
-				$fields[] = $location[$key];
+				if(isset($location[$key])) {
+					#$locationinfo[$key.$location_number] = $location[$key];
+					$fields[] = $location[$key];
+				} else {
+					#$locationinfo[$key.$location_number] = '';
+					$fields[] = '';
+				}
+			}
+
+
+			if(isset($location['phone'])) {
+				$phones = $location['phone'];
+				if( is_array($phones)) {
+					$phoneinfo = '';
+					foreach($phones as $phone) {
+						$phoneinfo .= $phone['phonenumber'];
+						if( isset( $phone['phonetype'] ) && '' !== $phone['phonetype'] ) {
+							$phoneinfo .= " (" . $phone['phonetype'] . ")";
+						}
+					}
+					$fields[] = $phoneinfo;
+				} 
 			} else {
-				#$locationinfo[$key.$location_number] = '';
 				$fields[] = '';
 			}
-		}
 
-
-		if(isset($location['phone'])) {
-			$phones = $location['phone'];
-			if( is_array($phones)) {
-				$phoneinfo = '';
-				foreach($phones as $phone) {
-					$phoneinfo .= $phone['phonenumber'] . " (" . $phone['phonetype'] . ")";
+			if(isset($location['email'])) {
+				$emails = $location['email'];
+				if(is_array($emails)) {
+					$emailinfo = '';
+					foreach($emails as $email) {
+						$emailinfo .= $email['emailaddress'];
+						if( isset( $email['emailtype'] ) && '' !== $email['emailtype'] ) {
+							$emailinfo .= " (" . $email['emailtype'] . ")";
+						}
+					}
+					$fields[] = $emailinfo;
 				}
-				$fields[] = $phoneinfo;
-			} 
-		} else {
-			$fields[] = '';
-		}
-
-		if(isset($location['email'])) {
-			$emails = $location['email'];
-			if(is_array($emails)) {
-				$emailinfo = '';
-				foreach($emails as $email) {
-					$emailinfo .= $email['emailaddress'] . "(" . $email['emailtype'] . ")";
-				}
-				$fields[] = $emailinfo;
+			} else {
+				$fields[] = '';
 			}
-		} else {
-			$fields[] = '';
 		}
 	}
 

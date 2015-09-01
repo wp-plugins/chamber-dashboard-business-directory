@@ -20,38 +20,62 @@
 			<label><?php _e('Address', 'cdash'); ?></label>
 			<p class="address-wrapper">
 				<?php $metabox->the_field('address'); ?>
-				<textarea name="<?php $metabox->the_name(); ?>" rows="3"><?php $metabox->the_value(); ?></textarea>
+				<textarea class="trigger-geolocation" name="<?php $metabox->the_name(); ?>" rows="3"><?php $metabox->the_value(); ?></textarea>
 			</p>
 
 			<?php $options = get_option('cdash_directory_options'); ?>
 	 
-			<div class="third city-wrapper">
+			<div class="fourth city-wrapper">
 				<?php $mb->the_field('city'); ?>
 				<label><?php _e('City', 'cdash'); ?></label>
-				<p><input type="text" class="city" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p> 
+				<p><input type="text" class="city trigger-geolocation" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p> 
 			</div>
 
-			<div class="third state-wrapper">
+			<div class="fourth state-wrapper">
 				<?php $mb->the_field('state'); ?>
 				<label><?php _e('State', 'cdash'); ?></label>
-				<p><input type="text" class="state" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+				<p><input type="text" class="state trigger-geolocation" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
 			</div>
 
-			<div class="third zip-wrapper">
+			<div class="fourth zip-wrapper">
 				<?php $mb->the_field('zip'); ?>
 				<label><?php _e('Zip', 'cdash'); ?></label>
-				<p><input type="text" class="zip" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+				<p><input type="text" class="zip trigger-geolocation" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
 			</div>
-		</div>
 
-		<div class="hidden">
-			<?php $mb->the_field('latitude'); ?>
-			<label><?php _e('Latitude', 'cdash'); ?></label>
-			<p><input type="text" name="<?php $mb->the_name(); ?>" id="latitude" value="<?php $mb->the_value(); ?>"/></p>
+			<div class="fourth country-wrapper">
+				<?php $mb->the_field('country'); ?>
+				<label><?php _e('Country', 'cdash'); ?></label>
+				<p><input type="text" class="country trigger-geolocation" name="<?php $mb->the_name(); ?>" value="<?php $mb->the_value(); ?>"/></p>
+			</div>
 
-			<?php $mb->the_field('longitude'); ?>
-			<label><?php _e('Longitude', 'cdash'); ?></label>
-			<p><input type="text" name="<?php $mb->the_name(); ?>" id="longitude" value="<?php $mb->the_value(); ?>"/></p>
+			<div class="geolocation-data clearfix">
+				<p class="clearfix"><a href="#" class="button button-primary preview-map"><?php _e( 'Preview Map', 'cdash' ); ?></a></p>
+				<div class="map-canvas half" style="width:300px; height: 300px; display: none; margin: 0 20px 20px 0;"></div>
+				<a href="#" class="button custom-coords" style="display:none;"><?php _e( 'Change Map Coordinates', 'cdash' ); ?></a>
+				<div class="enter-custom-coords" style="display: none;">
+					<p><?php _e( 'If you want the map marker to appear in a different place, you can enter the latitude and longitude yourself.', 'cdash' ); ?></p>
+					<p><a href="http://www.latlong.net/" target="_blank"><?php _e( 'Find the latitude and longitude', 'cdash' ); ?></a></p>
+					<div class="half custom-coords-fields">
+						<?php $mb->the_field('custom_latitude'); ?>
+						<label><?php _e( 'Latitude', 'cdash' ); ?></label>
+						<input type="text" name="<?php $mb->the_name(); ?>" class="custom-latitude new-coords" value="<?php $mb->the_value(); ?>"/>
+
+						<?php $mb->the_field('custom_longitude'); ?>
+						<label><?php _e( 'Longitude', 'cdash' ); ?></label>
+						<input type="text" name="<?php $mb->the_name(); ?>" class="custom-longitude new-coords" value="<?php $mb->the_value(); ?>"/>
+						<p class="update-preview">
+							<a href="#" class="update-map button"><?php _e( 'Update Map Preview', 'cdash' ); ?></a>
+							<span class="update-reminder" style="display:none;"><?php _e( 'Make sure you save your changes!', 'cdash' ); ?></span>
+						</p>
+					</div>
+				</div>
+				<?php $mb->the_field('latitude'); ?>
+				<input type="hidden" name="<?php $mb->the_name(); ?>" class="latitude" value="<?php $mb->the_value(); ?>"/>
+
+				<?php $mb->the_field('longitude'); ?>
+				<input type="hidden" name="<?php $mb->the_name(); ?>" class="longitude" value="<?php $mb->the_value(); ?>"/>
+			</div>
 		</div>
 
 		<div class="clearfix">
@@ -159,6 +183,7 @@
 				<option value="twitter" <?php if ($mb->get_the_value() == 'twitter') echo $selected; ?>><?php _e( 'Twitter', 'cdash' ); ?></option>
 				<option value="urbanspoon" <?php if ($mb->get_the_value() == 'urbanspoon') echo $selected; ?>><?php _e( 'Urbanspoon', 'cdash' ); ?></option>
 				<option value="vimeo" <?php if ($mb->get_the_value() == 'vimeo') echo $selected; ?>><?php _e( 'Vimeo', 'cdash' ); ?></option>
+				<option value="website" <?php if ($mb->get_the_value() == 'website') echo $selected; ?>><?php _e( 'Website', 'cdash' ); ?></option>
 				<option value="youtube" <?php if ($mb->get_the_value() == 'youtube') echo $selected; ?>><?php _e( 'YouTube', 'cdash' ); ?></option>
 				<option value="yelp" <?php if ($mb->get_the_value() == 'yelp') echo $selected; ?>><?php _e( 'Yelp', 'cdash' ); ?></option>
 			</select>
@@ -176,5 +201,4 @@
 		<?php endwhile; ?>
 		<p><a href="#" class="docopy-social button"><?php _e('Add Another Social Media Link', 'cdash'); ?></a></p>
 	</fieldset>
-
 </div>
