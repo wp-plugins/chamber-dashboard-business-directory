@@ -1,4 +1,7 @@
 <?php 
+
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 // force WP functionality to load so we can use wp_query
 $parse_uri = explode( 'wp-content', $_SERVER['SCRIPT_FILENAME'] );
 require_once( $parse_uri[0] . 'wp-load.php' );

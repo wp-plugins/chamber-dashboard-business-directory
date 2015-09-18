@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 // ------------------------------------------------------------------------
 // SEARCH WIDGET
 // ------------------------------------------------------------------------
@@ -25,7 +27,7 @@ class Cdash_Search_Widget extends WP_Widget {
 		$control_ops = array( 'width' => 300, 'height' => 350, 'id_base' => 'cdash-search' );
 
 		/* Create the widget. */
-		$this->WP_Widget( 'cdash-search', __('Business Directory Search', 'cdash'), $widget_ops, $control_ops );
+		parent::__construct( 'cdash-search', __('Business Directory Search', 'cdash'), $widget_ops, $control_ops );
 	}
 
 	/**
@@ -129,7 +131,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		$control_ops = array( 'width' => 300, 'height' => 350, 'id_base' => 'cdash-featured' );
 
 		/* Create the widget. */
-		$this->WP_Widget( 'cdash-featured', __( 'Featured Business', 'cdash' ), $widget_ops, $control_ops );
+		parent::__construct( 'cdash-featured', __( 'Featured Business', 'cdash' ), $widget_ops, $control_ops );
 	}
 
 	/**
@@ -493,7 +495,7 @@ class Cdash_Business_Categories_Widget extends WP_Widget {
 		$control_ops = array( 'width' => 300, 'height' => 350, 'id_base' => 'cdash-business-categories' );
 
 		/* Create the widget. */
-		$this->WP_Widget( 'cdash-business-categories', __('Business Categories', 'cdash'), $widget_ops, $control_ops );
+		parent::__construct( 'cdash-business-categories', __('Business Categories', 'cdash'), $widget_ops, $control_ops );
 	}
 
 	/**

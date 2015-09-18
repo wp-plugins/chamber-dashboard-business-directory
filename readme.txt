@@ -86,6 +86,9 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.7.5 =
+* updated deprecated widget function
+
 = 2.7.4 =
 * fixed bug on map on single business view
 

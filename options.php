@@ -1,4 +1,7 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /* Options Page for Chamber Dashboard Business Directory */
 
 // --------------------------------------------------------------------------------------
