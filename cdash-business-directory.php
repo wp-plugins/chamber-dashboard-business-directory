@@ -3,7 +3,7 @@
 Plugin Name: Chamber Dashboard Business Directory
 Plugin URI: http://chamberdashboard.com
 Description: Crate a database of the businesses in your chamber of commerce
-Version: 2.7.5
+Version: 2.7.6
 Author: Morgan Kay
 Author URI: http://wpalchemists.com
 Text Domain: cdash

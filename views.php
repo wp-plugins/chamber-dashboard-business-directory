@@ -664,7 +664,7 @@ function cdash_business_search_results_shortcode() {
 		$paged = get_query_var('paged') ? get_query_var('paged') : 1;
 		$args = array( 
                 'post_type' => 'business',
-                'posts_per_page' => 10,  
+                'posts_per_page' => 3,  
                 'paged' => $paged,
                 'order' => 'ASC',
                 );
@@ -763,8 +763,8 @@ function cdash_business_search_results_shortcode() {
 				$big = 999999999; // need an unlikely integer
    				$search_results .= "<div class='pagination'>";
 			  	$search_results .= paginate_links( array (
-			      'base' => rtrim( get_pagenum_link(1), "/" ) . '%_%',
-			      'format' => '/page/%#%',
+			      'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+			      'format' => '?page=%#%',
 			      'current' => $current_page,
 			      'total' => $total_pages,
 			    ) );
