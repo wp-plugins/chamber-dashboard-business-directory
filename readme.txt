@@ -86,6 +86,10 @@ Yes, the plugin is ready to be translated!  .po and .mo files are included.  If 
 1. Entering business information
 
 == Changelog ==
+= 2.7.7 =
+* added author support to businesses
+* added social media icons for Avvo and Tumblr
+
 = 2.7.6 =
 * fixed bug in search result pagination
 

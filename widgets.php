@@ -362,7 +362,7 @@ class Cdash_Featured_Business_Widget extends WP_Widget {
 		                printf(
 		                    '<option value="%s" %s>%s</option>',
 		                    $term->term_id,
-		                    in_array( $term->term_id, $instance['category']) ? 'selected="selected"' : '',
+		                    in_array( $term->term_id, $instance['category'] ) ? 'selected="selected"' : '',
 		                    $term->name
 		                );
 		            }

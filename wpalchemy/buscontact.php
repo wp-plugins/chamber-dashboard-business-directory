@@ -173,6 +173,7 @@
 			<select name="<?php $mb->the_name(); ?>">
 				<option value=""></option>
 				<?php $mb->the_field('socialservice'); ?>
+				<option value="avvo" <?php if ($mb->get_the_value() == 'avvo') echo $selected; ?>><?php _e( 'Avvo', 'cdash' ); ?></option>
 				<option value="facebook" <?php if ($mb->get_the_value() == 'facebook') echo $selected; ?>><?php _e( 'Facebook', 'cdash' ); ?></option>
 				<option value="flickr" <?php if ($mb->get_the_value() == 'flickr') echo $selected; ?>><?php _e( 'Flickr', 'cdash' ); ?></option>
 				<option value="google" <?php if ($mb->get_the_value() == 'google') echo $selected; ?>><?php _e( 'Google +', 'cdash' ); ?></option>
@@ -180,6 +181,7 @@
 				<option value="linkedin" <?php if ($mb->get_the_value() == 'linkedin') echo $selected; ?>><?php _e( 'LinkedIn', 'cdash' ); ?></option>
 				<option value="pinterest" <?php if ($mb->get_the_value() == 'pinterest') echo $selected; ?>><?php _e( 'Pinterest', 'cdash' ); ?></option>
 				<option value="tripadvisor" <?php if ($mb->get_the_value() == 'tripadvisor') echo $selected; ?>><?php _e( 'Trip Advisor', 'cdash' ); ?></option>
+				<option value="tumblr" <?php if ($mb->get_the_value() == 'tumblr') echo $selected; ?>><?php _e( 'Tumblr', 'cdash' ); ?></option>
 				<option value="twitter" <?php if ($mb->get_the_value() == 'twitter') echo $selected; ?>><?php _e( 'Twitter', 'cdash' ); ?></option>
 				<option value="urbanspoon" <?php if ($mb->get_the_value() == 'urbanspoon') echo $selected; ?>><?php _e( 'Urbanspoon', 'cdash' ); ?></option>
 				<option value="vimeo" <?php if ($mb->get_the_value() == 'vimeo') echo $selected; ?>><?php _e( 'Vimeo', 'cdash' ); ?></option>

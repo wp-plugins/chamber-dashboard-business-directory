@@ -204,7 +204,7 @@ add_action( 'init', 'cdash_register_taxonomy_private_category', 0 );
 function cdash_register_cpt_business() {
 
 	$options = get_option( 'cdash_directory_options' );
-	$supports = array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', );
+	$supports = array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'page-attributes', 'author' );
 	if( isset( $options['sv_comments'] ) && "1" == $options['sv_comments'] ) {
 		$supports[] = 'comments';
 	}
